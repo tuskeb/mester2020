@@ -1,0 +1,15 @@
+package hu.csanyzeg.master.Demos;
+
+import hu.csanyzeg.master.Demos.DemoMenu.MenuScreen;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+
+public class DemoMyGame extends MyGame {
+
+	@Override
+	public void create () {
+		super.create();
+		//setLoadingStage(new LoadingStage(this));
+		setScreen(new MenuScreen(this));
+	}
+
+}
