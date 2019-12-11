@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.UI;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public abstract class MyLabel extends Label implements IZindex, InitableInterface {
     public MyLabel(CharSequence text, Skin skin) {

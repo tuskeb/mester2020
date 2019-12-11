@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyButton;
+import hu.csanyzeg.master.MyBaseClasses.UI.MyButton;
 
 public class MenuButton extends MyButton {
     public static String fontHash = "alegreyaregular.otf";
