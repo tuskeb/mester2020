@@ -27,7 +27,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     private MyScreen screen = null;
 
     protected float elapsedTime = 0;
-    protected static int ZIndexAutoInc = 1;
+    protected int ZIndexAutoInc = 1;
 
     public MyStage(Viewport viewport, MyGame game) {
         super(viewport);

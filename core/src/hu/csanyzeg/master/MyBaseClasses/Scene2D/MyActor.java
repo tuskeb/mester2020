@@ -48,10 +48,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     }
 
     protected float elapsedTime = 0;
-    @Deprecated
-    protected Rectangle rectangle = new Rectangle();
-    @Deprecated
-    protected Circle circle = new Circle();
+
     protected HashMap<String, MyShape> shapeMap;
 
     protected static float debugPointSize = 30f;
@@ -154,13 +151,10 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
 
     public MyActor() {
         super();
-        //debug();
     }
 
     @Override
     public void init() {
-        //setSize(1,1);
-        //System.out.println(getWidth());
         setOrigintoCenter();
     }
 
@@ -173,16 +167,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
-        //setOrigin(getWidth() / 2, getHeight() / 2);
-        rectangle.setSize(getWidth(), getHeight());
-        circle.setRadius((getWidth() + getHeight()) / 2f);
-        /*
-        if (shapeMap!=null) {
-            for (MyShape shape:shapeMap.values()) {
-                shape.setSize(getWidth(),getHeight());
-            }
-        }
-        */
     }
 
     public void setOrigintoCenter(){
@@ -209,8 +193,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     @Override
     protected void positionChanged() {
         super.positionChanged();
-        rectangle.setPosition(getX(), getY());
-        circle.setPosition(getX(), getY());
         if (shapeMap!=null) {
             for (MyShape shape:shapeMap.values()) {
                 shape.setPosition(getX(),getY());
@@ -226,32 +208,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
                 shape.setRotation(getRotation());
             }
         }
-    }
-
-    @Deprecated
-    public boolean overlaps(ShapeType shapeType, MyActor anotherActor)
-    {
-        switch (shapeType)
-        {
-            case Circle:
-                return circle.overlaps(anotherActor.circle);
-            case Rectangle:
-                return rectangle.overlaps(anotherActor.rectangle);
-        }
-        return false;
-    }
-
-    @Deprecated
-    public static boolean overlaps(ShapeType shapeType, MyActor actorA, MyActor actorB)
-    {
-        switch (shapeType)
-        {
-            case Circle:
-                return actorA.circle.overlaps(actorB.circle);
-            case Rectangle:
-                return actorA.rectangle.overlaps(actorB.rectangle);
-        }
-        return false;
     }
 
     public static boolean overlaps(MyActor actorA, MyActor actorB){
@@ -660,8 +616,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     public void setOrigin(float originX, float originY) {
         if (shapeMap != null) {
             for (MyShape shape : getCollisionShapeMap().values()) {
-                //shape.setOriginFromCenter(shape.originX + (originX-getOriginX()) + shape.offsetX, shape.originY + (originY-getOriginY())+shape.offsetY);
-                //shape.setOriginFromCenter(shape.originX + (originX-getOriginX()) + shape.offsetX, shape.originY + (originY-getOriginY())+shape.offsetY);
                 shape.setOrigin(originX, originY);
             }
         }

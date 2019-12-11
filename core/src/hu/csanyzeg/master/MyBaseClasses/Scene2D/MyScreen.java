@@ -44,6 +44,7 @@ abstract public class MyScreen implements Screen, InitableInterface {
 
     public void addStage(MyStage stage, int zIndex, boolean processInput){
         stages.add(stage);
+        stage.setScreen(this);
         stage.setZIndex(zIndex);
         if (processInput) {
             inputMultiplexer.addProcessor(stage);

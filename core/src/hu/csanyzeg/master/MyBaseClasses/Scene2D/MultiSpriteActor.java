@@ -68,29 +68,16 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         }
     }
 
-    /*
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        for (OffsetSprite sprite: spriteMap.values()) {
-            sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
-        }
-    }
-*/
 
     @Override
     public void setSize(float width, float height) {
         float w = width / getWidth();
         float h = height / getHeight();
         for (OffsetSprite sprite : spriteMap.values()) {
-            //System.out.println(sprite.getOriginX()*w);
-
             sprite.setSize(sprite.getWidth() * w, sprite.getHeight() * h);
             sprite.getOffsetVector().x *= w;
             sprite.getOffsetVector().y *= h;
-            //sprite.setOrigin(sprite.getOriginX()*w, sprite.getOriginY()*h);
         }
-        //setOrigin(getOriginX()*w, getOriginY()*h);
         positionChanged();
         super.setSize(width, height);
     }
@@ -119,7 +106,6 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     protected void originChanged() {
         super.originChanged();
         for (OffsetSprite sprite : spriteMap.values()) {
-            //System.out.println(getOriginX());
             sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
         }
     }
@@ -181,7 +167,6 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
 
     public boolean removeSprite(String key) {
         if (spriteMap.containsKey(key)) {
-            //System.out.println("removing sprite");
             spriteMap.remove(key);
             return true;
         }
@@ -206,13 +191,10 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         super.drawDebugBounds(shapes);
         if (spriteMap != null) {
             for (OffsetSprite sprite : spriteMap.values()) {
-                //float w = (int)(0.8f + (float)Math.sin(elapsedTime * 10f)/5f+0.2f);
-                //System.out.println(elapsedTime);
                 if (((int) ((elapsedTime) * 5)) % 2 == 0 && sprite.visible) {
                     Color c = new Color(Color.MAGENTA);
                     shapes.setColor(c);
                     drawDebugLines(sprite.getCorners(), shapes);
-                    //shapes.setColor(Color.ORANGE);
                     shapes.circle(sprite.getOriginX() + sprite.getX(), sprite.getOriginY() + sprite.getY(), getWidth() / debugPointSize, 5);
                 }
             }

@@ -1,10 +1,10 @@
 package hu.csanyzeg.master.MyBaseClasses.UI;
 
-import com.badlogic.gdx.graphics.Color;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
@@ -12,31 +12,23 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
-public abstract class MyLabel extends Label implements IZindex, InitableInterface {
-    public MyLabel(CharSequence text, Skin skin) {
+public abstract class MyTextArea extends TextArea implements IZindex, InitableInterface {
+    public MyTextArea(String text, Skin skin) {
         super(text, skin);
         init();
     }
 
-    public MyLabel(CharSequence text, Skin skin, String styleName) {
+    public MyTextArea(String text, Skin skin, String styleName) {
         super(text, skin, styleName);
         init();
     }
 
-    public MyLabel(CharSequence text, Skin skin, String fontName, Color color) {
-        super(text, skin, fontName, color);
-        init();
-    }
-
-    public MyLabel(CharSequence text, Skin skin, String fontName, String colorName) {
-        super(text, skin, fontName, colorName);
-        init();
-    }
-
-    public MyLabel(CharSequence text, LabelStyle style) {
+    public MyTextArea(String text, TextFieldStyle style) {
         super(text, style);
         init();
     }
+
+
     protected int zIndex = 0;
 
     @Override

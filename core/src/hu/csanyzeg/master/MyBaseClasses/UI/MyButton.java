@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 /**
@@ -33,18 +34,8 @@ public abstract class MyButton extends TextButton implements InitableInterface, 
     @Override
     public boolean setZIndex(int index) {
         this.zIndex = index;
-        Group parent = this.getParent();
-        if (parent == null) return false;
-        Array<Actor> children = parent.getChildren();
-        if (children.size == 1) return false;
-        if (getStage() != null){
-            if (getStage() instanceof MyStage){
-                ((MyStage)getStage()).sortActorsByZindex();
-                return true;
-            }
-        }
-
-        return false;
+        return IZindexCode.setZIndex(index, this);
     }
+
 
 }

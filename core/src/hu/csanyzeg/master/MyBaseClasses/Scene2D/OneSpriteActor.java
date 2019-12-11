@@ -30,7 +30,6 @@ abstract public class OneSpriteActor extends MyActor implements InitableInterfac
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         sprite.draw(batch);
-        //System.out.println("Sprite "  + getOriginX());
     }
 
 
