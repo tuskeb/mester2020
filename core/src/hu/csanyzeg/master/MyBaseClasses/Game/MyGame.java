@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 
@@ -16,7 +17,7 @@ import java.util.Stack;
 
 abstract public class MyGame extends Game {
 
-    private LoadingStage loadingStage;
+    private LoadingStage loadingStage = null;
     private MyAssetManager myAssetManager;
 
     @Override
@@ -43,7 +44,7 @@ abstract public class MyGame extends Game {
     }
 
     public void setScreenBackByStackPop(ScreenInit init){
-        if (backButtonStack.size()>1){
+        if (backButtonStack.size()>0){
             try {
                 MyScreen scr = (MyScreen) backButtonStack.pop().getConstructor(MyGame.class).newInstance(this);
                 if (init != null) {

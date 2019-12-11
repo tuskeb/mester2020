@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
@@ -49,7 +50,9 @@ public class MyAssetManager {
         DebugChangeListener = new DebugChangeListener() {
             @Override
             public void change(String info) {
-                Gdx.app.log("Asset", "MyAssetManager: " + info.replace('\n', ' '));
+                String[] strings = info.split("\n");
+
+                Gdx.app.log("Asset", "MyAssetManager: " + strings[0] + " " + (strings.length > 2 ? strings[2] : strings[strings.length - 1]));
             }
         };
     }
@@ -60,24 +63,43 @@ public class MyAssetManager {
             progressChangeListener.change(0);
         }
 
+        if (to.getAssetList() != null) {
+            ArrayList<String> remove = new ArrayList<>();
 
-        for(Map.Entry<String, AssetDescriptor> e : to.getAssetList().getMap().entrySet()){
-            assetManager.load(e.getValue());
-            assetList.getMap().put(e.getKey(), e.getValue());
-            setDebug("Queue: " + e.getKey());
-        }
 
-        while (!assetManager.isFinished()){
-            setDebug("Load: " + assetManager.getProgress() + " % (" + assetManager.getDiagnostics() + ")");
-            if (progress != (int) assetManager.getProgress()) {
-                progress = (int) assetManager.getProgress();
-                if (progressChangeListener != null) {
-                    progressChangeListener.change((int)assetManager.getProgress());
+            for (Map.Entry<String, AssetDescriptor> e : assetList.getMap().entrySet()) {
+                if (!to.getAssetList().getMap().containsKey(e.getKey())){
+                    remove.add(e.getKey());
+//                    setDebug("Unused: " + e.getKey());
                 }
             }
-            assetManager.update();
-        }
 
+            for(String s : remove){
+                AssetDescriptor assetDescriptor = assetList.getMap().remove(s);
+                setDebug("Remove: " + assetDescriptor.fileName);
+                assetManager.unload(assetDescriptor.fileName);
+            }
+
+
+            for (Map.Entry<String, AssetDescriptor> e : to.getAssetList().getMap().entrySet()) {
+                if (!assetList.getMap().containsKey(e.getKey())) {
+                    assetManager.load(e.getValue());
+                    assetList.getMap().put(e.getKey(), e.getValue());
+                    setDebug("Queue: " + e.getKey());
+                }
+            }
+
+            while (!assetManager.isFinished()) {
+                setDebug("Load: " + assetManager.getProgress() + " %\n" + assetManager.getDiagnostics());
+                if (progress != (int) assetManager.getProgress()) {
+                    progress = (int) assetManager.getProgress();
+                    if (progressChangeListener != null) {
+                        progressChangeListener.change((int) assetManager.getProgress());
+                    }
+                }
+                assetManager.update();
+            }
+        }
         setDebug("Load finished.");
         if (progressChangeListener != null){
             progressChangeListener.change(100);

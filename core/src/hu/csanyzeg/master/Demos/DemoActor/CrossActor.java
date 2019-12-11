@@ -7,7 +7,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
  * Created by tuskeb on 2016. 09. 30..
  */
 public class CrossActor extends OneSpriteStaticActor {
-    public static String textureHash = "BADLOGIC_TEXTURE";
+    public static String textureHash = "badlogic.jpg";
 
     public CrossActor(MyGame game) {
         super(game, textureHash);

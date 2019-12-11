@@ -12,10 +12,12 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteAnimatedActor;
  */
 public class StarActor extends OneSpriteAnimatedActor {
     Sound sound;
+    public static String soundHash = "star.wav";
+    public static String textureAtlasHash = "star.atlas";
 
     public StarActor(MyGame game) {
-        super(game, "STAR_TEXTUREATLAS");
-        sound = game.getMyAssetManager().getSound("STAR_SOUND");
+        super(game, textureAtlasHash);
+        sound = game.getMyAssetManager().getSound(soundHash);
         setFps(8);
         addListener(new ClickListener(){
             @Override
@@ -24,7 +26,6 @@ public class StarActor extends OneSpriteAnimatedActor {
                 PlaySound();
             }
         });
-        //setOrigin(128,128);
     }
 
     public void PlaySound()

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.AnimatedOffsetSprite;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MultiSpriteActor;
@@ -24,8 +26,26 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
  * Created by tuskeb on 2016. 09. 30..
  */
 public class MenuStage extends MyStage {
-    public MenuStage(MyGame game) {
+    public MenuStage(final MyGame game) {
         super(new FitViewport(720,720), game);
+
+        addActor(new MenuButton(game, "Actor Demo"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,100);
+                setSize(200,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        game.setScreen(new ActorScreen(game));
+                    }
+                });
+            }
+        });
+
+
         addActor(new MenuButton(game, "Exit"){
             @Override
             public void init() {
@@ -36,7 +56,7 @@ public class MenuStage extends MyStage {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        Gdx.app.exit();
+                        game.setScreenBackByStackPop();
                     }
                 });
             }
@@ -45,7 +65,7 @@ public class MenuStage extends MyStage {
 
     public void init()
     {
-        addBackButtonScreenBackByStackPopListener();
+
 
     }
 
