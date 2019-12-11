@@ -38,12 +38,39 @@ abstract public class MyScreen implements Screen, InitableInterface {
         init();
     }
 
-    public void addStage(MyStage stage, int zIndex, boolean processInput){
+    public void addStage(final MyStage stage, int zIndex, boolean processInput){
         stages.add(stage);
         stage.setScreen(this);
         stage.setZIndex(zIndex);
         if (processInput) {
-            inputMultiplexer.addProcessor(stage);
+            if (stage.visible && !stage.pause) {
+                inputMultiplexer.addProcessor(stage);
+            }
+            stage.addVisibleChangeListener(new MyStage.VisibleChangeListener() {
+                @Override
+                public void change(boolean visible) {
+                    if (visible){
+                        if (!inputMultiplexer.getProcessors().contains(stage,true)) {
+                            inputMultiplexer.addProcessor(stage);
+                        }
+                    }else{
+                        inputMultiplexer.removeProcessor(stage);
+                    }
+                }
+            });
+
+            stage.addPauseChangeListener(new MyStage.PauseChangeListener() {
+                @Override
+                public void change(boolean pause) {
+                    if (!pause){
+                        if (!inputMultiplexer.getProcessors().contains(stage,true)) {
+                            inputMultiplexer.addProcessor(stage);
+                        }
+                    }else{
+                        inputMultiplexer.removeProcessor(stage);
+                    }
+                }
+            });
         }
     }
 

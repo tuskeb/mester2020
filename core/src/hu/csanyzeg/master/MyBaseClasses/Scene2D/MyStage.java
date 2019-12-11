@@ -33,6 +33,38 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     protected boolean pause = false;
 
+
+
+    protected ArrayList<VisibleChangeListener> visibleChangeListeners = new ArrayList<>();
+
+    public interface VisibleChangeListener{
+        public void change(boolean visible);
+    }
+
+    public void addVisibleChangeListener(VisibleChangeListener listener){
+        visibleChangeListeners.add(listener);
+    }
+
+    public void removeVisibleChangeListener(VisibleChangeListener listener){
+        visibleChangeListeners.remove(listener);
+    }
+
+
+    protected ArrayList<PauseChangeListener> pauseChangeListeners = new ArrayList<PauseChangeListener>();
+
+    public interface PauseChangeListener{
+        public void change(boolean pause);
+    }
+
+    public void addPauseChangeListener(PauseChangeListener listener){
+        pauseChangeListeners.add(listener);
+    }
+
+    public void removePauseChangeListener(PauseChangeListener listener){
+        pauseChangeListeners.remove(listener);
+    }
+
+
     public MyStage(Viewport viewport, MyGame game) {
         super(viewport);
         this.game = game;
@@ -455,6 +487,9 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+        for(VisibleChangeListener v : visibleChangeListeners){
+            v.change(visible);
+        }
     }
 
     public boolean isPause() {
@@ -463,6 +498,9 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     public void setPause(boolean pause) {
         this.pause = pause;
+        for(PauseChangeListener v : pauseChangeListeners){
+            v.change(pause);
+        }
     }
 
 
