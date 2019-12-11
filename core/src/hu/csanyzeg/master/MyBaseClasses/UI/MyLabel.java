@@ -8,11 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public abstract class MyLabel extends Label implements IZindex, InitableInterface {
+
+    protected MyGame game;
+
     public MyLabel(CharSequence text, Skin skin) {
         super(text, skin);
         init();
@@ -37,6 +41,13 @@ public abstract class MyLabel extends Label implements IZindex, InitableInterfac
         super(text, style);
         init();
     }
+
+
+    public MyGame getGame() {
+        return game;
+    }
+
+
     protected int zIndex = 0;
 
     @Override

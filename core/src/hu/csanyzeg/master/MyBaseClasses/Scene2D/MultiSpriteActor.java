@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,18 +15,21 @@ import java.util.HashMap;
 
 public abstract class MultiSpriteActor extends MyActor implements InitableInterface {
     protected HashMap<String, OffsetSprite> spriteMap = new HashMap<String, OffsetSprite>();
+    protected MyGame game;
     public static int debugLineNumbers = 16;
 
-    public MultiSpriteActor(float width, float height) {
+
+    public MultiSpriteActor(MyGame game, float width, float height) {
         super();
         super.setWidth(width);
         super.setHeight(height);
         init();
+        this.game = game;
     }
 
     /*  OffsetSprite... olyam mint egy tömb de simán fel lehet sorolni a paramétereket. Nincs fix hossza.
             https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs */
-    public MultiSpriteActor(float width, float height, OffsetSprite... offsetSprites) {
+    public MultiSpriteActor(MyGame game, float width, float height, OffsetSprite... offsetSprites) {
         super();
         super.setWidth(width);
         super.setHeight(height);
@@ -33,12 +37,13 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
             addSprite(spite);
         }
         init();
+        this.game = game;
     }
 
 
     /*  OffsetSprite... olyam mint egy tömb de simán fel lehet sorolni a paramétereket. Nincs fix hossza.
             https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs */
-    public MultiSpriteActor(float width, float height, ShapeType shapeType, OffsetSprite... offsetSprites) {
+    public MultiSpriteActor(MyGame game, float width, float height, ShapeType shapeType, OffsetSprite... offsetSprites) {
         super();
         super.setWidth(width);
         super.setHeight(height);
@@ -46,6 +51,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
             addSprite(spite, shapeType);
         }
         init();
+        this.game = game;
     }
 
     @Override

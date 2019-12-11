@@ -1,6 +1,9 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 public class AnimatedOffsetSprite extends OffsetSprite {
 
@@ -14,18 +17,28 @@ public class AnimatedOffsetSprite extends OffsetSprite {
     private int actualFrame = 0;
     private int prevFrame = 0;
 
+    @Deprecated
     public AnimatedOffsetSprite(TextureAtlas textureAtlas, float xOffset, float yOffset) {
         super(textureAtlas.getRegions().get(0).getTexture(), xOffset, yOffset);
         this.textureAtlas = textureAtlas;
     }
 
+    @Deprecated
     public AnimatedOffsetSprite(TextureAtlas textureAtlas, float xOffset, float yOffset, float width, float height) {
         super(textureAtlas.getRegions().get(0).getTexture(), xOffset, yOffset, width, height);
         this.textureAtlas = textureAtlas;
     }
 
 
+    public AnimatedOffsetSprite(MyGame game, String hash, float xOffset, float yOffset) {
+        super(game, hash, xOffset, yOffset);
+        textureAtlas = game.getMyAssetManager().getTextureAtlas(hash);
+    }
 
+    public AnimatedOffsetSprite(MyGame game, String hash, float xOffset, float yOffset, float width, float height) {
+        super(game, hash, xOffset, yOffset, width, height);
+        textureAtlas = game.getMyAssetManager().getTextureAtlas(hash);
+    }
 
     public void init() {
         setSize(textureAtlas.getRegions().get(0).getRegionWidth(), textureAtlas.getRegions().get(0).getRegionHeight());
