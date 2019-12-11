@@ -6,13 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Vector;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
@@ -37,7 +33,7 @@ abstract public class MyScreen implements Screen, InitableInterface {
 
     public MyScreen(MyGame game) {
         this.game = game;
-        game.getMyAssetManager().changeScreen(this);
+        game.getMyAssetManager().changeAssets(this.getAssetList(), game.getLoadingStage() == null ? null : game.getLoadingStage().getAssetList());
         Gdx.input.setInputProcessor(inputMultiplexer);
         init();
     }

@@ -11,12 +11,10 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public abstract class LoadingStage extends MyStage {
 
-    protected MyAssetManager assetManager;
-
     public LoadingStage(Viewport viewport, MyGame game) {
         super(viewport, game);
-        assetManager = new MyAssetManager();
-        assetManager.loadAsset(getAssetList());
+        game.getMyAssetManager().loadAsset(getAssetList());
+        game.getMyAssetManager().updateManager();
     }
 
     @Override
@@ -35,9 +33,4 @@ public abstract class LoadingStage extends MyStage {
 
     public abstract AssetList getAssetList();
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        assetManager.dispose();
-    }
 }

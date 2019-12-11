@@ -18,13 +18,13 @@ public class DemoLoadingStage extends LoadingStage {
 
     public DemoLoadingStage(MyGame game) {
         super(new ExtendViewport(1280, 640), game);
-        filenameLabel = new  MyLabel("Loading...", new Label.LabelStyle(assetManager.getFont(fontHash30), Color.GREEN)){
+        filenameLabel = new  MyLabel("Loading...", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash30), Color.GREEN)){
             @Override
             public void init() {
 
             }
         };
-        percentLabel = new  MyLabel("0%", new Label.LabelStyle(assetManager.getFont(fontHash100), Color.GREEN)){
+        percentLabel = new  MyLabel("0%", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash100), Color.GREEN)){
             @Override
             public void init() {
 

@@ -42,6 +42,7 @@ public class MyAssetManager {
     AssetList assetList = new AssetList();
 
     public MyAssetManager() {
+        Texture.setAssetManager(assetManager);
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
@@ -70,38 +71,42 @@ public class MyAssetManager {
         return assetManager.isFinished();
     }
 
-    public void changeScreen(MyScreen to){
+    public void changeAssets(AssetList to, AssetList protect){
         setDebug("Loading...");
         setProgress(0);
 
-        if (to.getAssetList() != null) {
-            ArrayList<String> remove = new ArrayList<>();
+        ArrayList<String> remove = new ArrayList<>();
 
 
-            for (Map.Entry<String, AssetDescriptor> e : assetList.getMap().entrySet()) {
-                if (!to.getAssetList().getMap().containsKey(e.getKey())){
-                    remove.add(e.getKey());
-//                    setDebug("Unused: " + e.getKey());
-                }
+        for (Map.Entry<String, AssetDescriptor> e : assetList.getMap().entrySet()) {
+            if (!to.getMap().containsKey(e.getKey())){
+                remove.add(e.getKey());
+                setDebug("Unused: " + e.getKey());
             }
-
-            for(String s : remove){
-                AssetDescriptor assetDescriptor = assetList.getMap().remove(s);
-                setDebug("Remove: " + assetDescriptor.fileName);
-                assetManager.unload(assetDescriptor.fileName);
-            }
-
-
-            for (Map.Entry<String, AssetDescriptor> e : to.getAssetList().getMap().entrySet()) {
-                if (!assetList.getMap().containsKey(e.getKey())) {
-                    assetManager.load(e.getValue());
-                    assetList.getMap().put(e.getKey(), e.getValue());
-                    setDebug("Queue: " + e.getKey());
-                }
-            }
-
-            setDebug("!!!! CALL updateManager FROM LOADINGSCREEN WHILE DONE. !!!!");
         }
+
+        for (Map.Entry<String, AssetDescriptor> e : protect.getMap().entrySet()) {
+            setDebug("Protect: " + e.getValue().fileName);
+            remove.remove(e.getKey());
+        }
+
+
+        for(String s : remove){
+            AssetDescriptor assetDescriptor = assetList.getMap().remove(s);
+            setDebug("Remove: " + assetDescriptor.fileName);
+            assetManager.unload(assetDescriptor.fileName);
+        }
+
+
+        for (Map.Entry<String, AssetDescriptor> e : to.getMap().entrySet()) {
+            if (!assetList.getMap().containsKey(e.getKey())) {
+                assetManager.load(e.getValue());
+                assetList.getMap().put(e.getKey(), e.getValue());
+                setDebug("Queue: " + e.getKey());
+            }
+        }
+
+        setDebug("!!!! CALL updateManager FROM LOADINGSCREEN WHILE DONE. !!!!");
     }
 
     public void updateManager(){
