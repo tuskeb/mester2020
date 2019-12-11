@@ -50,18 +50,29 @@ public class MyAssetManager {
         DebugChangeListener = new DebugChangeListener() {
             @Override
             public void change(String info) {
-                String[] strings = info.split("\n");
-
-                Gdx.app.log("Asset", "MyAssetManager: " + strings[0] + " " + (strings.length > 2 ? strings[2] : strings[strings.length - 1]));
+                Gdx.app.log("Asset", "MyAssetManager: " + info);
             }
         };
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
+    private void setProgress(int progress) {
+        this.progress = progress;
+        if (progressChangeListener != null) {
+            progressChangeListener.change(progress);
+        }
+    }
+
+    public boolean isLoadingComplete(){
+        return assetManager.isFinished();
+    }
+
     public void changeScreen(MyScreen to){
         setDebug("Loading...");
-        if (progressChangeListener != null){
-            progressChangeListener.change(0);
-        }
+        setProgress(0);
 
         if (to.getAssetList() != null) {
             ArrayList<String> remove = new ArrayList<>();
@@ -89,20 +100,46 @@ public class MyAssetManager {
                 }
             }
 
+            setDebug("!!!! CALL updateManager FROM LOADINGSCREEN WHILE DONE. !!!!");
+        }
+    }
+
+    public void updateManager(){
+        assetManager.update();
+        setProgress((int)(assetManager.getProgress()*100));
+        setDebug(getProgress() + " % ("+ getActualLoadingName() +")");
+    }
+
+    public String getActualLoadingName(){
+        String[] s = assetManager.getDiagnostics().split("\n");
+        if (s.length == 1){
+            return s[0].split(", ")[0];
+        }
+        return s[1].split(", ")[0];
+    }
+
+
+    public void loadAsset(AssetDescriptor assetDescriptor, String hash){
+        if (!assetList.getMap().containsKey(hash)) {
+            setDebug("Loading: " + hash);
+            assetManager.load(assetDescriptor);
+            assetList.add(assetDescriptor, hash);
             while (!assetManager.isFinished()) {
-                setDebug("Load: " + assetManager.getProgress() + " %\n" + assetManager.getDiagnostics());
-                if (progress != (int) assetManager.getProgress()) {
-                    progress = (int) assetManager.getProgress();
-                    if (progressChangeListener != null) {
-                        progressChangeListener.change((int) assetManager.getProgress());
-                    }
-                }
                 assetManager.update();
             }
+            setDebug("Loading: " + hash + " done.");
+        }else{
+            setDebug("Loading: " + hash + " already loaded.");
         }
-        setDebug("Load finished.");
-        if (progressChangeListener != null){
-            progressChangeListener.change(100);
+    }
+
+    public void loadAsset(AssetDescriptor assetDescriptor){
+        loadAsset(assetDescriptor, assetDescriptor.fileName);
+    }
+
+    public void loadAsset(AssetList assetList) {
+        for (Map.Entry<String, AssetDescriptor> e : assetList.getMap().entrySet()) {
+            loadAsset(e.getValue(), e.getKey());
         }
     }
 
@@ -119,6 +156,7 @@ public class MyAssetManager {
     }
 
     public BitmapFont getFont(String hash){
+        System.out.println(assetManager.get((AssetDescriptor<BitmapFont>)(assetList.getAssetDescriptor(hash))));
         return assetManager.get((AssetDescriptor<BitmapFont>)(assetList.getAssetDescriptor(hash)));
     }
 

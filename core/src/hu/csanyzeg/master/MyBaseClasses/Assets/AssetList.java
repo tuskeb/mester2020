@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 public class AssetList {
     public static final String CHARS = "0123456789öüóqwertzuiopőúasdfghjkléáűíyxcvbnm'+!%/=()ÖÜÓQWERTZUIOPŐÚASDFGHJKLÉÁŰÍYXCVBNM?:_*<>#&@{}[],-.";
+    public static final String NUMBERS = "0123456789";
+    public static final String SIGNS = "'+!%/=()?:_*<>#&@{}[],-.";
 
     private HashMap<String, AssetDescriptor> map = new HashMap<String, AssetDescriptor>();
 
@@ -51,19 +53,45 @@ public class AssetList {
         addFont(fileName, fileName, size, Color.WHITE);
     }
 
+
+    public void add(AssetDescriptor assetDescriptor, String hash) {
+        map.put(hash, assetDescriptor);
+    }
+
+    public void add(AssetDescriptor assetDescriptor) {
+        map.put(assetDescriptor.fileName, assetDescriptor);
+    }
+
+
     public void addFont(String fileName, String hash, int size, Color color) {
+        addFont(fileName, hash, size, color, CHARS);
+    }
+
+
+    public void addFont(String fileName, String hash, int size, Color color, String chars) {
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontParameter.fontFileName = fileName;
         fontParameter.fontParameters.size = size;
-        fontParameter.fontParameters.characters = CHARS;
+        fontParameter.fontParameters.characters = chars;
         fontParameter.fontParameters.color = color;
-
+        fontParameter.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        fontParameter.fontParameters.minFilter = Texture.TextureFilter.Linear;
         if (!map.containsKey(hash)) {
             map.put(hash != null ? hash : fileName, new AssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
         }
     }
 
+
+    public void addFont(String fileName, String hash, FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter) {
+        if (!map.containsKey(hash)) {
+            map.put(hash != null ? hash : fileName, new AssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
+        }
+    }
+
+
+
     public AssetDescriptor getAssetDescriptor(String hash){
+        System.out.printf(map.get(hash).toString());
         return map.get(hash);
     }
 

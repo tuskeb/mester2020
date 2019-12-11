@@ -618,7 +618,31 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
             setPosition(ev.getWorldWidth()/2-getWidth()/2, ev.getWorldHeight()/2-getHeight()/2);
         }
     }
+    public void setPositionCenter(float y){
+        Stage s;
+        Viewport ev;
+        if ((s = getStage()) != null) {
+            ev = s.getViewport();
+            setPosition(ev.getWorldWidth()/2-getWidth()/2, y);
+        }
+    }
 
+    public void setPositionMiddle(float x){
+        Stage s;
+        Viewport ev;
+        if ((s = getStage()) != null) {
+            ev = s.getViewport();
+            setPosition(x, ev.getWorldHeight()/2-getHeight()/2);
+        }
+    }
+
+    public void setPositionCenter(){
+        setPositionCenter(getY());
+    }
+
+    public void setPositionMiddle() {
+        setPositionMiddle(getX());
+    }
 
     @Override
     public void setOriginX(float originX) {

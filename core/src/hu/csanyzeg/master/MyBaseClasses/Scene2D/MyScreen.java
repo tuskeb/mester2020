@@ -27,6 +27,8 @@ abstract public class MyScreen implements Screen, InitableInterface {
 
     public float r=0,g=0,b=0;
 
+    private boolean assetsLoaded = false;
+
     public final MyGame game;
 
     protected Array<MyStage> stages = new Array<MyStage>();
@@ -87,6 +89,19 @@ abstract public class MyScreen implements Screen, InitableInterface {
     public void render(float delta) {
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(!game.getMyAssetManager().isLoadingComplete()){
+            if (game.getLoadingStage()!= null){
+                game.getLoadingStage().act(delta);
+                game.getLoadingStage().draw();
+            }else{
+                game.getMyAssetManager().updateManager();
+            }
+            return;
+        }
+        if (!assetsLoaded){
+            assetsLoaded = true;
+            afterAssetsLoaded();
+        }
         for(MyStage s : stages){
             s.act(delta);
         }
@@ -129,5 +144,7 @@ abstract public class MyScreen implements Screen, InitableInterface {
 
 
     public abstract AssetList getAssetList();
+
+    protected abstract void afterAssetsLoaded();
 
 }

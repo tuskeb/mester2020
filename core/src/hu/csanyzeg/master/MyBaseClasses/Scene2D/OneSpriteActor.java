@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
@@ -74,4 +75,11 @@ abstract public class OneSpriteActor extends MyActor implements InitableInterfac
     public void setAlpha(float a){
         sprite.setAlpha(a);
     }
+
+    @Override
+    public void setColor(Color c) {
+        super.setColor(c);
+        sprite.setColor(c);
+    }
+
 }

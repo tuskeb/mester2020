@@ -10,7 +10,6 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 public class ActorScreen extends MyScreen {
     public ActorScreen(MyGame game) {
         super(game);
-        addStage(new ActorStage(game), 1, true);
     }
 
     @Override
@@ -32,5 +31,10 @@ public class ActorScreen extends MyScreen {
     @Override
     public void init() {
 
+    }
+
+    @Override
+    protected void afterAssetsLoaded() {
+        addStage(new ActorStage(game), 1, true);
     }
 }

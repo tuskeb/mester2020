@@ -29,7 +29,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         super();
         super.setWidth(width);
         super.setHeight(height);
-        for (OffsetSprite spite: offsetSprites) {
+        for (OffsetSprite spite : offsetSprites) {
             addSprite(spite);
         }
         init();
@@ -42,7 +42,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         super();
         super.setWidth(width);
         super.setHeight(height);
-        for (OffsetSprite spite: offsetSprites) {
+        for (OffsetSprite spite : offsetSprites) {
             addSprite(spite, shapeType);
         }
         init();
@@ -51,9 +51,9 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     @Override
     public void act(float delta) {
         super.act(delta);
-        for(OffsetSprite os : spriteMap.values()){
-            if (os instanceof AnimatedOffsetSprite){
-                ((AnimatedOffsetSprite)os).act(delta);
+        for (OffsetSprite os : spriteMap.values()) {
+            if (os instanceof AnimatedOffsetSprite) {
+                ((AnimatedOffsetSprite) os).act(delta);
             }
         }
     }
@@ -61,7 +61,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        for (OffsetSprite sprite: spriteMap.values()) {
+        for (OffsetSprite sprite : spriteMap.values()) {
             if (sprite.visible) {
                 sprite.draw(batch);
             }
@@ -97,7 +97,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
 
     @Override
     public void setHeight(float height) {
-        setSize(getWidth(),height);
+        setSize(getWidth(), height);
     }
 
     @Override
@@ -109,17 +109,16 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     @Override
     protected void positionChanged() {
         super.positionChanged();
-        for (OffsetSprite sprite: spriteMap.values()) {
+        for (OffsetSprite sprite : spriteMap.values()) {
             sprite.setPosition(getX() + sprite.getOffsetVector().x, getY() + sprite.getOffsetVector().y);
         }
     }
 
 
-
     @Override
     protected void originChanged() {
         super.originChanged();
-        for (OffsetSprite sprite: spriteMap.values()) {
+        for (OffsetSprite sprite : spriteMap.values()) {
             //System.out.println(getOriginX());
             sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
         }
@@ -128,20 +127,20 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     @Override
     protected void rotationChanged() {
         super.rotationChanged();
-        for (OffsetSprite sprite: spriteMap.values()) {
+        for (OffsetSprite sprite : spriteMap.values()) {
             sprite.setRotation(getRotation());
         }
     }
 
 
     public void addSprite(OffsetSprite sprite) {
-        spriteMap.put("Sprite"+ spriteMap.size(), sprite);
+        spriteMap.put("Sprite" + spriteMap.size(), sprite);
         sprite.setPosition(getX() + sprite.getOffsetVector().x, getY() + sprite.getOffsetVector().y);
         sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
     }
 
-    public void addSprite(OffsetSprite sprite, ShapeType shapeType){
-        addSprite(sprite, "Sprite"+ spriteMap.size(), shapeType);
+    public void addSprite(OffsetSprite sprite, ShapeType shapeType) {
+        addSprite(sprite, "Sprite" + spriteMap.size(), shapeType);
     }
 
 
@@ -152,7 +151,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     }
 
 
-    public void addSprite(OffsetSprite sprite, String key, ShapeType shapeType){
+    public void addSprite(OffsetSprite sprite, String key, ShapeType shapeType) {
         spriteMap.put(key, sprite);
         sprite.setPosition(getX() + sprite.getOffsetVector().x, getY() + sprite.getOffsetVector().y);
         sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
@@ -160,29 +159,28 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
             addCollisionShape(key, new MyRectangle(sprite.getWidth(), sprite.getHeight(), sprite.getOffsetVector().x, sprite.getOffsetVector().y, getOriginX(), getOriginY(), getRotation(), sprite.getRotation(), getX(), getY(), true));
         }
         if (shapeType == ShapeType.Circle) {
-            addCollisionShape(key, new MyCircle((float)Math.sqrt(sprite.getWidth() * sprite.getHeight())/2.0f, sprite.getOffsetVector().x, sprite.getOffsetVector().y, getOriginX(), getOriginY(), getX(), getY(), true));
+            addCollisionShape(key, new MyCircle((float) Math.sqrt(sprite.getWidth() * sprite.getHeight()) / 2.0f, sprite.getOffsetVector().x, sprite.getOffsetVector().y, getOriginX(), getOriginY(), getX(), getY(), true));
         }
     }
 
 
-    public void changeSprite(String key, OffsetSprite sprite){
-        for(OffsetSprite offsetSprite : spriteMap.values()){
-            if(getSprite(key)==offsetSprite){
+    public void changeSprite(String key, OffsetSprite sprite) {
+        for (OffsetSprite offsetSprite : spriteMap.values()) {
+            if (getSprite(key) == offsetSprite) {
                 float y = offsetSprite.getY();
                 float x = offsetSprite.getX();
                 float height = offsetSprite.getHeight();
                 float width = offsetSprite.getWidth();
                 offsetSprite.set(sprite);
                 offsetSprite.setSize(width, height);
-                offsetSprite.setPosition(x,y);
+                offsetSprite.setPosition(x, y);
             }
         }
     }
 
 
-
     public boolean removeSprite(String key) {
-        if(spriteMap.containsKey(key)){
+        if (spriteMap.containsKey(key)) {
             //System.out.println("removing sprite");
             spriteMap.remove(key);
             return true;
@@ -190,8 +188,8 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         return false;
     }
 
-    public OffsetSprite getSprite(String key ){
-        if(spriteMap.containsKey(key)) return spriteMap.get(key);
+    public OffsetSprite getSprite(String key) {
+        if (spriteMap.containsKey(key)) return spriteMap.get(key);
         else return null;
     }
 
@@ -199,7 +197,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         return spriteMap;
     }
 
-    public Collection<OffsetSprite> getSprites(){
+    public Collection<OffsetSprite> getSprites() {
         return spriteMap.values();
     }
 
@@ -207,11 +205,10 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     protected void drawDebugBounds(ShapeRenderer shapes) {
         super.drawDebugBounds(shapes);
         if (spriteMap != null) {
-            for (OffsetSprite sprite: spriteMap.values()) {
+            for (OffsetSprite sprite : spriteMap.values()) {
                 //float w = (int)(0.8f + (float)Math.sin(elapsedTime * 10f)/5f+0.2f);
                 //System.out.println(elapsedTime);
-                if (((int)((elapsedTime)*5))%2 ==0 && sprite.visible)
-                {
+                if (((int) ((elapsedTime) * 5)) % 2 == 0 && sprite.visible) {
                     Color c = new Color(Color.MAGENTA);
                     shapes.setColor(c);
                     drawDebugLines(sprite.getCorners(), shapes);
@@ -222,4 +219,29 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         }
     }
 
+
+    public void setAlpha(float a) {
+        if (spriteMap != null) {
+            for (OffsetSprite sprite : spriteMap.values()) {
+                sprite.setAlpha(a);
+            }
+        }
+    }
+
+
+    public void setColor(Color c) {
+        if (spriteMap != null) {
+            for (OffsetSprite sprite : spriteMap.values()) {
+                sprite.setColor(c);
+            }
+        }
+    }
+
+    public void setColor(float r, float g, float b, float a) {
+        if (spriteMap != null) {
+            for (OffsetSprite sprite : spriteMap.values()) {
+                sprite.setColor(r, g, b, a);
+            }
+        }
+    }
 }
