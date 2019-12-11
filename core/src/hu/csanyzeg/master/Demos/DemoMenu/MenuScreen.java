@@ -22,10 +22,10 @@ public class MenuScreen extends MyScreen {
     @Override
     public AssetList getAssetList() {
         AssetList assetList = new AssetList();
-        assetList.addFont(MenuButton.fontHash, null, 20, Color.WHITE);
-        assetList.addTexture(MenuButton.downHash, null);
-        assetList.addTexture(MenuButton.upHash, null);
-        assetList.addTexture(MenuButton.overHash, null);
+        assetList.addFont(MenuButton.fontHash, null, 20, Color.WHITE).protect = true;
+        assetList.addTexture(MenuButton.downHash, null).protect = true;
+        assetList.addTexture(MenuButton.upHash, null).protect = true;
+        assetList.addTexture(MenuButton.overHash, null).protect = true;
         return  assetList;
     }
 

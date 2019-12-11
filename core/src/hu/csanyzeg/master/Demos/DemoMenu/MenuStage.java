@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
+import hu.csanyzeg.master.Demos.DemoSzakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
@@ -14,6 +15,23 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 public class MenuStage extends MyStage {
     public MenuStage(final MyGame game) {
         super(new FitViewport(720,720), game);
+
+        addActor(new MenuButton(game, "Szakkör Demo"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,200);
+                setSize(200,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        game.setScreen(new SzakkorScreen(game));
+                    }
+                });
+            }
+        });
+
 
         addActor(new MenuButton(game, "Actor Demo"){
             @Override

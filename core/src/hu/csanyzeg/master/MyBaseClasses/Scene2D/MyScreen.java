@@ -33,7 +33,7 @@ abstract public class MyScreen implements Screen, InitableInterface {
 
     public MyScreen(MyGame game) {
         this.game = game;
-        game.getMyAssetManager().changeAssets(this.getAssetList(), game.getLoadingStage() == null ? null : game.getLoadingStage().getAssetList());
+        game.getMyAssetManager().changeAssets(this.getAssetList());
         Gdx.input.setInputProcessor(inputMultiplexer);
         init();
     }

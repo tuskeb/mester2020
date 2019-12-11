@@ -16,59 +16,69 @@ public class AssetList {
     public static final String NUMBERS = "0123456789";
     public static final String SIGNS = "'+!%/=()?:_*<>#&@{}[],-.";
 
-    private HashMap<String, AssetDescriptor> map = new HashMap<String, AssetDescriptor>();
+    private HashMap<String, MyAssetDescriptor> map = new HashMap<String, MyAssetDescriptor>();
 
-    public void addTexture(String fileName){
-        addTexture(fileName, fileName);
+    public MyAssetDescriptor<Texture> addTexture(String fileName){
+        return addTexture(fileName, fileName);
     }
-    public void addTexture(String fileName, String hash){
+    public MyAssetDescriptor<Texture> addTexture(String fileName, String hash){
+        MyAssetDescriptor<Texture> descriptor;
         if (!map.containsKey(hash)){
-            map.put(hash != null ? hash : fileName, new AssetDescriptor<Texture>(fileName, Texture.class));
+            map.put(hash != null ? hash : fileName, descriptor = new MyAssetDescriptor<Texture>(fileName, Texture.class));
+        }else{
+            descriptor = map.get(hash);
         }
+        return descriptor;
     }
 
-    public void addTextureAtlas(String fileName){
-        addTextureAtlas(fileName,fileName);
+
+
+    public MyAssetDescriptor<TextureAtlas> addTextureAtlas(String fileName){
+        return addTextureAtlas(fileName,fileName);
     }
-    public void addTextureAtlas(String fileName, String hash){
+
+    public MyAssetDescriptor<TextureAtlas> addTextureAtlas(String fileName, String hash){
+        MyAssetDescriptor<TextureAtlas> descriptor;
         if (!map.containsKey(hash)){
-            map.put(hash != null ? hash : fileName, new AssetDescriptor<TextureAtlas>(fileName, TextureAtlas.class));
+            map.put(hash != null ? hash : fileName, descriptor = new MyAssetDescriptor<TextureAtlas>(fileName, TextureAtlas.class));
+        }else{
+            descriptor = map.get(hash);
         }
+        return descriptor;
     }
 
-    public void addSound(String fileName) {
-        addSound(fileName, fileName);
+
+
+    public MyAssetDescriptor<Sound> addSound(String fileName) {
+        return addSound(fileName, fileName);
     }
-    public void addSound(String fileName, String hash){
+
+    public MyAssetDescriptor<Sound> addSound(String fileName, String hash){
+        MyAssetDescriptor<Sound> descriptor;
         if (!map.containsKey(hash)){
-            map.put(hash != null ? hash : fileName, new AssetDescriptor<Sound>(fileName, Sound.class));
+            map.put(hash != null ? hash : fileName, descriptor = new  MyAssetDescriptor<Sound>(fileName, Sound.class));
+        }else{
+            descriptor = map.get(hash);
         }
-    }
-
-    public void addFont(String fileName, int size, Color color) {
-        addFont(fileName, fileName, size, color);
-    }
-
-    public void addFont(String fileName, int size) {
-        addFont(fileName, fileName, size, Color.WHITE);
+        return descriptor;
     }
 
 
-    public void add(AssetDescriptor assetDescriptor, String hash) {
-        map.put(hash, assetDescriptor);
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName, int size, Color color) {
+        return addFont(fileName, fileName, size, color);
     }
 
-    public void add(AssetDescriptor assetDescriptor) {
-        map.put(assetDescriptor.fileName, assetDescriptor);
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName, int size) {
+        return addFont(fileName, fileName, size, Color.WHITE);
+    }
+
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName, String hash, int size, Color color) {
+        return addFont(fileName, hash, size, color, CHARS);
     }
 
 
-    public void addFont(String fileName, String hash, int size, Color color) {
-        addFont(fileName, hash, size, color, CHARS);
-    }
-
-
-    public void addFont(String fileName, String hash, int size, Color color, String chars) {
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName, String hash, int size, Color color, String chars) {
+        MyAssetDescriptor<BitmapFont> descriptor;
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontParameter.fontFileName = fileName;
         fontParameter.fontParameters.size = size;
@@ -77,25 +87,41 @@ public class AssetList {
         fontParameter.fontParameters.magFilter = Texture.TextureFilter.Linear;
         fontParameter.fontParameters.minFilter = Texture.TextureFilter.Linear;
         if (!map.containsKey(hash)) {
-            map.put(hash != null ? hash : fileName, new AssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
+            map.put(hash != null ? hash : fileName, descriptor = new MyAssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
+        }else{
+            descriptor = map.get(hash);
         }
+        return descriptor;
     }
 
 
-    public void addFont(String fileName, String hash, FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter) {
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName, String hash, FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter) {
+        MyAssetDescriptor<BitmapFont> descriptor;
         if (!map.containsKey(hash)) {
-            map.put(hash != null ? hash : fileName, new AssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
+            map.put(hash != null ? hash : fileName, descriptor = new MyAssetDescriptor<BitmapFont>(fontParameter.fontFileName, BitmapFont.class, fontParameter));
+        }else{
+            descriptor = map.get(hash);
         }
+        return descriptor;
     }
 
 
 
-    public AssetDescriptor getAssetDescriptor(String hash){
-        System.out.printf(map.get(hash).toString());
+    public void add(MyAssetDescriptor MyAssetDescriptor, String hash) {
+        map.put(hash, MyAssetDescriptor);
+    }
+
+    public void add(MyAssetDescriptor MyAssetDescriptor) {
+        map.put(MyAssetDescriptor.fileName, MyAssetDescriptor);
+    }
+
+
+
+    public MyAssetDescriptor getAssetDescriptor(String hash){
         return map.get(hash);
     }
 
-    public HashMap<String, AssetDescriptor> getMap() {
+    public HashMap<String, MyAssetDescriptor> getMap() {
         return map;
     }
 

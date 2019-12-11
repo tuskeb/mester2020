@@ -48,8 +48,8 @@ public class DemoLoadingStage extends LoadingStage {
     @Override
     public AssetList getAssetList() {
         AssetList assetList = new AssetList();
-        assetList.addFont("loadingscreen/normal.ttf", fontHash30, 30, Color.WHITE, AssetList.CHARS);
-        assetList.addFont("loadingscreen/italic.ttf", fontHash100, 200, Color.WHITE, AssetList.NUMBERS + AssetList.SIGNS);
+        assetList.addFont("loadingscreen/normal.ttf", fontHash30, 30, Color.WHITE, AssetList.CHARS).protect = true;
+        assetList.addFont("loadingscreen/italic.ttf", fontHash100, 200, Color.WHITE, AssetList.NUMBERS + AssetList.SIGNS).protect = true;
 
         return assetList;
     }
