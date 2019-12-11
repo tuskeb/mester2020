@@ -11,18 +11,15 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
  */
 public class OneSpriteStaticActor extends OneSpriteActor {
 
-    @Deprecated
-    public OneSpriteStaticActor(String file) {
-        super(new Sprite(new Texture(file)));
-    }
-
-    @Deprecated
-    public OneSpriteStaticActor(Texture texture) {
-        super(new Sprite(texture));
-    }
+    protected MyGame game;
 
     public OneSpriteStaticActor(MyGame game, String hash) {
         super(new Sprite(game.getMyAssetManager().getTexture(hash)));
+        this.game = game;
+    }
+
+    public MyGame getGame() {
+        return game;
     }
 
     public Texture getTexture()

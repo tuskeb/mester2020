@@ -29,6 +29,10 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     protected float elapsedTime = 0;
     protected int ZIndexAutoInc = 1;
 
+    protected boolean visible = true;
+
+    protected boolean pause = false;
+
     public MyStage(Viewport viewport, MyGame game) {
         super(viewport);
         this.game = game;
@@ -442,6 +446,23 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     public void setScreen(MyScreen screen) {
         this.screen = screen;
+    }
+
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 
 

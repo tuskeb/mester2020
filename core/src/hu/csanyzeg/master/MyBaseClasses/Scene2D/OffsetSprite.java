@@ -5,39 +5,65 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+
 /**
  * Created by M on 12/14/2017.
  */
 
 public class OffsetSprite extends Sprite {
     protected Vector2 offsetVector;
+    MyGame game;
 
     public boolean visible = true;
 
     static protected float PI = (float) Math.PI;
 
+    @Deprecated
     public OffsetSprite(Texture texture, float xOffset, float yOffset) {
         super(texture);
+        this.game = game;
         offsetVector = new Vector2(xOffset, yOffset);
     }
 
+    @Deprecated
     public OffsetSprite(TextureRegion texture, float xOffset, float yOffset) {
         super(texture);
+        this.game = game;
         offsetVector = new Vector2(xOffset, yOffset);
     }
 
-
+    @Deprecated
     public OffsetSprite(Texture texture, float xOffset, float yOffset, float width, float height) {
         super(texture);
         offsetVector = new Vector2(xOffset, yOffset);
+        this.game = game;
         setSize(width, height);
     }
 
+    @Deprecated
     public OffsetSprite(TextureRegion texture, float xOffset, float yOffset, float width, float height) {
         super(texture);
         offsetVector = new Vector2(xOffset, yOffset);
+        this.game = game;
         setSize(width, height);
     }
+
+
+
+    public OffsetSprite(MyGame game, String hash, float xOffset, float yOffset) {
+        super(game.getMyAssetManager().getTexture(hash));
+        this.game = game;
+        offsetVector = new Vector2(xOffset, yOffset);
+    }
+
+    public OffsetSprite(MyGame game, String hash, float xOffset, float yOffset, float width, float height) {
+        super(game.getMyAssetManager().getTexture(hash));
+        offsetVector = new Vector2(xOffset, yOffset);
+        this.game = game;
+        setSize(width, height);
+    }
+
 
 
     public Vector2 getOffsetVector() {

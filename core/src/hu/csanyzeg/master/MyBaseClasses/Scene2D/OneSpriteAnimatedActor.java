@@ -16,6 +16,7 @@ public class OneSpriteAnimatedActor extends OneSpriteActor {
     protected boolean running = true;
     protected boolean looping = true;
     protected float animationTime = 0;
+    protected MyGame game;
 
     private int actualFrame = 0;
     private int prevFrame = 0;
@@ -33,29 +34,17 @@ public class OneSpriteAnimatedActor extends OneSpriteActor {
         return actualFrame;
     }
 
-    @Deprecated
-    public OneSpriteAnimatedActor(String file) {
-        super(null);
-        textureAtlas = new TextureAtlas(Gdx.files.internal(file));
-        sprite = new Sprite(textureAtlas.getRegions().get(0).getTexture());
-        init();
-    }
-
-    @Deprecated
-    public OneSpriteAnimatedActor(TextureAtlas textureAtlas) {
-        super(null);
-        this.textureAtlas = textureAtlas;
-        sprite = new Sprite(textureAtlas.getRegions().get(0).getTexture());
-        init();
-    }
-
     public OneSpriteAnimatedActor(MyGame game, String hash) {
         super(null);
         this.textureAtlas = game.getMyAssetManager().getTextureAtlas(hash);
         sprite = new Sprite(textureAtlas.getRegions().get(0).getTexture());
         init();
+        this.game = game;
     }
 
+    public MyGame getGame() {
+        return game;
+    }
 
     @Override
     public void init() {

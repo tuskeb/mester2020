@@ -8,11 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public abstract class MyTextArea extends TextArea implements IZindex, InitableInterface {
+
+    protected MyGame game;
+
     public MyTextArea(String text, Skin skin) {
         super(text, skin);
         init();
@@ -27,6 +31,13 @@ public abstract class MyTextArea extends TextArea implements IZindex, InitableIn
         super(text, style);
         init();
     }
+
+
+    public MyGame getGame() {
+        return game;
+    }
+
+
 
 
     protected int zIndex = 0;

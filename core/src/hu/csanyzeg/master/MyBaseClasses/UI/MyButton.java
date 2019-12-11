@@ -19,10 +19,18 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
  */
 public abstract class MyButton extends TextButton implements InitableInterface, IZindex {
 
+    protected MyGame game;
+
     public MyButton(MyGame game, String text, TextButtonStyle style) {
         super(text, style);
+        this.game = game;
         init();
     }
+
+    public MyGame getGame() {
+        return game;
+    }
+
 
     protected int zIndex = 0;
 

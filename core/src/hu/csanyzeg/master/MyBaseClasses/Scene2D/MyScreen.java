@@ -100,10 +100,14 @@ abstract public class MyScreen implements Screen, InitableInterface {
             afterAssetsLoaded();
         }
         for(MyStage s : stages){
-            s.act(delta);
+            if (s.visible && !s.pause) {
+                s.act(delta);
+            }
         }
         for(MyStage s : stages){
-            s.draw();
+            if (s.visible){
+                s.draw();
+            }
         }
     }
 

@@ -16,6 +16,9 @@ public class MenuStage extends MyStage {
     public MenuStage(final MyGame game) {
         super(new FitViewport(720,720), game);
 
+
+        addBackButtonScreenBackByStackPopListener();
+
         addActor(new MenuButton(game, "Szakkör Demo"){
             @Override
             public void init() {
