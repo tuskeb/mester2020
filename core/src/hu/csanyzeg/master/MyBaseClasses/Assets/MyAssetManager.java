@@ -11,13 +11,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.utils.Disposable;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 
-public class MyAssetManager {
+public class MyAssetManager implements Disposable {
 
     public interface DebugChangeListener{
         public void change(String info);
@@ -193,5 +197,19 @@ public class MyAssetManager {
         assetManager.dispose();
         assetList.getMap().clear();
         setDebug("Dispose");
+    }
+
+    public static void collectAssetDescriptor(Class aClass, AssetList targetList){
+        for(Field f : aClass.getFields()){
+            if (f.getType().isInstance(targetList)){
+                Gdx.app.log("Asset", "Class scanning found: " + f.getName() + " in " + aClass.getName() + " class.");
+                try {
+                    AssetList a = (AssetList)f.get(f);
+                    targetList.add(a);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

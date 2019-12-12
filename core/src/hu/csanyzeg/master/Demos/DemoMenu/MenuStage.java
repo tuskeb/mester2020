@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
 import hu.csanyzeg.master.Demos.DemoFlappy.FlappyScreen;
 import hu.csanyzeg.master.Demos.DemoSzakkor.SzakkorScreen;
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
@@ -14,6 +16,13 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
  * Created by tuskeb on 2016. 09. 30..
  */
 public class MenuStage extends MyStage {
+
+    public static AssetList assetList = new AssetList();
+    static {
+        MyAssetManager.collectAssetDescriptor(MenuButton.class, assetList);
+    }
+
+
     public MenuStage(final MyGame game) {
         super(new FitViewport(720,720), game);
 

@@ -2,6 +2,8 @@ package hu.csanyzeg.master.Demos.DemoActor;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 
@@ -10,6 +12,11 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
  */
 public class BadlActor extends OneSpriteStaticActor {
     public static String textureHash = "badlogic.jpg";
+    public static AssetList assetList = new AssetList();
+    static {
+        assetList.addTexture(textureHash);
+    }
+
 
     public BadlActor(MyGame game) {
         super(game, textureHash);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class AssetList {
@@ -115,6 +116,12 @@ public class AssetList {
         map.put(MyAssetDescriptor.fileName, MyAssetDescriptor);
     }
 
+
+    public void add(AssetList source) {
+        for(Map.Entry<String, MyAssetDescriptor> a : source.getMap().entrySet()){
+            map.put(a.getKey(), a.getValue());
+        }
+    }
 
 
     public MyAssetDescriptor getAssetDescriptor(String hash){

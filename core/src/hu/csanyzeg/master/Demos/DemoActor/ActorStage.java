@@ -9,11 +9,25 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public class ActorStage extends MyStage {
+
+    public static AssetList assetList = new AssetList();
+    static {
+        MyAssetManager.collectAssetDescriptor(MenuButton.class, assetList);
+        MyAssetManager.collectAssetDescriptor(StarActor.class, assetList);
+        MyAssetManager.collectAssetDescriptor(BadlActor.class, assetList);
+        MyAssetManager.collectAssetDescriptor(CrossActor.class, assetList);
+        MyAssetManager.collectAssetDescriptor(ExplosionActor.class, assetList);
+    }
+
+
+
     public ActorStage(final MyGame game) {
         super(new ExtendViewport(720,720), game);
         addBackButtonScreenBackByStackPopListener();
@@ -39,4 +53,5 @@ public class ActorStage extends MyStage {
     public void init() {
 
     }
+
 }

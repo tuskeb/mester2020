@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteAnimatedActor;
 
@@ -12,8 +13,25 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteAnimatedActor;
  */
 public class StarActor extends OneSpriteAnimatedActor {
     Sound sound;
-    public static String soundHash = "star.wav";
-    public static String textureAtlasHash = "star.atlas";
+    /*------------------AssetList------------*/
+
+
+    public static final AssetList assetList = new AssetList();
+
+    public static final String soundHash = "star.wav";
+    public static final String textureAtlasHash = "star.atlas";
+
+    static {
+        assetList.addTextureAtlas(textureAtlasHash);
+        assetList.addSound(soundHash);
+    }
+
+    /*------------------AssetList------------*/
+
+
+
+
+
 
     public StarActor(MyGame game) {
         super(game, textureAtlasHash);

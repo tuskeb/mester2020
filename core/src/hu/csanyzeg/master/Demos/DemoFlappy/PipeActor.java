@@ -1,10 +1,17 @@
 package hu.csanyzeg.master.Demos.DemoFlappy;
 
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 
 public class PipeActor extends OneSpriteStaticActor {
     public static final String pipeTexture = "demoflappy/pipe.png";
+    public static AssetList assetList = new AssetList();
+    static {
+        assetList.addTexture(pipeTexture);
+    }
+
+
     public PipeActor(MyGame game) {
         super(game, pipeTexture);
         setTouchable(null);

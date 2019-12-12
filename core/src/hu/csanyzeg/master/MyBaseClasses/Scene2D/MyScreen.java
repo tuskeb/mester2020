@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Comparator;
 
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetCollector;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -17,7 +18,7 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-abstract public class MyScreen implements Screen, InitableInterface {
+abstract public class MyScreen implements Screen, InitableInterface, AssetCollector {
 
 
 
@@ -171,8 +172,7 @@ abstract public class MyScreen implements Screen, InitableInterface {
     }
 
 
-    public abstract AssetList getAssetList();
-
     protected abstract void afterAssetsLoaded();
+
 
 }
