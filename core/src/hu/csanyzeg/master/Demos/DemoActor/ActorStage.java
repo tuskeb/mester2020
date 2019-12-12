@@ -1,29 +1,23 @@
 package hu.csanyzeg.master.Demos.DemoActor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 public class ActorStage extends MyStage {
 
     public static AssetList assetList = new AssetList();
     static {
-        MyAssetManager.collectAssetDescriptor(MenuButton.class, assetList);
-        MyAssetManager.collectAssetDescriptor(StarActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(BadlActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(CrossActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(ExplosionActor.class, assetList);
+        AssetList.collectAssetDescriptor(MenuButton.class, assetList);
+        AssetList.collectAssetDescriptor(StarActor.class, assetList);
+        AssetList.collectAssetDescriptor(BadlActor.class, assetList);
+        AssetList.collectAssetDescriptor(CrossActor.class, assetList);
+        AssetList.collectAssetDescriptor(ExplosionActor.class, assetList);
     }
 
 

@@ -4,13 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Assets.CimerActor;
 import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
@@ -22,8 +19,8 @@ public class DemoLoadingStage extends LoadingStage {
     static {
         assetList.addFont(fontHash, fontHash, 20, Color.WHITE, AssetList.CHARS).protect = true;
         assetList.addTexture(bgHash).protect = true;
-        MyAssetManager.collectAssetDescriptor(ProgressActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(CimerActor.class, assetList);
+        AssetList.collectAssetDescriptor(ProgressActor.class, assetList);
+        AssetList.collectAssetDescriptor(CimerActor.class, assetList);
     }
 
 

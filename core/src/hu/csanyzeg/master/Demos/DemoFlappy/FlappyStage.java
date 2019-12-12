@@ -4,13 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import hu.csanyzeg.master.Demos.DemoActor.StarActor;
 import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
-import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
 import static hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor.overlaps;
 
@@ -19,10 +16,10 @@ public class FlappyStage extends MyStage {
 
     public static AssetList assetList = new AssetList();
     static {
-        MyAssetManager.collectAssetDescriptor(CityActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(MenuButton.class, assetList);
-        MyAssetManager.collectAssetDescriptor(BirdActor.class, assetList);
-        MyAssetManager.collectAssetDescriptor(PipeActor.class, assetList);
+        AssetList.collectAssetDescriptor(CityActor.class, assetList);
+        AssetList.collectAssetDescriptor(MenuButton.class, assetList);
+        AssetList.collectAssetDescriptor(BirdActor.class, assetList);
+        AssetList.collectAssetDescriptor(PipeActor.class, assetList);
     }
 
     private BirdActor birdActor;

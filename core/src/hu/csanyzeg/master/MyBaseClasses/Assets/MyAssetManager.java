@@ -199,17 +199,4 @@ public class MyAssetManager implements Disposable {
         setDebug("Dispose");
     }
 
-    public static void collectAssetDescriptor(Class aClass, AssetList targetList){
-        for(Field f : aClass.getFields()){
-            if (f.getType().isInstance(targetList)){
-                Gdx.app.log("Asset", "Class scanning found: " + f.getName() + " in " + aClass.getName() + " class.");
-                try {
-                    AssetList a = (AssetList)f.get(f);
-                    targetList.add(a);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

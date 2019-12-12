@@ -5,11 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
-import hu.csanyzeg.master.Demos.DemoActor.StarActor;
 import hu.csanyzeg.master.Demos.DemoFlappy.FlappyScreen;
 import hu.csanyzeg.master.Demos.DemoSzakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
@@ -20,7 +18,7 @@ public class MenuStage extends MyStage {
 
     public static AssetList assetList = new AssetList();
     static {
-        MyAssetManager.collectAssetDescriptor(MenuButton.class, assetList);
+        AssetList.collectAssetDescriptor(MenuButton.class, assetList);
     }
 
 

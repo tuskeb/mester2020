@@ -1,6 +1,8 @@
 package hu.csanyzeg.master.MyBaseClasses.Assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +21,20 @@ public class AssetList {
     public static final String SIGNS = "'+!%/=()?:_*<>#&@{}[],-.";
 
     private HashMap<String, MyAssetDescriptor> map = new HashMap<String, MyAssetDescriptor>();
+
+    public static void collectAssetDescriptor(Class aClass, AssetList targetList){
+        for(Field f : aClass.getFields()){
+            if (f.getType().isInstance(targetList)){
+                Gdx.app.log("Asset", "Class scanning found: " + f.getName() + " in " + aClass.getName() + " class.");
+                try {
+                    AssetList a = (AssetList)f.get(f);
+                    targetList.add(a);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public MyAssetDescriptor<Texture> addTexture(String fileName){
         return addTexture(fileName, fileName);
@@ -64,6 +81,20 @@ public class AssetList {
         return descriptor;
     }
 
+
+    public MyAssetDescriptor<Music> addMusic(String fileName) {
+        return addMusic(fileName, fileName);
+    }
+
+    public MyAssetDescriptor<Music> addMusic(String fileName, String hash){
+        MyAssetDescriptor<Music> descriptor;
+        if (!map.containsKey(hash)){
+            map.put(hash != null ? hash : fileName, descriptor = new  MyAssetDescriptor<Music>(fileName, Music.class));
+        }else{
+            descriptor = map.get(hash);
+        }
+        return descriptor;
+    }
 
     public MyAssetDescriptor<BitmapFont> addFont(String fileName, int size, Color color) {
         return addFont(fileName, fileName, size, color);

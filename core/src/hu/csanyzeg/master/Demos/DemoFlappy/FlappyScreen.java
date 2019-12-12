@@ -1,7 +1,6 @@
 package hu.csanyzeg.master.Demos.DemoFlappy;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 
@@ -13,7 +12,7 @@ public class FlappyScreen extends MyScreen {
     @Override
     public AssetList getAssetList() {
         AssetList assetList = new AssetList();
-        MyAssetManager.collectAssetDescriptor(FlappyStage.class, assetList);
+        AssetList.collectAssetDescriptor(FlappyStage.class, assetList);
         return assetList;
     }
 
