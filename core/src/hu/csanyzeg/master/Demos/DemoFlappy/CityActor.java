@@ -14,11 +14,4 @@ public class CityActor extends OneSpriteStaticActor {
     public CityActor(MyGame game) {
         super(game, hatterTexture);
     }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        setX(getX()-5);
-        if(getX() < -getWidth()) setX(getWidth());
-    }
 }

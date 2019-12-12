@@ -11,18 +11,26 @@ public class PipeActor extends OneSpriteStaticActor {
         assetList.addTexture(pipeTexture);
     }
 
+    private boolean isAct;
 
     public PipeActor(MyGame game) {
         super(game, pipeTexture);
         setTouchable(null);
         setSize(getWidth()/2.5f,getHeight()/2.5f);
         addBaseCollisionRectangleShape();
+        setAct(true);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        setX(getX()-5);
-        if(getX() < -getWidth()) setX(350);
+        if(isAct) {
+            setX(getX() - 5);
+            if (getX() < -getWidth() - 5) setX(350);
+        }
+    }
+
+    public void setAct(boolean b) {
+        this.isAct = b;
     }
 }

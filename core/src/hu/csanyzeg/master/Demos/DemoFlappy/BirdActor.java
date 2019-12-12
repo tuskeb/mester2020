@@ -12,10 +12,12 @@ public class BirdActor extends OneSpriteStaticActor {
         assetList.addTexture(birdTexture);
     }
 
+    private boolean isAct;
 
     public BirdActor(MyGame game) {
         super(game, birdTexture);
-        setSize(getWidth()/5,getHeight()/5);
+        setAct(true);
+        setSize(getWidth()/4,getHeight()/4);
         setTouchable(null);
         addBaseCollisionCircleShape();
     }
@@ -23,7 +25,13 @@ public class BirdActor extends OneSpriteStaticActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        setY(getY()-3);
-        if(getRotation() > 0) setRotation(getRotation()-7);
+        if(isAct) {
+            setY(getY() - 3);
+            if (getRotation() > 0 && getRotation() < 90) setRotation(getRotation() - 5);
+        }
+    }
+
+    public void setAct(boolean b) {
+        this.isAct = b;
     }
 }
