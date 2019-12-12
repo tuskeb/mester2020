@@ -7,11 +7,15 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetCollector;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
@@ -35,6 +39,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
     public MyScreen(MyGame game) {
         this.game = game;
         game.getMyAssetManager().changeAssets(this.getAssetList());
+        game.getLoadingStage().show();
         Gdx.input.setInputProcessor(inputMultiplexer);
         init();
     }
@@ -125,6 +130,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         }
         if (!assetsLoaded){
             assetsLoaded = true;
+            game.getLoadingStage().hide();
             afterAssetsLoaded();
         }
         for(MyStage s : stages){
@@ -134,6 +140,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         }
         for(MyStage s : stages){
             if (s.visible){
+                //s.getBatch().setProjectionMatrix(s.getCamera().projection);
                 s.draw();
             }
         }
@@ -141,8 +148,12 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
 
     @Override
     public void resize(int width, int height) {
+        if (game.getLoadingStage()!=null){
+            game.getLoadingStage().getViewport().update(width,height);
+        }
         for(MyStage s : stages){
             s.resize(width, height);
+            s.getViewport().update(width, height);
         }
     }
 

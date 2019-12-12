@@ -5,7 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+
 public class MyGroup extends Group implements IZindex{
+
+    protected MyGame game;
+
+    public MyGroup(MyGame game) {
+        this.game = game;
+    }
 
     protected int zIndex = 0;
 

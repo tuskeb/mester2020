@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
+import hu.csanyzeg.master.Demos.DemoActor.StarActor;
 import hu.csanyzeg.master.Demos.DemoFlappy.FlappyScreen;
 import hu.csanyzeg.master.Demos.DemoSzakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
