@@ -29,7 +29,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
 
     public void setActorWorldHelper(WorldHelper<?, Actor> worldHelper){
         actorWorldHelper = worldHelper;
-        actorWorldHelper.actor = this;
     }
 
     protected int zIndex = 0;
@@ -171,6 +170,9 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     public void act(float delta) {
         super.act(delta);
         elapsedTime += delta;
+        if (actorWorldHelper!=null){
+            setPosition(actorWorldHelper.getBodyX(), actorWorldHelper.getBodyY());
+        }
     }
 
     @Override
