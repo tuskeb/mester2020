@@ -1,10 +1,10 @@
-package hu.csanyzeg.master.Demos.DemoActor;
+package hu.csanyzeg.master.Demos.Actor;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
+import hu.csanyzeg.master.Demos.Menu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;

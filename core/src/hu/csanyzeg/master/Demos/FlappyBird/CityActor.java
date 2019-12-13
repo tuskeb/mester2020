@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.Demos.DemoFlappy;
+package hu.csanyzeg.master.Demos.FlappyBird;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;

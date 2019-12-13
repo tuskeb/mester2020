@@ -1,12 +1,13 @@
-package hu.csanyzeg.master.Demos.DemoMenu;
+package hu.csanyzeg.master.Demos.Menu;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import hu.csanyzeg.master.Demos.DemoActor.ActorScreen;
-import hu.csanyzeg.master.Demos.DemoFlappy.FlappyScreen;
-import hu.csanyzeg.master.Demos.DemoSzakkor.SzakkorScreen;
+import hu.csanyzeg.master.Demos.Actor.ActorScreen;
+import hu.csanyzeg.master.Demos.Box2dHelper.Box2dScreen;
+import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
+import hu.csanyzeg.master.Demos.Szakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
@@ -27,6 +28,25 @@ public class MenuStage extends MyStage {
 
 
         addBackButtonScreenBackByStackPopListener();
+
+
+        addActor(new MenuButton(game, "Box2d Helper"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,400);
+                setSize(200,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        game.setScreen(new Box2dScreen(game));
+                    }
+                });
+            }
+        });
+
+
 
         addActor(new MenuButton(game, "Flappy Demo"){
             @Override

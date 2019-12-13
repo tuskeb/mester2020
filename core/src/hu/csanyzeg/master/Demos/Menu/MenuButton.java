@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.Demos.DemoMenu;
+package hu.csanyzeg.master.Demos.Menu;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

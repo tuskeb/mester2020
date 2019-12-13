@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2DWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 
 import java.util.ArrayList;
@@ -22,6 +24,13 @@ import java.util.Map;
  * Created by tuskeb on 2016. 09. 30..
  */
 abstract public class MyActor extends Actor implements InitableInterface, IZindex {
+
+    WorldHelper<?, Actor> actorWorldHelper = null;
+
+    public void setActorWorldHelper(WorldHelper<?, Actor> worldHelper){
+        actorWorldHelper = worldHelper;
+        actorWorldHelper.actor = this;
+    }
 
     protected int zIndex = 0;
 

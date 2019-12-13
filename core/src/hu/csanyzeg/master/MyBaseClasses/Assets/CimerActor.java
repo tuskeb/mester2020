@@ -1,9 +1,5 @@
 package hu.csanyzeg.master.MyBaseClasses.Assets;
 
-import com.badlogic.gdx.graphics.Color;
-
-import hu.csanyzeg.master.Demos.DemoLoadingStage.ProgressActor;
-import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 

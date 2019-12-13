@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 /**
  * Created by tuskeb on 2016. 10. 29..
  */
-
+@Deprecated
 public interface WorldInterface {
     public void addToWorld();
     public void removeFromWorld();

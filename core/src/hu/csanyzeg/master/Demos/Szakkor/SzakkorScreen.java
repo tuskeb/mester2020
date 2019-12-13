@@ -1,24 +1,26 @@
-package hu.csanyzeg.master.Demos.DemoFlappy;
+package hu.csanyzeg.master.Demos.Szakkor;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 
-public class FlappyScreen extends MyScreen {
-    public FlappyScreen(MyGame game) {
+public class SzakkorScreen extends MyScreen {
+
+
+    public SzakkorScreen(MyGame game) {
         super(game);
     }
 
     @Override
     public AssetList getAssetList() {
         AssetList assetList = new AssetList();
-        AssetList.collectAssetDescriptor(FlappyStage.class, assetList);
+        assetList.addTexture(BlActor.textureHash);
         return assetList;
     }
 
     @Override
     protected void afterAssetsLoaded() {
-        addStage(new FlappyStage(game),1,true);
+        addStage(new BlStage(game), 1, true);
     }
 
     @Override

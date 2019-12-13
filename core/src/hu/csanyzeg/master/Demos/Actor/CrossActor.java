@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.Demos.DemoActor;
+package hu.csanyzeg.master.Demos.Actor;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;

@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.Demos.DemoActor;
+package hu.csanyzeg.master.Demos.Actor;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

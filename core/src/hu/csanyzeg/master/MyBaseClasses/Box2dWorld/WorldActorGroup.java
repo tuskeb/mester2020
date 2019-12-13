@@ -17,7 +17,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
 /**
  * Created by tuskeb on 2016. 10. 29..
  */
-
+@Deprecated
 public class WorldActorGroup extends Group implements WorldInterface, InitableInterface {
     public final World world;
     public final ShapeType shapeType;

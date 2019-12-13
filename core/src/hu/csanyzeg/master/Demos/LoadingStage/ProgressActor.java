@@ -1,17 +1,12 @@
-package hu.csanyzeg.master.Demos.DemoLoadingStage;
+package hu.csanyzeg.master.Demos.LoadingStage;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 
-import hu.csanyzeg.master.Demos.DemoMenu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MultiSpriteActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyGroup;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.OffsetSprite;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
