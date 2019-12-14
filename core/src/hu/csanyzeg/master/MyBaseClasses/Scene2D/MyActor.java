@@ -2,8 +2,6 @@ package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -12,7 +10,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2DWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 
 import java.util.ArrayList;
@@ -23,12 +20,18 @@ import java.util.Map;
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-abstract public class MyActor extends Actor implements InitableInterface, IZindex {
+abstract public class MyActor extends Actor implements InitableInterface, IZindex, WorldActor {
 
     WorldHelper<?, Actor> actorWorldHelper = null;
 
     public void setActorWorldHelper(WorldHelper<?, Actor> worldHelper){
         actorWorldHelper = worldHelper;
+    }
+
+
+    @Override
+    public WorldHelper<?, Actor> getActorWorldHelper() {
+        return actorWorldHelper;
     }
 
     protected int zIndex = 0;
@@ -91,7 +94,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
             shapeMap = new HashMap<String, MyShape>();
         }
         //shape.setOffset(shape.getX(), shape.getY());
-        //shape.setPosition(getX(),getY());
+        //shape.setBodyPosition(getX(),getY());
         shape.setExtraData(this);
         shapeMap.put(name, shape);
     }
@@ -170,14 +173,20 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     public void act(float delta) {
         super.act(delta);
         elapsedTime += delta;
-        if (actorWorldHelper!=null){
+        if (actorWorldHelper != null){
+            actorWorldHelper.beginUpdate();
             setPosition(actorWorldHelper.getBodyX(), actorWorldHelper.getBodyY());
+            setRotation(actorWorldHelper.getBodyRotation());
+            actorWorldHelper.endUpdate();
         }
     }
 
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
+        if (actorWorldHelper != null && !actorWorldHelper.isModifyedByWorld()){
+            actorWorldHelper.setBodySize(getWidth(), getHeight());
+        }
     }
 
     public void setOrigintoCenter(){
@@ -209,6 +218,10 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
                 shape.setPosition(getX(),getY());
             }
         }
+        if (actorWorldHelper != null && !actorWorldHelper.isModifyedByWorld()){
+            actorWorldHelper.setBodyPosition(getX(), getY());
+        }
+
     }
 
     @Override
@@ -218,6 +231,9 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
             for (MyShape shape:shapeMap.values()) {
                 shape.setRotation(getRotation());
             }
+        }
+        if (actorWorldHelper != null && !actorWorldHelper.isModifyedByWorld()){
+            actorWorldHelper.setBodyRotation(getRotation());
         }
     }
 
@@ -690,4 +706,23 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         setSizeByOrigin(getWidth(), getHeight());
     }
 
+    @Override
+    protected void setStage(Stage stage) {
+        super.setStage(stage);
+        if (getActorWorldHelper() != null){
+            if (getStage() == null){
+                getActorWorldHelper().removeFromWorld();
+            }else{
+                getActorWorldHelper().addToWorld();
+            }
+        }
+    }
+
+    /*
+    @Override
+    public boolean remove() {
+        return super.remove();
+    }
+
+     */
 }

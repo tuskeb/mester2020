@@ -5,6 +5,16 @@ public abstract class WorldHelper<TBody, TActor> {
     public TActor actor;
     public TBody body;
 
+    public boolean modifyedByWorld = false;
+
+    public void beginUpdate(){
+        modifyedByWorld = true;
+    }
+
+    public void endUpdate(){
+        modifyedByWorld = false;
+    }
+
     public WorldHelper(TActor actor, TBody body) {
         this.actor = actor;
         this.body = body;
@@ -33,11 +43,11 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract float getActorOriginX();
     public abstract float getActorOriginY();
 
-    public abstract WorldHelper setX();
-    public abstract WorldHelper setY();
-    public abstract WorldHelper setRotation();
-    public abstract WorldHelper setOriginX();
-    public abstract WorldHelper setOriginY();
+    public abstract WorldHelper setBodyRotation(float rotation);
+    public abstract WorldHelper setBodyOriginX();
+    public abstract WorldHelper setBodyOriginY();
+    public abstract WorldHelper setBodySize(float w, float h);
+    public abstract WorldHelper setBodyPosition(float x, float y);
 
 
     protected abstract void beforeAddToWorld();
@@ -47,6 +57,11 @@ public abstract class WorldHelper<TBody, TActor> {
 
     public abstract void addToWorld();
     public abstract void removeFromWorld();
+
+    public boolean isModifyedByWorld() {
+        return modifyedByWorld;
+    }
+
 
 /*
 

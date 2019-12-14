@@ -111,7 +111,7 @@ public class WorldActorGroup extends Group implements WorldInterface, InitableIn
             case Circle:
                 shape = new CircleShape();
                 ((CircleShape)shape).setRadius((getWidth()+getHeight())/4);
-                //((CircleShape)shape).setPosition(new Vector2((getWidth()+getHeight())/4, (getWidth()+getHeight())/4));
+                //((CircleShape)shape).setBodyPosition(new Vector2((getWidth()+getHeight())/4, (getWidth()+getHeight())/4));
                 fixtureDef.shape = shape;
                 body.createFixture(fixtureDef);
                 setOrigin((getWidth()+getHeight())/4, (getWidth()+getHeight())/4);

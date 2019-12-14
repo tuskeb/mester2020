@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Box2dWorld;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldHelper;
 
@@ -30,13 +32,57 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         this.shapeType = shapeType;
         this.world = world;
         this.actor = actor;
-        addToWorld();
     }
+
+
+    //------------------  BODY SETTERS -----------------------------------------
+    //------------------  BODY SETTERS -----------------------------------------
+    //------------------  BODY SETTERS -----------------------------------------
+
+    @Override
+    public WorldHelper setBodyRotation(float rotation) {
+        if (body == null){
+            return this;
+        }
+        if (!modifyedByWorld) {
+            body.setTransform(getActorX(), getActorY(), getActorRotation() * MathUtils.degreesToRadians);
+        }
+        return this;
+    }
+
+    @Override
+    public WorldHelper setBodySize(float w, float h) {
+        if (body == null){
+            return this;
+        }
+        if (!modifyedByWorld) {
+            removeFromWorld();
+            addToWorld();
+        }
+        return this;
+    }
+
+    @Override
+    public WorldHelper setBodyPosition(float x, float y) {
+        if (body == null){
+            return this;
+        }
+        if (!modifyedByWorld) {
+            body.setTransform(getActorX(), getActorY(), getActorRotation() * MathUtils.degreesToRadians);
+        }
+        return this;
+    }
+
+
+    //------------------  BODY GETTERS -----------------------------------------
+    //------------------  BODY GETTERS -----------------------------------------
+    //------------------  BODY GETTERS -----------------------------------------
+
 
     @Override
     public float getBodyX() {
         if (body != null) {
-            return body.getPosition().x;
+            return body.getPosition().x - actor.getOriginX();
         }else
             return 0;
 
@@ -45,25 +91,41 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
     @Override
     public float getBodyY() {
         if (body != null) {
-            return body.getPosition().y;
+            return body.getPosition().y - actor.getOriginY();
         }else
             return 0;
     }
 
     @Override
     public float getBodyRotation() {
-        return 0;
+        return MathUtils.radDeg * body.getAngle();
     }
 
     @Override
     public float getBodyOriginX() {
-        return 0;
+        return originX;
     }
 
     @Override
     public float getBodyOriginY() {
-        return 0;
+        return originY;
     }
+
+    @Override
+    public WorldHelper setBodyOriginX() {
+        return null;
+    }
+
+    @Override
+    public WorldHelper setBodyOriginY() {
+        return null;
+    }
+
+//------------------  ACTOR GETTERS -----------------------------------------
+    //------------------  ACTOR GETTERS -----------------------------------------
+    //------------------  ACTOR GETTERS -----------------------------------------
+    //------------------  ACTOR GETTERS -----------------------------------------
+
 
     @Override
     public float getActorX() {
@@ -77,43 +139,24 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
     @Override
     public float getActorRotation() {
-        return 0;
+        return actor.getRotation();
     }
 
     @Override
     public float getActorOriginX() {
-        return 0;
+        return actor.getOriginX();
     }
 
     @Override
     public float getActorOriginY() {
-        return 0;
+        return actor.getOriginY();
     }
 
-    @Override
-    public WorldHelper setX() {
-        return null;
-    }
 
-    @Override
-    public WorldHelper setY() {
-        return null;
-    }
 
-    @Override
-    public WorldHelper setRotation() {
-        return null;
-    }
 
-    @Override
-    public WorldHelper setOriginX() {
-        return null;
-    }
 
-    @Override
-    public WorldHelper setOriginY() {
-        return null;
-    }
+
 
     @Override
     protected void beforeAddToWorld() {
@@ -137,26 +180,29 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
     @Override
     public void addToWorld() {
-
+        if (body!=null){
+            return;
+        }
         beforeAddToWorld();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
-        bodyDef.position.set(getActorX(),getActorY());
-        bodyDef.angle = getActorOriginX();
+        bodyDef.position.set(getActorX() + getActorOriginX(),getActorY() + getActorOriginY());
+        bodyDef.angle = getActorRotation() * MathUtils.degRad;
 
         body = world.createBody(bodyDef);
-        body.setFixedRotation(false);
-        body.setUserData(this);
+
+        body.setUserData(this.actor);
 
         Shape shape;
         FixtureDef fixtureDef = new FixtureDef();
         this.fixtureDef.setFixtureValues(fixtureDef);
+
         switch (shapeType)
         {
             case Circle:
                 shape = new CircleShape();
-                //((CircleShape)shape).setRadius((getActorWidth()+getActorHeight())/4);
-                ((CircleShape)shape).setPosition(new Vector2((getActorWidth()+getActorHeight())/4, (getActorWidth()+getActorHeight())/4));
+                ((CircleShape)shape).setRadius((getActorWidth()+getActorHeight())/4);
+                //((CircleShape)shape).setBodyPosition(new Vector2((getActorWidth()+getActorHeight())/4, (getActorWidth()+getActorHeight())/4));
                 fixtureDef.shape = shape;
                 body.createFixture(fixtureDef);
                 originX =(getActorWidth()+getActorHeight())/4;
@@ -165,12 +211,13 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
                 break;
             case Rectangle:
                 shape = new PolygonShape();
-                ((PolygonShape)shape).setAsBox(getActorWidth()/2,getActorHeight()/2,new Vector2(getActorWidth()/2, getActorHeight()/2),0);
-                //((PolygonShape)shape).setAsBox(getActorWidth()/2,getActorHeight()/2,new Vector2(0, 0),0);
+                //((PolygonShape)shape).setAsBox(getActorWidth()/2,getActorHeight()/2,new Vector2(getActorWidth()/2, getActorHeight()/2),0);
+                ((PolygonShape)shape).setAsBox(getActorWidth()/2,getActorHeight()/2,new Vector2(0, 0),0);
                 fixtureDef.shape = shape;
                 body.createFixture(fixtureDef);
                 originX = getActorWidth()/2;
                 originY = getActorHeight()/2;
+                //body.setTransform(originX, originY, getActorRotation()*MathUtils.degRad);
                 shape.dispose();
                 break;
                 /*
@@ -182,16 +229,34 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
                  */
         }
-        body.getMassData().center.set(getActorWidth()/2,getActorHeight()/2);
+        body.getMassData().center.set(getActorOriginX(),getActorOriginY());
         for(Fixture f : body.getFixtureList()) {
-            f.setUserData(this);
+            f.setUserData(this.actor);
         }
+        //body.setFixedRotation(false);
+        System.out.println(body.isFixedRotation());
         afterAddToWorld();
     }
 
+    protected boolean flaggedForDeleteFromWorld = false;
+
+
     @Override
     public void removeFromWorld() {
-
+        if (body == null){
+            return;
+        }
+        if (!body.getWorld().isLocked()) {
+            beforeRemoveFromWorld();
+            world.destroyBody(this.body);
+            this.body = null;
+            /*if (visibilityControl) {
+                setVisible(false);
+            }*/
+            afterRemoveFromWorld();
+        } else {
+            flaggedForDeleteFromWorld = true;
+        }
     }
 
     @Override
