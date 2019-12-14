@@ -5,5 +5,5 @@ package hu.csanyzeg.master.MyBaseClasses.Scene2D;
  */
 
 public enum ShapeType {
-    Circle, Rectangle, @Deprecated Polygon
+    Circle, Rectangle, Polygon
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
@@ -18,12 +19,27 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldHelper;
 
 public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
-    ShapeType shapeType;
-    MyFixtureDef fixtureDef;
-    BodyDef.BodyType bodyType;
-    World world;
-    public float originX;
-    public float originY;
+    protected ShapeType shapeType;
+    protected MyFixtureDef fixtureDef;
+    protected BodyDef.BodyType bodyType;
+    protected World world;
+    protected WorldBodyEditorLoader loader;
+    protected String bodyID;
+    protected  float originX;
+    protected  float originY;
+
+    protected Array<Runnable> runnables = new Array<>();
+
+    public Box2DWorldHelper(World world, Actor actor, WorldBodyEditorLoader loader,  String bodyID,  MyFixtureDef fixtureDef, BodyDef.BodyType bodyType) {
+        super(null, null);
+        shapeType = ShapeType.Polygon;
+        this.loader = loader;
+        this.bodyID = bodyID;
+        this.bodyType = bodyType;
+        this.fixtureDef = fixtureDef;
+        this.world = world;
+        this.actor = actor;
+    }
 
     public Box2DWorldHelper(World world, Actor actor, ShapeType shapeType, MyFixtureDef fixtureDef, BodyDef.BodyType bodyType) {
         super(null, null);
@@ -41,35 +57,59 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
     @Override
     public WorldHelper setBodyRotation(float rotation) {
-        if (body == null){
-            return this;
-        }
-        if (!modifyedByWorld) {
-            body.setTransform(getActorX(), getActorY(), getActorRotation() * MathUtils.degreesToRadians);
-        }
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                if (body == null){
+                    return;
+                }
+                if (!modifyedByWorld) {
+                    body.setTransform(getActorX() + getActorOriginX(), getActorY() + getActorOriginY(), getActorRotation() * MathUtils.degreesToRadians);
+                }
+            }
+        });
         return this;
+    }
+
+    public void refreshBodyOnWorld(){
+        float av = body.getAngularVelocity();
+        Vector2 lv = body.getLinearVelocity();
+        removeFromWorld();
+        addToWorld();
+        body.setLinearVelocity(lv);
+        body.setAngularVelocity(av);
     }
 
     @Override
     public WorldHelper setBodySize(float w, float h) {
-        if (body == null){
-            return this;
-        }
-        if (!modifyedByWorld) {
-            removeFromWorld();
-            addToWorld();
-        }
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                if (body == null) {
+                    return;
+                }
+                if (!modifyedByWorld) {
+                    refreshBodyOnWorld();
+                }
+
+            }
+        });
         return this;
     }
 
     @Override
     public WorldHelper setBodyPosition(float x, float y) {
-        if (body == null){
-            return this;
-        }
-        if (!modifyedByWorld) {
-            body.setTransform(getActorX(), getActorY(), getActorRotation() * MathUtils.degreesToRadians);
-        }
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                if (body == null) {
+                    return;
+                }
+                if (!modifyedByWorld) {
+                    body.setTransform(getActorX(), getActorY(), getActorRotation() * MathUtils.degreesToRadians);
+                }
+            }
+        });
         return this;
     }
 
@@ -112,15 +152,11 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
     }
 
     @Override
-    public WorldHelper setBodyOriginX() {
-        return null;
+    public WorldHelper setBodyOrigin(float x, float y) {
+        originX = x;
+        originY = y;
+        return this;
     }
-
-    @Override
-    public WorldHelper setBodyOriginY() {
-        return null;
-    }
-
 //------------------  ACTOR GETTERS -----------------------------------------
     //------------------  ACTOR GETTERS -----------------------------------------
     //------------------  ACTOR GETTERS -----------------------------------------
@@ -220,42 +256,42 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
                 //body.setTransform(originX, originY, getActorRotation()*MathUtils.degRad);
                 shape.dispose();
                 break;
-                /*
+
             case Polygon:
                 loader.attachFixture(body, bodyID, fixtureDef, getActorWidth()>getActorHeight()?getActorWidth():getActorHeight());
                 Vector2 vector2 = loader.getOrigin(bodyID,getActorWidth()>getActorHeight()?getActorWidth():getActorHeight());
-                setOrigin(vector2.x, vector2.y);
+                setBodyOrigin(vector2.x, vector2.y);
                 break;
 
-                 */
+
         }
         body.getMassData().center.set(getActorOriginX(),getActorOriginY());
         for(Fixture f : body.getFixtureList()) {
             f.setUserData(this.actor);
         }
         //body.setFixedRotation(false);
-        System.out.println(body.isFixedRotation());
+        //System.out.println(body.isFixedRotation());
         afterAddToWorld();
     }
 
-    protected boolean flaggedForDeleteFromWorld = false;
 
 
     @Override
     public void removeFromWorld() {
-        if (body == null){
+        if (body == null) {
             return;
         }
-        if (!body.getWorld().isLocked()) {
-            beforeRemoveFromWorld();
-            world.destroyBody(this.body);
-            this.body = null;
-            /*if (visibilityControl) {
-                setVisible(false);
-            }*/
-            afterRemoveFromWorld();
-        } else {
-            flaggedForDeleteFromWorld = true;
+        beforeRemoveFromWorld();
+        world.destroyBody(this.body);
+        this.body = null;
+        afterRemoveFromWorld();
+    }
+
+
+    @Override
+    public void act(float delta) {
+        while (runnables.size>0){
+            runnables.removeIndex(0).run();
         }
     }
 
@@ -268,4 +304,23 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
     public float getActorHeight() {
         return actor.getHeight();
     }
+
+    public void remove(){
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                removeFromWorld();
+                actor.getStage().getActors().removeValue(actor, true);
+            }
+        });
+    }
+
+    public void invoke(Runnable runnable){
+        if (!world.isLocked()){
+            runnable.run();
+        }else{
+            runnables.add(runnable);
+        }
+    }
+
 }

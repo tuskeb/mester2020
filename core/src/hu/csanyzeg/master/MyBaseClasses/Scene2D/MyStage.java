@@ -36,7 +36,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     protected boolean pause = false;
 
+    public final Array<Timer> timers = new Array<>();
 
+    public void addTimer(Timer timer){
+        timers.add(timer);
+    }
 
     protected ArrayList<VisibleChangeListener> visibleChangeListeners = new ArrayList<>();
 
@@ -254,6 +258,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     public void act(float delta) {
         super.act(delta);
         elapsedTime += delta;
+
+        for(Timer t : timers){
+            t.act(delta);
+        }
+
         OrthographicCamera c = (OrthographicCamera)getCamera();
         if (cameraTargetX!=c.position.x || cameraTargetY!=c.position.y || cameraTargetZoom!=c.zoom){
             if (Math.abs(c.position.x-cameraTargetX)<cameraMoveSpeed*delta) {

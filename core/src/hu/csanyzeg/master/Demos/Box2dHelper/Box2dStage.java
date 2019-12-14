@@ -8,11 +8,14 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.Random;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.Timer;
 
 public class Box2dStage extends MyStage {
 
@@ -20,23 +23,37 @@ public class Box2dStage extends MyStage {
     static {
         AssetList.collectAssetDescriptor(BoxActor.class, assetList);
         AssetList.collectAssetDescriptor(WallActor.class, assetList);
+        AssetList.collectAssetDescriptor(BallActor.class, assetList);
+        AssetList.collectAssetDescriptor(UfoActor.class, assetList);
     }
 
     private World world;
     Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
 
-    public Box2dStage(MyGame game) {
+    java.util.Random random = new Random();
+
+    public Box2dStage(final MyGame game) {
         super(new ExtendViewport(16,9), game);
         world  = new World(new Vector2(0,-9.81f), false);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
 
-                if (contact.getFixtureA().getUserData() instanceof BoxActor){
-                    ((BoxActor)contact.getFixtureA().getUserData()).setFlash();
+
+                if (contact.getFixtureA().getUserData() instanceof BoxActor && (contact.getFixtureB().getUserData() instanceof BallActor)){
+                    BoxActor ba = (BoxActor) contact.getFixtureA().getUserData();
+                    ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
+                    if (ba.getWidth()<0.01){
+                        ba.remove();
+                    }
                 }
-                if (contact.getFixtureB().getUserData() instanceof BoxActor){
-                    ((BoxActor)contact.getFixtureA().getUserData()).setFlash();
+                if (contact.getFixtureB().getUserData() instanceof BoxActor && (contact.getFixtureA().getUserData() instanceof BallActor)){
+                    BoxActor ba = (BoxActor) contact.getFixtureB().getUserData();
+                    ((BoxActor)contact.getFixtureB().getUserData()).setFlash();
+                    ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
+                    if (ba.getWidth()<0.01){
+                        ba.remove();
+                    }
                 }
 
             }
@@ -59,13 +76,38 @@ public class Box2dStage extends MyStage {
 
 
 
-        BoxActor b;
-        addActor(new BoxActor(game, world,3,5,10));
-        addActor(new BoxActor(game, world,5,5,20));
-        addActor(b = new BoxActor(game, world,7,5,30));
-        addActor(new WallActor(game, world,0,0,16,1,0));
+        setCameraResetToLeftBottomOfScreen();
 
-        b.setSize(2,2);
+        //WorldBodyEditorLoader loader = new WorldBodyEditorLoader("box2dhelper/teszt.json");
+
+        //addActor(new UfoActor(game, world, loader, 7,7,1,1));
+
+        addActor(new WallActor(game, world,0,getViewport().getWorldHeight() - 1,16,1,0));
+        addActor(new WallActor(game, world,0,0,16,1,0));
+        addActor(new WallActor(game, world,-7.5f,7.5f,16,1,90));
+        addActor(new WallActor(game, world,7.5f,7.5f,16,1,90));
+
+        for(int i = 0; i<10; i++){
+            addActor(new BoxActor(game, world,random.nextFloat() *14 + 2,random.nextFloat()*4+4, random.nextFloat()+0.5f,random.nextFloat()*360));
+        }
+
+        addActor(new BallActor(game, world, 9,6,1));
+
+
+        addTimer(new Timer(1, true, new Timer.TickListener() {
+            @Override
+            public void Tick(float correction) {
+                addActor(new BoxActor(game, world,random.nextFloat() *14 + 2,random.nextFloat()*4+4, random.nextFloat()+0.5f,random.nextFloat()*360));
+            }
+        }));
+
+
+        addTimer(new Timer(10.5f, true, new Timer.TickListener() {
+            @Override
+            public void Tick(float correction) {
+                addActor(new BallActor(game, world, 9,6,1));
+            }
+        }));
     }
 
     @Override

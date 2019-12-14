@@ -15,6 +15,10 @@ public abstract class WorldHelper<TBody, TActor> {
         modifyedByWorld = false;
     }
 
+    public boolean isModifyedByWorld() {
+        return modifyedByWorld;
+    }
+
     public WorldHelper(TActor actor, TBody body) {
         this.actor = actor;
         this.body = body;
@@ -27,6 +31,8 @@ public abstract class WorldHelper<TBody, TActor> {
     public TBody getBody() {
         return body;
     }
+
+    public abstract void remove();
 
     public abstract float getBodyX();
     public abstract float getBodyY();
@@ -44,8 +50,7 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract float getActorOriginY();
 
     public abstract WorldHelper setBodyRotation(float rotation);
-    public abstract WorldHelper setBodyOriginX();
-    public abstract WorldHelper setBodyOriginY();
+    public abstract WorldHelper setBodyOrigin(float x, float y);
     public abstract WorldHelper setBodySize(float w, float h);
     public abstract WorldHelper setBodyPosition(float x, float y);
 
@@ -57,47 +62,11 @@ public abstract class WorldHelper<TBody, TActor> {
 
     public abstract void addToWorld();
     public abstract void removeFromWorld();
+    public abstract void refreshBodyOnWorld();
 
-    public boolean isModifyedByWorld() {
-        return modifyedByWorld;
-    }
-
-
-/*
-
-    public void addToWorld();
-    public void removeFromWorld();
-    public boolean remove();
+    public abstract void act(float delta);
 
 
 
-    public void setActive(boolean active);
-    public boolean isActive();
-    public void setVisibile(boolean visible);
-    public void isVisibile(boolean visible);
 
-    public ShapeType getShapeType();
-    public void setFriction(float value);
-    public void setRestitution(float value);
-    public void setDensity(float value);
-    public Body getBody();
-    public void setSensor(boolean sensor);
-
-
-
-    public void act(float delta);
-    public void positionChanged();
-    public void rotationChanged();
-    public void sizeChanged();
-
-
-    public boolean isFlaggedForDelete();
-    public void setPositionByLeftBottomCorner(float x, float y);
-    public float getXByLeftBottomCorner();
-    public float getYByLeftBottomCorner();
-
-
-
-    // ------    World Event ------- //
-*/
 }

@@ -25,9 +25,9 @@ public class BoxActor extends OneSpriteStaticActor {
     }
 
 
-    public BoxActor(MyGame game, World world, float x, float y, float rotation) {
+    public BoxActor(MyGame game, World world, float x, float y, float size, float rotation) {
         super(game, boxTexture);
-        setSize(1,1);
+        setSize(size,size);
         setPosition(x,y);
         setRotation(rotation);
         setActorWorldHelper(new Box2DWorldHelper(world, this, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.DynamicBody));

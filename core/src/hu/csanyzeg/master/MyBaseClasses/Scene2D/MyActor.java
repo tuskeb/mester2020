@@ -174,10 +174,13 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         super.act(delta);
         elapsedTime += delta;
         if (actorWorldHelper != null){
-            actorWorldHelper.beginUpdate();
-            setPosition(actorWorldHelper.getBodyX(), actorWorldHelper.getBodyY());
-            setRotation(actorWorldHelper.getBodyRotation());
-            actorWorldHelper.endUpdate();
+            actorWorldHelper.act(delta);
+            if(actorWorldHelper.getBody()!= null) {
+                actorWorldHelper.beginUpdate();
+                setPosition(actorWorldHelper.getBodyX(), actorWorldHelper.getBodyY());
+                setRotation(actorWorldHelper.getBodyRotation());
+                actorWorldHelper.endUpdate();
+            }
         }
     }
 
@@ -718,11 +721,12 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         }
     }
 
-    /*
     @Override
     public boolean remove() {
+        if(getActorWorldHelper()!=null){
+            getActorWorldHelper().remove();
+            return false;
+        }
         return super.remove();
     }
-
-     */
 }
