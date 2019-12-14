@@ -15,7 +15,7 @@ import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.Timer;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.TickTimer;
 
 public class Box2dStage extends MyStage {
 
@@ -43,13 +43,14 @@ public class Box2dStage extends MyStage {
                 if (contact.getFixtureA().getUserData() instanceof BoxActor && (contact.getFixtureB().getUserData() instanceof BallActor)){
                     BoxActor ba = (BoxActor) contact.getFixtureA().getUserData();
                     ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
+                    ba.setFlash();
                     if (ba.getWidth()<0.01){
                         ba.remove();
                     }
                 }
                 if (contact.getFixtureB().getUserData() instanceof BoxActor && (contact.getFixtureA().getUserData() instanceof BallActor)){
                     BoxActor ba = (BoxActor) contact.getFixtureB().getUserData();
-                    ((BoxActor)contact.getFixtureB().getUserData()).setFlash();
+                    ba.setFlash();
                     ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
                     if (ba.getWidth()<0.01){
                         ba.remove();
@@ -78,9 +79,9 @@ public class Box2dStage extends MyStage {
 
         setCameraResetToLeftBottomOfScreen();
 
-        //WorldBodyEditorLoader loader = new WorldBodyEditorLoader("box2dhelper/teszt.json");
+        final WorldBodyEditorLoader loader = new WorldBodyEditorLoader("box2dhelper/teszt.json");
 
-        //addActor(new UfoActor(game, world, loader, 7,7,1,1));
+        addActor(new UfoActor(game, world, loader, 7,7,2,2));
 
         addActor(new WallActor(game, world,0,getViewport().getWorldHeight() - 1,16,1,0));
         addActor(new WallActor(game, world,0,0,16,1,0));
@@ -94,7 +95,7 @@ public class Box2dStage extends MyStage {
         addActor(new BallActor(game, world, 9,6,1));
 
 
-        addTimer(new Timer(1, true, new Timer.TickListener() {
+        addTimer(new TickTimer(1, true, new TickTimer.TickListener() {
             @Override
             public void Tick(float correction) {
                 addActor(new BoxActor(game, world,random.nextFloat() *14 + 2,random.nextFloat()*4+4, random.nextFloat()+0.5f,random.nextFloat()*360));
@@ -102,10 +103,18 @@ public class Box2dStage extends MyStage {
         }));
 
 
-        addTimer(new Timer(10.5f, true, new Timer.TickListener() {
+        addTimer(new TickTimer(10.5f, true, new TickTimer.TickListener() {
             @Override
             public void Tick(float correction) {
-                addActor(new BallActor(game, world, 9,6,1));
+                addActor(new BallActor(game, world, random.nextFloat() *14 + 2,random.nextFloat()*4+4,1));
+            }
+        }));
+
+
+        addTimer(new TickTimer(7.5f, true, new TickTimer.TickListener() {
+            @Override
+            public void Tick(float correction) {
+                addActor(new UfoActor(game, world, loader, random.nextFloat() *14 + 2,random.nextFloat()*4+4,2,2));
             }
         }));
     }

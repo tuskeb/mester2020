@@ -1,4 +1,4 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
-public interface Timer {
+public class ActTimer implements Timer {
 }

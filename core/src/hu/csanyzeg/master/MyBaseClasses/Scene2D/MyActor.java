@@ -28,6 +28,12 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         actorWorldHelper = worldHelper;
     }
 
+    public final Array<TickTimer> timers = new Array<>();
+
+    public void addTimer(TickTimer timer){
+        timers.add(timer);
+    }
+
 
     @Override
     public WorldHelper<?, Actor> getActorWorldHelper() {
@@ -173,6 +179,11 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     public void act(float delta) {
         super.act(delta);
         elapsedTime += delta;
+
+        for(TickTimer t : timers){
+            t.act(delta);
+        }
+
         if (actorWorldHelper != null){
             actorWorldHelper.act(delta);
             if(actorWorldHelper.getBody()!= null) {

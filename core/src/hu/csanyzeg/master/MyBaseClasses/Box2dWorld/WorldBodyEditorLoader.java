@@ -41,8 +41,8 @@ public class WorldBodyEditorLoader {
     }
 
     public WorldBodyEditorLoader(String str) {
-        if (str == null) throw new NullPointerException("str is null");
-        model = readJson(str);
+        //if (str == null) throw new NullPointerException("str is null");
+        model = readJson(new FileHandle(str).readString());
     }
 
     // -------------------------------------------------------------------------

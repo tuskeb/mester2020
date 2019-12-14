@@ -260,7 +260,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
             case Polygon:
                 loader.attachFixture(body, bodyID, fixtureDef, getActorWidth()>getActorHeight()?getActorWidth():getActorHeight());
                 Vector2 vector2 = loader.getOrigin(bodyID,getActorWidth()>getActorHeight()?getActorWidth():getActorHeight());
-                setBodyOrigin(vector2.x, vector2.y);
+                actor.setOrigin(vector2.x, vector2.y);
                 break;
 
 

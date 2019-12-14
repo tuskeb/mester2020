@@ -1,11 +1,9 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,12 +11,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import hu.csanyzeg.master.MyBaseClasses.Assets.AssetCollector;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 
 /**
@@ -36,9 +32,9 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     protected boolean pause = false;
 
-    public final Array<Timer> timers = new Array<>();
+    public final Array<TickTimer> timers = new Array<>();
 
-    public void addTimer(Timer timer){
+    public void addTimer(TickTimer timer){
         timers.add(timer);
     }
 
@@ -259,7 +255,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         super.act(delta);
         elapsedTime += delta;
 
-        for(Timer t : timers){
+        for(TickTimer t : timers){
             t.act(delta);
         }
 

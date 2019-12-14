@@ -44,12 +44,19 @@ public class BoxActor extends OneSpriteStaticActor {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        if (elapsedTime<1){
+            setAlpha(elapsedTime);
+        }else{
+            setAlpha(1);
+        }
+
         if (flashTimer > 0) {
             flashTimer -= delta * 3;
             if (flashTimer<0){
                 setColor(1,1,1,1);
             }else{
-                setColor(1-flashTimer / 2,1-flashTimer / 2,1-flashTimer / 2,1);
+                setColor(1,1-flashTimer,1-flashTimer,1);
             }
         }else{
             flashTimer = 0;
