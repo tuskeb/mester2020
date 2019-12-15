@@ -1,17 +1,12 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.Timers;
 
-public class TickTimer implements Timer {
-    public interface TickListener{
-        public void Tick(float correction);
-    }
+public class TickTimer extends Timer<TickTimerListener> {
 
-    public TickListener getTickListener() {
-        return tickListener;
-    }
 
-    public void setTickListener(TickListener tickListener) {
-        this.tickListener = tickListener;
-    }
+    protected boolean repeat;
+    protected float interval;
+    public float elapsedTime = 0;
+
 
     public boolean isRepeat() {
         return repeat;
@@ -30,39 +25,35 @@ public class TickTimer implements Timer {
         elapsedTime = 0;
     }
 
-    protected TickListener tickListener;
-    protected boolean repeat;
-    protected boolean enabled = true;
-    protected float interval;
 
-    public TickTimer(float interval, boolean repeat, TickListener tickListener) {
-        this.tickListener = tickListener;
+    public TickTimer(float interval, boolean repeat, TickTimerListener timerListener) {
+        this.timerListener = timerListener;
         this.repeat = repeat;
         this.interval = interval;
+        start();
     }
-
-    public float elapsedTime = 0;
 
     public void act(float delta){
         if (!enabled) return;
         elapsedTime += delta;
         if (elapsedTime >= interval){
-            if (tickListener !=null){
+            if (timerListener !=null){
                 float correction = elapsedTime-interval;
                 elapsedTime = correction;
                 if (!repeat) enabled = false;
-                tickListener.Tick(correction);
+                timerListener.onTick(this, correction);
+                timerListener.onRepeat(this);
             }
         }
     }
 
     public void start(){
-        enabled = true;
+        super.start();
         elapsedTime = 0;
     }
 
     public void stop(){
-        enabled = false;
+        super.stop();
         elapsedTime = 0;
     }
 }

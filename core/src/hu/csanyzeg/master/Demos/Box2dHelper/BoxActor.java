@@ -1,18 +1,16 @@
 package hu.csanyzeg.master.Demos.Box2dHelper;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import java.util.Random;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2DWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
 
@@ -39,32 +37,57 @@ public class BoxActor extends OneSpriteStaticActor {
             }
         });
 
+        addTimer(new IntervalTimer(1f, new IntervalTimerListener() {
+            @Override
+            public void onRepeat(IntervalTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(IntervalTimer sender, float correction) {
+                setAlpha(sender.getElapsedTime());
+            }
+
+            @Override
+            public void onStop(IntervalTimer sender) {
+                setAlpha(1f);
+                removeTimer(sender);
+            }
+
+            @Override
+            public void onStart(IntervalTimer sender) {
+                setAlpha(0);
+            }
+        } ));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        if (elapsedTime<1){
-            setAlpha(elapsedTime);
-        }else{
-            setAlpha(1);
-        }
-
-        if (flashTimer > 0) {
-            flashTimer -= delta * 3;
-            if (flashTimer<0){
-                setColor(1,1,1,1);
-            }else{
-                setColor(1,1-flashTimer,1-flashTimer,1);
-            }
-        }else{
-            flashTimer = 0;
-        }
     }
 
-    private float flashTimer = 0;
     public void setFlash(){
-        flashTimer = 1;
+        addTimer(new IntervalTimer(0.5f, new IntervalTimerListener() {
+            @Override
+            public void onRepeat(IntervalTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(IntervalTimer sender, float correction) {
+                setColor(1,1- sender.getElapsedTime(),1 - sender.getElapsedTime(),1);
+            }
+
+            @Override
+            public void onStop(IntervalTimer sender) {
+                setColor(1,1,1,1);
+                removeTimer(sender);
+            }
+
+            @Override
+            public void onStart(IntervalTimer sender) {
+
+            }
+        }));
     }
 }

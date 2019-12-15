@@ -15,7 +15,9 @@ import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.TickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
+import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 public class Box2dStage extends MyStage {
 
@@ -95,28 +97,72 @@ public class Box2dStage extends MyStage {
         addActor(new BallActor(game, world, 9,6,1));
 
 
-        addTimer(new TickTimer(1, true, new TickTimer.TickListener() {
+        addTimer(new TickTimer(1, true, new TickTimerListener() {
             @Override
-            public void Tick(float correction) {
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
                 addActor(new BoxActor(game, world,random.nextFloat() *14 + 2,random.nextFloat()*4+4, random.nextFloat()+0.5f,random.nextFloat()*360));
             }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
         }));
 
 
-        addTimer(new TickTimer(10.5f, true, new TickTimer.TickListener() {
+        addTimer(new TickTimer(10.5f, true, new TickTimerListener() {
             @Override
-            public void Tick(float correction) {
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
                 addActor(new BallActor(game, world, random.nextFloat() *14 + 2,random.nextFloat()*4+4,1));
             }
-        }));
 
-
-        addTimer(new TickTimer(7.5f, true, new TickTimer.TickListener() {
             @Override
-            public void Tick(float correction) {
-                addActor(new UfoActor(game, world, loader, random.nextFloat() *14 + 2,random.nextFloat()*4+4,2,2));
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
             }
         }));
+
+
+        addTimer(new TickTimer(7.5f, true, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                addActor(new UfoActor(game, world, loader, random.nextFloat() *14 + 2,random.nextFloat()*4+4,2,2));
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }}));
     }
 
     @Override
@@ -135,6 +181,5 @@ public class Box2dStage extends MyStage {
     public void draw() {
         super.draw();
         box2DDebugRenderer.render(world, getCamera().combined);
-
     }
 }

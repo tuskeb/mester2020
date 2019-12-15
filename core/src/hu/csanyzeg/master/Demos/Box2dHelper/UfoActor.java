@@ -13,7 +13,9 @@ import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.TickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
+import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 public class UfoActor extends OneSpriteStaticActor {
     public static final String ufoTexture = "box2dhelper/ufo.png";
@@ -38,10 +40,25 @@ public class UfoActor extends OneSpriteStaticActor {
                 remove();
             }
         });
-        addTimer(new TickTimer(0.5f, true, new TickTimer.TickListener() {
+        addTimer(new TickTimer(0.5f, true, new TickTimerListener() {
             @Override
-            public void Tick(float correction) {
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
                 setColor(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
             }
         }));
     }

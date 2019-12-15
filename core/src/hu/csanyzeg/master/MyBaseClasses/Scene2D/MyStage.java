@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 import java.util.ArrayList;
 
@@ -32,10 +33,14 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     protected boolean pause = false;
 
-    public final Array<TickTimer> timers = new Array<>();
+    public final Array<Timer> timers = new Array<>();
 
-    public void addTimer(TickTimer timer){
+    public void addTimer(Timer timer){
         timers.add(timer);
+    }
+
+    public void removeTimer(Timer timer){
+        timers.removeValue(timer, true);
     }
 
     protected ArrayList<VisibleChangeListener> visibleChangeListeners = new ArrayList<>();
@@ -255,7 +260,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         super.act(delta);
         elapsedTime += delta;
 
-        for(TickTimer t : timers){
+        for(Timer t : timers){
             t.act(delta);
         }
 

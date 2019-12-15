@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +29,14 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         actorWorldHelper = worldHelper;
     }
 
-    public final Array<TickTimer> timers = new Array<>();
+    public final Array<Timer> timers = new Array<>();
 
-    public void addTimer(TickTimer timer){
+    public void addTimer(Timer timer){
         timers.add(timer);
+    }
+
+    public void removeTimer(Timer timer){
+        timers.removeValue(timer, true);
     }
 
 
@@ -180,7 +185,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         super.act(delta);
         elapsedTime += delta;
 
-        for(TickTimer t : timers){
+        for(Timer t : timers){
             t.act(delta);
         }
 
