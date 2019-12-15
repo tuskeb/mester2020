@@ -67,7 +67,7 @@ public class BoxActor extends OneSpriteStaticActor {
     }
 
     public void setFlash(){
-        addTimer(new IntervalTimer(0.5f, new IntervalTimerListener() {
+        addTimer(new IntervalTimer(0.45f, new IntervalTimerListener() {
             @Override
             public void onRepeat(IntervalTimer sender) {
 
@@ -75,7 +75,7 @@ public class BoxActor extends OneSpriteStaticActor {
 
             @Override
             public void onTick(IntervalTimer sender, float correction) {
-                setColor(1,1- sender.getElapsedTime(),1 - sender.getElapsedTime(),1);
+                setColor(1, sender.getElapsedTime()*2f, sender.getElapsedTime()*2f,1);
             }
 
             @Override

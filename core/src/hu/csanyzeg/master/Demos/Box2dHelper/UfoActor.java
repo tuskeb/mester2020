@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.EventListener;
 import java.util.Random;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
@@ -13,6 +14,8 @@ import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
@@ -33,11 +36,34 @@ public class UfoActor extends OneSpriteStaticActor {
         setSize(w,h);
         setPosition(x,y);
         setActorWorldHelper(new Box2DWorldHelper(world, this, loader, "ufo.png", new MyFixtureDef(), BodyDef.BodyType.DynamicBody));
+
         addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                remove();
+                getTimers().clear();
+                addTimer(new IntervalTimer(0.9f, new IntervalTimerListener() {
+                    @Override
+                    public void onRepeat(IntervalTimer sender) {
+
+                    }
+
+                    @Override
+                    public void onTick(IntervalTimer sender, float correction) {
+                        setAlpha(1-sender.getElapsedTime());
+                    }
+
+                    @Override
+                    public void onStop(IntervalTimer sender) {
+                        removeTimer(sender);
+                        remove();
+                    }
+
+                    @Override
+                    public void onStart(IntervalTimer sender) {
+                        getListeners().clear();
+                    }
+                }));
             }
         });
         addTimer(new TickTimer(0.5f, true, new TickTimerListener() {

@@ -43,6 +43,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         timers.removeValue(timer, true);
     }
 
+
+    public Array<Timer> getTimers() {
+        return timers;
+    }
+
     protected ArrayList<VisibleChangeListener> visibleChangeListeners = new ArrayList<>();
 
     public interface VisibleChangeListener{

@@ -39,6 +39,9 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         timers.removeValue(timer, true);
     }
 
+    public Array<Timer> getTimers() {
+        return timers;
+    }
 
     @Override
     public WorldHelper<?, Actor> getActorWorldHelper() {

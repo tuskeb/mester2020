@@ -85,9 +85,13 @@ public class IntervalTimer extends Timer<IntervalTimerListener> {
             if (elapsedTime >= startTime && elapsedTime <= stopTime){
                 timerListener.onTick(this, delta);
             }
-            if (repeat && elapsedTime > repeatTime){
-                timerListener.onRepeat(this);
-                reset();
+            if (elapsedTime > repeatTime && elapsedTime > stopTime){
+                if(repeat) {
+                    timerListener.onRepeat(this);
+                    reset();
+                }else{
+                    stop();
+                }
             }
         }
     }

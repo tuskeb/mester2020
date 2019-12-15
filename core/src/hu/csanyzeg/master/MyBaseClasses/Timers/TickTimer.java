@@ -39,10 +39,13 @@ public class TickTimer extends Timer<TickTimerListener> {
         if (elapsedTime >= interval){
             if (timerListener !=null){
                 float correction = elapsedTime-interval;
-                elapsedTime = correction;
-                if (!repeat) enabled = false;
                 timerListener.onTick(this, correction);
-                timerListener.onRepeat(this);
+                if (!repeat){
+                    stop();
+                }else{
+                    elapsedTime = correction;
+                    timerListener.onRepeat(this);
+                }
             }
         }
     }
