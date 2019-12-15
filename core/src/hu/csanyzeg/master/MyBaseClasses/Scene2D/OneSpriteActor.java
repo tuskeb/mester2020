@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 /**
  * Created by tuskeb on 2016. 09. 30..
@@ -11,7 +12,8 @@ import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 abstract public class OneSpriteActor extends MyActor implements InitableInterface {
     public Sprite sprite;
 
-    public OneSpriteActor(Sprite sprite) {
+    public OneSpriteActor(MyGame game, Sprite sprite) {
+        super(game);
         if (sprite!=null) {
             this.sprite = sprite;
             init();

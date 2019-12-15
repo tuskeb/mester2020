@@ -180,6 +180,6 @@ public class Box2dStage extends MyStage {
     @Override
     public void draw() {
         super.draw();
-        box2DDebugRenderer.render(world, getCamera().combined);
+        if(game.debug) box2DDebugRenderer.render(world, getCamera().combined);
     }
 }

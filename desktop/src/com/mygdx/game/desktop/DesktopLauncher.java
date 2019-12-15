@@ -8,6 +8,6 @@ import hu.csanyzeg.master.Demos.DemoMyGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new DemoMyGame(), config);
+		new LwjglApplication(new DemoMyGame(true), config);
 	}
 }

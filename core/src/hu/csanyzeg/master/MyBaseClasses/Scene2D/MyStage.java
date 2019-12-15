@@ -85,6 +85,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         init();
     }
 
+    @Override
+    public void init() {
+
+    }
+
     public interface BackButtonListener {
         public void backKeyDown();
     }

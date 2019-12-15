@@ -15,43 +15,39 @@ import java.util.HashMap;
 
 public abstract class MultiSpriteActor extends MyActor implements InitableInterface {
     protected HashMap<String, OffsetSprite> spriteMap = new HashMap<String, OffsetSprite>();
-    protected MyGame game;
     public static int debugLineNumbers = 16;
 
 
     public MultiSpriteActor(MyGame game, float width, float height) {
-        super();
+        super(game);
         super.setWidth(width);
         super.setHeight(height);
         init();
-        this.game = game;
     }
 
     /*  OffsetSprite... olyam mint egy tömb de simán fel lehet sorolni a paramétereket. Nincs fix hossza.
             https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs */
     public MultiSpriteActor(MyGame game, float width, float height, OffsetSprite... offsetSprites) {
-        super();
+        super(game);
         super.setWidth(width);
         super.setHeight(height);
         for (OffsetSprite spite : offsetSprites) {
             addSprite(spite);
         }
         init();
-        this.game = game;
     }
 
 
     /*  OffsetSprite... olyam mint egy tömb de simán fel lehet sorolni a paramétereket. Nincs fix hossza.
             https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs */
     public MultiSpriteActor(MyGame game, float width, float height, ShapeType shapeType, OffsetSprite... offsetSprites) {
-        super();
+        super(game);
         super.setWidth(width);
         super.setHeight(height);
         for (OffsetSprite spite : offsetSprites) {
             addSprite(spite, shapeType);
         }
         init();
-        this.game = game;
     }
 
     @Override

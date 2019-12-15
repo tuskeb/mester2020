@@ -35,7 +35,7 @@ public class OneSpriteAnimatedActor extends OneSpriteActor {
     }
 
     public OneSpriteAnimatedActor(MyGame game, String hash) {
-        super(null);
+        super(game, null);
         this.textureAtlas = game.getMyAssetManager().getTextureAtlas(hash);
         sprite = new Sprite(textureAtlas.getRegions().get(0).getTexture());
         init();

@@ -8,6 +8,13 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 public class DemoMyGame extends MyGame {
 
+	public DemoMyGame(boolean debug) {
+		super(debug);
+	}
+
+	public DemoMyGame() {
+	}
+
 	@Override
 	public void create () {
 		super.create();

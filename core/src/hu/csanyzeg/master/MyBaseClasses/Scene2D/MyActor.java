@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 import java.util.ArrayList;
@@ -173,13 +174,15 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         shapes.circle(getOriginX() + getX(), getOriginY() + getY(), getWidth() / debugPointSize, 3);
     }
 
+    protected final MyGame game;
 
-    public MyActor() {
-        super();
+    public MyActor(MyGame game) {
+        super(); this.game = game;
     }
 
     @Override
     public void init() {
+        setDebug(game.debug);
         setOrigintoCenter();
     }
 
