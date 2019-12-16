@@ -36,6 +36,7 @@ public class Box2dStage extends MyStage {
 
     public Box2dStage(final MyGame game) {
         super(new ExtendViewport(16,9), game);
+        addBackButtonScreenBackByStackPopListener();
         world  = new World(new Vector2(0,-9.81f), false);
         world.setContactListener(new ContactListener() {
             @Override
@@ -82,6 +83,7 @@ public class Box2dStage extends MyStage {
         setCameraResetToLeftBottomOfScreen();
 
         final WorldBodyEditorLoader loader = new WorldBodyEditorLoader("box2dhelper/teszt.json");
+        //Telefonokon azt írja ez a fájl nem található
 
         addActor(new UfoActor(game, world, loader, 7,7,2,2));
 

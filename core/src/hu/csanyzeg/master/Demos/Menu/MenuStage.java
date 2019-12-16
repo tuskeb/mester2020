@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import hu.csanyzeg.master.Demos.Actor.ActorScreen;
 import hu.csanyzeg.master.Demos.Box2dHelper.Box2dScreen;
+import hu.csanyzeg.master.Demos.Firework.FireworkScreen;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.Demos.Szakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
@@ -29,6 +30,21 @@ public class MenuStage extends MyStage {
 
         addBackButtonScreenBackByStackPopListener();
 
+        addActor(new MenuButton(game, "Firework Demo"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,500);
+                setSize(200,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        game.setScreen(new FireworkScreen(game));
+                    }
+                });
+            }
+        });
 
         addActor(new MenuButton(game, "Box2d Helper"){
             @Override
