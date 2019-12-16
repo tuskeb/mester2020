@@ -16,7 +16,7 @@ public class PipeActor extends OneSpriteStaticActor {
     public PipeActor(MyGame game) {
         super(game, pipeTexture);
         setTouchable(null);
-        setSize(getWidth()/2.5f,getHeight()/2.5f);
+
         addBaseCollisionRectangleShape();
         setAct(true);
     }
