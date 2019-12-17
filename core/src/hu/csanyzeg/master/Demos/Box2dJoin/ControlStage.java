@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Random;
+
 import hu.csanyzeg.master.Demos.Menu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -22,6 +24,22 @@ public class ControlStage extends MyStage {
         this.box2dJoinStage = box2dJoinStage;
         setCameraResetToLeftBottomOfScreen();
         addBackButtonScreenBackByStackPopListener();
+        addActor(new MenuButton(game, "Box"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,600);
+                setSize(100,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        box2dJoinStage.addBox();
+                    }
+                });
+            }
+        });
+
         addActor(new MenuButton(game, "Weld"){
             @Override
             public void init() {

@@ -9,6 +9,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import java.util.Random;
+
 import hu.csanyzeg.master.Demos.Box2dHelper.BoxActor;
 import hu.csanyzeg.master.Demos.Box2dHelper.WallActor;
 import hu.csanyzeg.master.Demos.Menu.MenuButton;
@@ -25,6 +27,13 @@ public class Box2dJoinStage extends Box2dStage {
         AssetList.collectAssetDescriptor(WallActor.class, assetList);
         AssetList.collectAssetDescriptor(BoxActor.class, assetList);
         AssetList.collectAssetDescriptor(MenuButton.class, assetList);
+    }
+
+
+    java.util.Random random = new Random();
+
+    public void addBox() {
+        addActor(new BoxActor(game, world, random.nextFloat() * 14 + 2, 10, random.nextFloat() + 0.5f, random.nextFloat() * 360));
     }
 
     public void addWeld(){

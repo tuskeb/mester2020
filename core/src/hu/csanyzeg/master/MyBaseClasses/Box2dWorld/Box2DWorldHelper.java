@@ -40,7 +40,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         MyJoint.removeJoint(joint);
     }
 
-    public void clearJoint(MyJoint joint){
+    public void clearJoint(){
         while (joints.size>0){
             removeJoint(joints.get(0));
         }
@@ -329,8 +329,10 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         invoke(new Runnable() {
             @Override
             public void run() {
+                clearJoint();
                 removeFromWorld();
                 actor.getStage().getActors().removeValue(actor, true);
+                actor.getParent().removeActor(actor);
             }
         });
     }
