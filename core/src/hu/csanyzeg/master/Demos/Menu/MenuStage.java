@@ -5,7 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import hu.csanyzeg.master.Demos.Actor.ActorScreen;
-import hu.csanyzeg.master.Demos.Box2dHelper.Box2dScreen;
+import hu.csanyzeg.master.Demos.Box2dHelper.Box2dHelperScreen;
+import hu.csanyzeg.master.Demos.Box2dJoin.Box2dJoinScreen;
 import hu.csanyzeg.master.Demos.Firework.FireworkScreen;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.Demos.Szakkor.SzakkorScreen;
@@ -29,6 +30,24 @@ public class MenuStage extends MyStage {
 
 
         addBackButtonScreenBackByStackPopListener();
+
+
+        addActor(new MenuButton(game, "B2D Join Demo"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,600);
+                setSize(200,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        game.setScreen(new Box2dJoinScreen(game));
+                    }
+                });
+            }
+        });
+
 
         addActor(new MenuButton(game, "Firework Demo"){
             @Override
@@ -56,7 +75,7 @@ public class MenuStage extends MyStage {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        game.setScreen(new Box2dScreen(game));
+                        game.setScreen(new Box2dHelperScreen(game));
                     }
                 });
             }

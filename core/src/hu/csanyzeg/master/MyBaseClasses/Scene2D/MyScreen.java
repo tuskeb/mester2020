@@ -39,7 +39,9 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
     public MyScreen(MyGame game) {
         this.game = game;
         game.getMyAssetManager().changeAssets(this.getAssetList());
-        game.getLoadingStage().show();
+        if (game.getLoadingStage()!= null) {
+            game.getLoadingStage().show();
+        }
         Gdx.input.setInputProcessor(inputMultiplexer);
         init();
     }
@@ -130,7 +132,9 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         }
         if (!assetsLoaded){
             assetsLoaded = true;
-            game.getLoadingStage().hide();
+            if (game.getLoadingStage() != null) {
+                game.getLoadingStage().hide();
+            }
             afterAssetsLoaded();
         }
         for(MyStage s : stages){

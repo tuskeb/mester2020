@@ -20,7 +20,7 @@ abstract public class MyGame extends Game {
 
     private LoadingStage loadingStage = null;
     private MyAssetManager myAssetManager;
-    public final boolean debug;
+    public boolean debug;
 
     public MyGame(boolean debug) {
         this.debug = debug;

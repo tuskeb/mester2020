@@ -33,7 +33,7 @@ public class BoxActor extends OneSpriteStaticActor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                getActorWorldHelper().getActor().setPosition(getX(),9);
+                setPosition(getX(),9);
             }
         });
 

@@ -19,7 +19,7 @@ import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
-public class Box2dStage extends MyStage {
+public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2dStage {
 
     public static AssetList assetList = new AssetList();
     static {
@@ -29,15 +29,11 @@ public class Box2dStage extends MyStage {
         AssetList.collectAssetDescriptor(UfoActor.class, assetList);
     }
 
-    private World world;
-    Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
-
     java.util.Random random = new Random();
 
-    public Box2dStage(final MyGame game) {
+    public Box2dHelperStage(final MyGame game) {
         super(new ExtendViewport(16,9), game);
         addBackButtonScreenBackByStackPopListener();
-        world  = new World(new Vector2(0,-9.81f), false);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -172,16 +168,4 @@ public class Box2dStage extends MyStage {
 
     }
 
-
-    @Override
-    public void act(float delta) {
-        world.step(delta,5,5);
-        super.act(delta);
-    }
-
-    @Override
-    public void draw() {
-        super.draw();
-        if(game.debug) box2DDebugRenderer.render(world, getCamera().combined);
-    }
 }
