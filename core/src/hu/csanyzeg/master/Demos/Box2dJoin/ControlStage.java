@@ -17,7 +17,7 @@ public class ControlStage extends MyStage {
         AssetList.collectAssetDescriptor(MenuButton.class, assetList);
     }
 
-    public ControlStage(MyGame game, Box2dJoinStage box2dJoinStage) {
+    public ControlStage(MyGame game, final Box2dJoinStage box2dJoinStage) {
         super(new ExtendViewport(720,720), game);
         this.box2dJoinStage = box2dJoinStage;
         setCameraResetToLeftBottomOfScreen();
@@ -32,11 +32,26 @@ public class ControlStage extends MyStage {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        //game.setScreen(new Box2dJoinScreen(game));
+                        box2dJoinStage.addWeld();
                     }
                 });
             }
         });
 
+        addActor(new MenuButton(game, "Revolute"){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(0,400);
+                setSize(100,50);
+                addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        box2dJoinStage.addRevolute();
+                    }
+                });
+            }
+        });
     }
 }

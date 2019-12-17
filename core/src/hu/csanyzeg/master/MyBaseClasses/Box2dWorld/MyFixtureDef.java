@@ -12,7 +12,7 @@ public class MyFixtureDef {
     public float restitution = 0.2f;
 
     /** The density, usually in kg/m^2. **/
-    public float density = 10;
+    public float density = 5;
 
     /** A sensor shape collects contact information but never generates a collision response. */
     public boolean isSensor = false;

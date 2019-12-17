@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,8 +30,27 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
     protected  float originY;
 
     protected Array<Runnable> runnables = new Array<>();
+    protected Array<MyJoint> joints = new Array<MyJoint>();
 
-    public Box2DWorldHelper(World world, Actor actor, WorldBodyEditorLoader loader,  String bodyID,  MyFixtureDef fixtureDef, BodyDef.BodyType bodyType) {
+    public void addJoint(MyJoint joint){
+        joints.add(joint);
+    }
+
+    public void removeJoint(MyJoint joint){
+        MyJoint.removeJoint(joint);
+    }
+
+    public void clearJoint(MyJoint joint){
+        while (joints.size>0){
+            removeJoint(joints.get(0));
+        }
+    }
+
+    public Array<MyJoint> getJoints() {
+        return joints;
+    }
+
+    public Box2DWorldHelper(World world, Actor actor, WorldBodyEditorLoader loader, String bodyID, MyFixtureDef fixtureDef, BodyDef.BodyType bodyType) {
         super(null, null);
         shapeType = ShapeType.Polygon;
         this.loader = loader;

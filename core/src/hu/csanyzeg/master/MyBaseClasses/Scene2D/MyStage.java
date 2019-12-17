@@ -391,7 +391,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     @Override
     /**
      * Automatikusan növekvő Z index 1-től.
-     * @param actor
+     * @param bActor
      */
     public void addActor(Actor actor) {
         addActor(actor, ZIndexAutoInc);
@@ -449,9 +449,9 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         /*
         getActors().sort(new Comparator<Actor>() {
             @Override
-            public int compare(Actor actor, Actor t1) {
-                if (actor instanceof MyActor && t1 instanceof MyActor){
-                    return ((MyActor) actor).zIndex - ((MyActor) t1).zIndex;
+            public int compare(Actor bActor, Actor t1) {
+                if (bActor instanceof MyActor && t1 instanceof MyActor){
+                    return ((MyActor) bActor).zIndex - ((MyActor) t1).zIndex;
                 }else {
                     return 0;
                 }

@@ -31,7 +31,7 @@ public class MenuButton extends MyButton {
     public MenuButton(MyGame game, String text) {
         super(game, text, new TextButtonStyle(new TextureRegionDrawable(new TextureRegion(game.getMyAssetManager().getTexture(upHash))),
                 new TextureRegionDrawable(new TextureRegion(game.getMyAssetManager().getTexture(downHash))),
-                new TextureRegionDrawable(new TextureRegion(game.getMyAssetManager().getTexture(overHash))),
+                new TextureRegionDrawable(new TextureRegion(game.getMyAssetManager().getTexture(upHash))),
                 game.getMyAssetManager().getFont(fontHash)));
     }
 }
