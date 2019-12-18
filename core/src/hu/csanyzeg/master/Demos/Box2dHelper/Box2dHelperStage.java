@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.Demos.Box2dHelper;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -163,4 +164,9 @@ public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorl
             }}));
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        world.setGravity(new Vector2(Gdx.input.getAccelerometerY()*7,-9.81f-Gdx.input.getAccelerometerX()*5));
+    }
 }
