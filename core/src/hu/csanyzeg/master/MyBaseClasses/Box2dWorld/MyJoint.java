@@ -99,7 +99,7 @@ public class MyJoint {
             f.setSensor(true);
         }
         jointDef.maxForce = maxForce;
-        jointDef.target.set(jointDef.bodyA.getPosition().add(jointDef.bodyA.getMassData().center));
+        jointDef.target.set(jointDef.bodyA.getPosition());
         createJoint(ground,target,jointDef);
     }
 

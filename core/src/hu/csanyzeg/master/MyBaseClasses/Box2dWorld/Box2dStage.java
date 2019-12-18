@@ -96,7 +96,7 @@ public abstract class Box2dStage extends MyStage {
         float delta2;
         long m = TimeUtils.millis();
         if (fps < minFps){
-            if (worldDelta > 0.001) {
+            if (worldDelta > 0.007) {
                 worldDelta -= 0.001;
             }
             delta2 = worldDelta;

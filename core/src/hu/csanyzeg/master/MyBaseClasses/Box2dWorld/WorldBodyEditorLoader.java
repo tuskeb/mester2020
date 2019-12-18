@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Box2dWorld;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -35,14 +36,16 @@ public class WorldBodyEditorLoader {
     // Ctors
     // -------------------------------------------------------------------------
 
+    /*
+    @Deprecated
     public WorldBodyEditorLoader(FileHandle file) {
         if (file == null) throw new NullPointerException("file is null");
         model = readJson(file.readString());
     }
-
+*/
     public WorldBodyEditorLoader(String str) {
         //if (str == null) throw new NullPointerException("str is null");
-        model = readJson(new FileHandle(str).readString());
+        model = readJson(Gdx.files.internal(str).readString());
     }
 
     // -------------------------------------------------------------------------
