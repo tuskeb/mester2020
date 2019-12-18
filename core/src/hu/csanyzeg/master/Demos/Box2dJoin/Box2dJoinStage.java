@@ -44,12 +44,33 @@ public class Box2dJoinStage extends Box2dStage {
         addActor(new ChainActorGroup(game, world, loader,1,10, JointDef.JointType.RevoluteJoint));
     }
 
+
+    public void addDistance(){
+        addActor(new ChainActorGroup(game, world, loader,1,10, JointDef.JointType.DistanceJoint));
+    }
+
+
+    public void addMouse(){
+        addActor(new ChainActorGroup(game, world, loader,1,10, JointDef.JointType.MouseJoint));
+    }
+
+    public void addRope(){
+        addActor(new ChainActorGroup(game, world, loader,1,10, JointDef.JointType.RopeJoint));
+    }
+
+
+    public void addPrismatic(){
+        addActor(new ChainActorGroup(game, world, loader,1,10, JointDef.JointType.PrismaticJoint));
+    }
+
+
     public Box2dJoinStage(MyGame game) {
         super(new ExtendViewport(16,9), game);
         setLoader("box2dhelper/teszt.json");
         setCameraResetToLeftBottomOfScreen();
-        addActor(new WallActor(game, world,0,0,16,1,0));
-        addActor(new BoxActor(game, world, 6,1,2,2));
+        addActor(new WallActor(game, world,0,0,getWidth(),1,0));
+        //addActor(new BoxActor(game, world, 6,1,2,2));
+        //addActor(new ChainActorGroup(game, world, loader,1,7, JointDef.JointType.PrismaticJoint));
         /*for(int i = 0; i<100; i++){
             addActor(new ChainActorGroup(game, world, loader,1,i + 4, JointDef.JointType.WeldJoint));
         }*/

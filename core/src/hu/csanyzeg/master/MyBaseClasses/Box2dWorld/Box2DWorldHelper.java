@@ -345,4 +345,10 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         }
     }
 
+    public void setSensor(boolean sensor){
+        for(Fixture f : body.getFixtureList()){
+            f.setSensor(sensor);
+        }
+    }
+
 }

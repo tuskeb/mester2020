@@ -163,9 +163,4 @@ public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorl
             }}));
     }
 
-    @Override
-    public void init() {
-
-    }
-
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -22,7 +23,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyGroup;
 public class ChainActorGroup extends MyGroup {
     World world;
     WorldBodyEditorLoader loader;
-    public float linkCount = 17;
+    public float linkCount = 18;
     protected Array<ChainLinkActor> chainLinkActors = new Array<>();
     public Array<WeldJoint> weldJoints = new Array<>();
     protected JointDef.JointType jointType;
@@ -53,11 +54,27 @@ public class ChainActorGroup extends MyGroup {
                     case RevoluteJoint:
                         MyJoint.createRevoluteJoint(chainLinkActors.get(i-1), chainLinkActors.get(i));
                         break;
+                    case DistanceJoint:
+                        MyJoint.createDistanceJoint(chainLinkActors.get(i-1), chainLinkActors.get(i));
+                        break;
+                    case MouseJoint:
+                        if (i%2 == 1) {
+                            MyJoint.createMouseJoint(chainLinkActors.get(i - 1), chainLinkActors.get(i), 30);
+                        }
+                        break;
+                    case RopeJoint:
+                        MyJoint.createRopeJoint(chainLinkActors.get(i - 1), chainLinkActors.get(i));
+                        break;
+                    case PrismaticJoint:
+                        MyJoint.createPrismaticJoint(chainLinkActors.get(i - 1), chainLinkActors.get(i));
+                        break;
                 }
-
-
+            }
+            if (jointType == JointDef.JointType.RopeJoint){
+                MyJoint.createRopeJoint(chainLinkActors.get(0), chainLinkActors.get(chainLinkActors.size-1));
             }
         }
+
 
     }
 }
