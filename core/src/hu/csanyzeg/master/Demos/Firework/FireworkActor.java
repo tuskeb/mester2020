@@ -27,15 +27,22 @@ public class FireworkActor extends OneSpriteStaticActor {
     private Vector2 force = new Vector2(0,0);
     private Random random;
     private boolean master;
+    private boolean isSensor;
 
     public FireworkActor(MyGame game, World world, boolean master) {
         super(game, fireworkTexture);
         this.master = master;
         random = new Random();
         alpha = 1;
-        if(!master) setSize(0.1f, 0.1f);
-        else setSize(0.25f,0.25f);
-        setActorWorldHelper(new Box2DWorldHelper(world, this, ShapeType.Circle, new MyFixtureDef(0.2f, 0.7f, 5f, false), BodyDef.BodyType.DynamicBody));
+        if(!master) {
+            setSize(0.1f, 0.1f);
+            isSensor = false;
+        }
+        else {
+            setSize(0.25f, 0.25f);
+            isSensor = true;
+        }
+        setActorWorldHelper(new Box2DWorldHelper(world, this, ShapeType.Circle, new MyFixtureDef(0.2f, 0.7f, 5f, isSensor), BodyDef.BodyType.DynamicBody));
         setColor(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
         setAlpha(1);
     }

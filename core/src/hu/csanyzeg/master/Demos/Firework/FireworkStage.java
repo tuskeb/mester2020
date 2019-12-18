@@ -66,10 +66,10 @@ public class FireworkStage extends Box2dStage {
     public void act(float delta) {
         super.act(delta);
         if(fireworkActors.get(0).getY() >= getViewport().getWorldHeight()*0.8) {
-            for (int i = 0; i < 64; i++) {
+            for (int i = 0; i < 128; i++) {
                 fireworkActors.add(new FireworkActor(game, world, false));
-                fireworkActors.get(i + 1).setPosition(fireworkActors.get(0).getX(), getViewport().getWorldHeight() * 0.8f);
-                fireworkActors.get(i + 1).setRotation(360 / 64.0f * i);
+                fireworkActors.get(i + 1).setPosition((float) (fireworkActors.get(0).getX() + Math.random()), (float) (getViewport().getWorldHeight() * 0.8f + Math.random()));
+                fireworkActors.get(i + 1).setRotation(360 / 128.0f * i);
                 fireworkActors.get(i + 1).setForce(new Vector2((float) Math.sin(fireworkActors.get(i + 1).getRotation()) * 0.5f, (float) Math.cos(fireworkActors.get(i + 1).getRotation()) * 0.5f));
                 addActor(fireworkActors.get(i + 1));
             }
