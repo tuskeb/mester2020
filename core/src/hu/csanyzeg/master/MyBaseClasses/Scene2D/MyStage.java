@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,14 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 import java.util.ArrayList;
+
+import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
 
 
 /**
@@ -87,7 +93,29 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     @Override
     public void init() {
+        if(game.debug){
+            addTimer(new TickTimer(2f, true, new TickTimerListener() {
+                @Override
+                public void onRepeat(TickTimer sender) {
 
+                }
+
+                @Override
+                public void onTick(Timer sender, float correction) {
+                    Gdx.app.log("stage","Stage (" + this.hashCode() +") \tfps: " + 1f / Gdx.graphics.getDeltaTime() + ". \tActor count: " + getActors().size + ". \tDraw DT: " + drawTime + " ms. Act DT: " + actTime + " ms");
+                }
+
+                @Override
+                public void onStop(Timer sender) {
+
+                }
+
+                @Override
+                public void onStart(Timer sender) {
+
+                }
+            }));
+        }
     }
 
     public interface BackButtonListener {
@@ -265,8 +293,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         setCameraResetToCenterOfScreen();
     };
 
+
+    protected float actTime = 0;
     @Override
     public void act(float delta) {
+        long nanoTimet = TimeUtils.nanoTime();
         super.act(delta);
         elapsedTime += delta;
 
@@ -306,7 +337,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
             c.update();
 
         }
-
+        actTime = ((float)(TimeUtils.nanoTime() - nanoTimet)) / 100000;
     }
 
 
@@ -526,5 +557,11 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         }
     }
 
-
+    protected float drawTime = 0;
+    @Override
+    public void draw() {
+        long t = TimeUtils.nanoTime();
+        super.draw();
+        drawTime = ((float)(TimeUtils.nanoTime() - t)) / 100000;
+    }
 }

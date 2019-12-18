@@ -50,6 +50,9 @@ public class Box2dJoinStage extends Box2dStage {
         setCameraResetToLeftBottomOfScreen();
         addActor(new WallActor(game, world,0,0,16,1,0));
         addActor(new BoxActor(game, world, 6,1,2,2));
+        /*for(int i = 0; i<100; i++){
+            addActor(new ChainActorGroup(game, world, loader,1,i + 4, JointDef.JointType.WeldJoint));
+        }*/
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -57,7 +60,7 @@ public class Box2dJoinStage extends Box2dStage {
                     ChainLinkActor c = (ChainLinkActor) contact.getFixtureB().getUserData();
                     for(MyJoint j : ((Box2DWorldHelper)c.getActorWorldHelper()).getJoints()){
                         c.setForceColor(j.joint.getReactionForce(1).len());
-                        if (j.joint.getReactionForce(1).len()>15){
+                        if (j.joint.getReactionForce(1).len()>18){
                             j.remove();
                         }
 

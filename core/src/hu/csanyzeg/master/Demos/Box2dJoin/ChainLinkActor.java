@@ -16,6 +16,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.PermanentTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.PermanentTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TimerListener;
 
 public class ChainLinkActor extends OneSpriteStaticActor {
@@ -32,7 +33,7 @@ public class ChainLinkActor extends OneSpriteStaticActor {
         setPosition(x,y);
         setRotation(rotation);
         setActorWorldHelper(new Box2DWorldHelper(world, this, loader, "link.png", new MyFixtureDef(), BodyDef.BodyType.DynamicBody));
-        addTimer(new PermanentTimer(new TimerListener<PermanentTimer>() {
+        addTimer(new PermanentTimer(new PermanentTimerListener() {
             @Override
             public void onTick(PermanentTimer sender, float correction) {
                 setColor(getColor().add(0,0.5f * correction,0.5f  * correction,0));

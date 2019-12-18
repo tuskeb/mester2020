@@ -1,7 +1,7 @@
 package hu.csanyzeg.master.MyBaseClasses.Timers;
 
-public class PermanentTimer extends Timer<TimerListener> {
-    public PermanentTimer(TimerListener<PermanentTimer> timerListener) {
+public class PermanentTimer extends Timer<PermanentTimerListener> {
+    public PermanentTimer(PermanentTimerListener timerListener) {
         setTimerListener(timerListener);
         start();
     }

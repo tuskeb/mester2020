@@ -13,7 +13,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 public class Box2dJoinScreen extends MyScreen {
     public Box2dJoinScreen(MyGame game) {
         super(game);
-        //game.debug = true;
+        game.debug = true;
     }
 
     @Override

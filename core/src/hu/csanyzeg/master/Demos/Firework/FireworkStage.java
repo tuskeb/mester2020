@@ -10,13 +10,14 @@ import java.util.ArrayList;
 
 import hu.csanyzeg.master.Demos.Box2dHelper.UfoActor;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2dStage;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
-public class FireworkStage extends MyStage {
+public class FireworkStage extends Box2dStage {
     public static final String fireworkSound = "demofirework/sound.wav";
 
     public static AssetList assetList = new AssetList();
@@ -26,11 +27,9 @@ public class FireworkStage extends MyStage {
     }
 
     ArrayList<FireworkActor> fireworkActors = new ArrayList<>();
-    private World world;
 
     public FireworkStage(final MyGame game) {
         super(new ExtendViewport(16,9), game);
-        world  = new World(new Vector2(0,-9.81f), false);
         fireworkActors.add(new FireworkActor(game,world,true));
         fireworkActors.get(0).setForce(new Vector2(0,10));
         fireworkActors.get(0).setPosition(getViewport().getWorldWidth()/2,-1);
@@ -66,7 +65,6 @@ public class FireworkStage extends MyStage {
     @Override
     public void act(float delta) {
         super.act(delta);
-        world.step(delta,5,5);
         if(fireworkActors.get(0).getY() >= getViewport().getWorldHeight()*0.8) {
             for (int i = 0; i < 64; i++) {
                 fireworkActors.add(new FireworkActor(game, world, false));
