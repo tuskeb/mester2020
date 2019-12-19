@@ -69,41 +69,5 @@ public class Box2dJoinStage extends Box2dStage {
         setLoader("box2dhelper/teszt.json");
         setCameraResetToLeftBottomOfScreen();
         addActor(new WallActor(game, world,0,0,getWidth(),1,0));
-        //addActor(new BoxActor(game, world, 6,1,2,2));
-        //addActor(new ChainActorGroup(game, world, loader,1,7, JointDef.JointType.PrismaticJoint));
-        /*for(int i = 0; i<100; i++){
-            addActor(new ChainActorGroup(game, world, loader,1,i + 4, JointDef.JointType.WeldJoint));
-        }*/
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                if (contact.getFixtureB().getUserData() instanceof ChainLinkActor){
-                    ChainLinkActor c = (ChainLinkActor) contact.getFixtureB().getUserData();
-                    for(MyJoint j : ((Box2DWorldHelper)c.getActorWorldHelper()).getJoints()){
-                        c.setForceColor(j.joint.getReactionForce(1).len());
-                        if (j.joint.getReactionForce(1).len()>18){
-                            j.remove();
-                        }
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        });
     }
 }

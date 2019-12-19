@@ -20,6 +20,8 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldHelper;
 
 public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
+    protected final Array<MyContactListener> contactListeners = new Array<>();
+
     protected ShapeType shapeType;
     protected MyFixtureDef fixtureDef;
     protected BodyDef.BodyType bodyType;
@@ -31,6 +33,22 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
     protected Array<Runnable> runnables = new Array<>();
     protected Array<MyJoint> joints = new Array<MyJoint>();
+
+    public void addContactListener(MyContactListener contactListener){
+        contactListeners.add(contactListener);
+    }
+
+    public void removeContactListener(MyContactListener contactListener){
+        contactListeners.removeValue(contactListener, true);
+    }
+
+    public void clearContactListener(){
+        contactListeners.clear();
+    }
+
+    public Array<MyContactListener> getContactListeners() {
+        return contactListeners;
+    }
 
     public void addJoint(MyJoint joint){
         joints.add(joint);
@@ -287,7 +305,8 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         }
         body.getMassData().center.set(getActorOriginX(),getActorOriginY());
         for(Fixture f : body.getFixtureList()) {
-            f.setUserData(this.actor);
+            //f.setUserData(this.actor);
+            f.setUserData(this);
         }
         //body.setFixedRotation(false);
         //System.out.println(body.isFixedRotation());

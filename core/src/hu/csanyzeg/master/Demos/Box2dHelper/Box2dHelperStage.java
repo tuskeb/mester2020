@@ -35,52 +35,10 @@ public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorl
     public Box2dHelperStage(final MyGame game) {
         super(new ExtendViewport(16,9), game);
         addBackButtonScreenBackByStackPopListener();
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-
-
-                if (contact.getFixtureA().getUserData() instanceof BoxActor && (contact.getFixtureB().getUserData() instanceof BallActor)){
-                    BoxActor ba = (BoxActor) contact.getFixtureA().getUserData();
-                    ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
-                    ba.setFlash();
-                    if (ba.getWidth()<0.01){
-                        ba.remove();
-                    }
-                }
-                if (contact.getFixtureB().getUserData() instanceof BoxActor && (contact.getFixtureA().getUserData() instanceof BallActor)){
-                    BoxActor ba = (BoxActor) contact.getFixtureB().getUserData();
-                    ba.setFlash();
-                    ba.setSize(ba.getWidth()*0.98f, ba.getHeight()*0.98f);
-                    if (ba.getWidth()<0.01){
-                        ba.remove();
-                    }
-                }
-
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        });
-
-
 
         setCameraResetToLeftBottomOfScreen();
 
         final WorldBodyEditorLoader loader = new WorldBodyEditorLoader("box2dhelper/teszt.json");
-        //Telefonokon azt írja ez a fájl nem található
 
         addActor(new UfoActor(game, world, loader, 7,7,2,2));
 

@@ -66,8 +66,20 @@ public class BoxActor extends OneSpriteStaticActor {
         super.act(delta);
     }
 
+    public void contactWithBall(){
+        if (!protect) {
+            setSize(getWidth() * 0.9f, getHeight() * 0.9f);
+            if (getWidth() < 0.05) {
+                remove();
+            }
+            setFlash();
+        }
+    }
+
+    private boolean protect = false;
+
     public void setFlash(){
-        addTimer(new IntervalTimer(0.45f, new IntervalTimerListener() {
+        addTimer(new IntervalTimer(0.85f, new IntervalTimerListener() {
             @Override
             public void onRepeat(IntervalTimer sender) {
 
@@ -82,11 +94,12 @@ public class BoxActor extends OneSpriteStaticActor {
             public void onStop(IntervalTimer sender) {
                 setColor(1,1,1,1);
                 removeTimer(sender);
+                protect = false;
             }
 
             @Override
             public void onStart(IntervalTimer sender) {
-
+                protect = true;
             }
         }));
     }
