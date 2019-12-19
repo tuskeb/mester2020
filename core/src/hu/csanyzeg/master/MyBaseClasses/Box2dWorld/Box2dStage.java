@@ -132,7 +132,8 @@ public abstract class Box2dStage extends MyStage {
     protected float realElapsedTime = 0;
     protected float lastDelta;
     protected int iterations = 1;
-    protected float minFps = 15f;
+    protected float minFps = 10f;
+    protected float criticalFps = 2f;
     protected float iterationPerSec = 666f;
 
     public float getMinFps() {
@@ -156,14 +157,21 @@ public abstract class Box2dStage extends MyStage {
         float fps = 1f / delta;
         float delta2;
         long m = TimeUtils.millis();
-        if (fps < minFps){
-            if (worldDelta > 0.007) {
-                worldDelta -= 0.001;
+        if (fps < minFps || fps < criticalFps){
+            if (worldDelta > 0.050 && fps > criticalFps || worldDelta > 0.007 && fps <=criticalFps) {
+                worldDelta -= 0.001f;
+                if (fps<=criticalFps){
+                    worldDelta -= 0.001f;
+                }
             }
             delta2 = worldDelta;
         }else{
-            worldDelta = delta;
-            delta2 = delta;
+            if (worldDelta > delta){
+                delta2 = delta;
+            }else{
+                worldDelta += 0.001f;
+                delta2 = worldDelta;
+            }
         }
         iterations = 1 + (int)(delta2*iterationPerSec);
         world.step(delta2, iterations, iterations);
