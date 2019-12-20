@@ -75,26 +75,33 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
 
     protected float elapsedTime = 0;
 
+    @Deprecated
     protected HashMap<String, MyShape> shapeMap;
 
+    @Deprecated
     protected static float debugPointSize = 30f;
 
+    @Deprecated
     public HashMap<String, MyShape> getCollisionShapeMap(){
         return shapeMap;
     }
 
+    @Deprecated
     public void addBaseCollisionRectangleShape(){
         addCollisionShape("BaseRectangle",new MyRectangle(getWidth(),getHeight(),0,0,getOriginX(), getOriginY(), getRotation(), 0, true));
     }
 
+    @Deprecated
     public void addBaseCollisionCircleShape() {
         addCollisionShape("BaseCircle", new MyCircle((float) Math.sqrt(getWidth() * getHeight()) / 2, 0, 0, getOriginX(), getOriginY(), getX(), getY(), true));
     }
 
+    @Deprecated
     public void removeBaseCollisionRectangleShape(){
         removeCollisionShape("BaseRectangle");
     }
 
+    @Deprecated
     public void removeBaseCollisionCircleShape(){
         removeCollisionShape("BaseCircle");
     }
@@ -104,6 +111,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
      * @param name
      * @param shape A pozíciója és a forgatása relatív az Actortól
      */
+    @Deprecated
     public void addCollisionShape(String name, MyShape shape){
         if (shapeMap == null){
             shapeMap = new HashMap<String, MyShape>();
@@ -114,12 +122,14 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         shapeMap.put(name, shape);
     }
 
+    @Deprecated
     public void removeCollisionShape(String name){
         if (shapeMap != null){
             shapeMap.remove(name);
         }
     }
 
+    @Deprecated
     public MyShape getCollisionShape(String name){
         if (shapeMap != null){
             return shapeMap.get(name);
@@ -128,15 +138,17 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     }
 
 
+    @Deprecated
     public static float getDebugPointSize() {
         return debugPointSize;
     }
 
+    @Deprecated
     public static void setDebugPointSize(float debugPointSize) {
         MyActor.debugPointSize = debugPointSize;
     }
 
-
+    @Deprecated
     public static void drawDebugLines(Vector2[] v, ShapeRenderer shapes){
         for (int i = 0; i < v.length - 1; i++) {
             shapes.line(v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
@@ -144,6 +156,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         shapes.line(v[v.length - 1].x, v[v.length - 1].y, v[0].x, v[0].y);
     }
 
+    @Deprecated
     @Override
     protected void drawDebugBounds(ShapeRenderer shapes) {
         super.drawDebugBounds(shapes);
@@ -262,6 +275,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         }
     }
 
+    @Deprecated
     public static boolean overlaps(MyActor actorA, MyActor actorB){
         if (actorA.getCollisionShapeMap() == null) return false;
         if (actorB.getCollisionShapeMap() == null) return false;
@@ -277,6 +291,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         return false;
     }
 
+    @Deprecated
     public static ArrayList<String> getActorAOverlappedShapeKeys(MyActor actorA, MyActor actorB){
         ArrayList<String> strings = new ArrayList<String>();
         for(Map.Entry shapeA : actorA.getCollisionShapeMap().entrySet()){
@@ -291,18 +306,22 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         return strings;
     }
 
+    @Deprecated
     public static ArrayList<String> getActorBOverlappedShapeKeys(MyActor actorA, MyActor actorB){
         return getActorAOverlappedShapeKeys(actorB,actorA);
     }
 
+    @Deprecated
     public ArrayList<String> getMyOverlappedShapeKeys(MyActor anotherActor){
         return getActorAOverlappedShapeKeys(this, anotherActor);
     }
 
+    @Deprecated
     public ArrayList<String> getOtherOverlappedShapeKeys(MyActor anotherActor){
         return getActorAOverlappedShapeKeys(anotherActor, this);
     }
 
+    @Deprecated
     public static ArrayList<MyShape> getActorAOverlappedShapeValues(MyActor actorA, MyActor actorB){
         ArrayList<MyShape> strings = new ArrayList<MyShape>();
         for(Map.Entry shapeA : actorA.getCollisionShapeMap().entrySet()){
@@ -317,18 +336,22 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         return strings;
     }
 
+    @Deprecated
     public static ArrayList<MyShape> getActorBOverlappedShapeValues(MyActor actorA, MyActor actorB){
         return getActorAOverlappedShapeValues(actorB,actorA);
     }
 
+    @Deprecated
     public ArrayList<MyShape> getMyOverlappedShapeValues(MyActor anotherActor){
         return getActorAOverlappedShapeValues(this, anotherActor);
     }
 
+    @Deprecated
     public ArrayList<MyShape> getOtherOverlappedShapeValues(MyActor anotherActor){
         return getActorAOverlappedShapeValues(anotherActor, this);
     }
 
+    @Deprecated
     public static ArrayList<Map.Entry<String, MyShape>> getActorAOverlappedShapeEntries(MyActor actorA, MyActor actorB){
         ArrayList<Map.Entry<String, MyShape>> strings = new ArrayList<Map.Entry<String, MyShape>>();
         for(Map.Entry shapeA : actorA.getCollisionShapeMap().entrySet()){
@@ -343,18 +366,22 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         return strings;
     }
 
+    @Deprecated
     public static ArrayList<Map.Entry<String, MyShape>> getActorBOverlappedShapeEntries(MyActor actorA, MyActor actorB){
         return getActorAOverlappedShapeEntries(actorB,actorA);
     }
 
+    @Deprecated
     public ArrayList<Map.Entry<String, MyShape>> getMyOverlappedShapeEntries(MyActor anotherActor){
         return getActorAOverlappedShapeEntries(this, anotherActor);
     }
 
+    @Deprecated
     public ArrayList<Map.Entry<String, MyShape>> getOtherOverlappedShapeEntries(MyActor anotherActor){
         return getActorAOverlappedShapeEntries(anotherActor, this);
     }
 
+    @Deprecated
     public boolean overlaps(MyActor anotherActor){
         return overlaps(this, anotherActor);
     }
