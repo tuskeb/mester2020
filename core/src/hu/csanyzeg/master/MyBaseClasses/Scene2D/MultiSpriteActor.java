@@ -3,8 +3,12 @@ package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.ShapeType;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyCircle;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyRectangle;
 
 import java.util.Collection;
 import java.util.HashMap;

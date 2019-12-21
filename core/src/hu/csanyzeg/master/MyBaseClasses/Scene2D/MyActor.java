@@ -12,7 +12,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyCircle;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyRectangle;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyShape;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
+import hu.csanyzeg.master.MyBaseClasses.WorldHelper.WorldHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,8 +181,10 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
                 for (MyShape shape : shapeMap.values()) {
                     if (shape.active) {
                         drawDebugLines(shape.getCorners(), shapes);
-                        shapes.circle(shape.originX + shape.centerX + shape.offsetX, shape.originY + shape.centerY + shape.offsetY, getWidth() / debugPointSize, 7);
-                        shapes.circle(shape.realCenterX, shape.realCenterY, getWidth() / debugPointSize, 3);
+                        //shapes.circle(shape.originX + shape.centerX + shape.offsetX, shape.originY + shape.centerY + shape.offsetY, getWidth() / debugPointSize, 7);
+                        //shapes.circle(shape.realCenterX, shape.realCenterY, getWidth() / debugPointSize, 3);
+                        shapes.circle(shape.getOriginX() + shape.getCenterX() + shape.getOffsetX(), shape.getOriginY() + shape.getCenterY() + shape.getOffsetY(), getWidth() / debugPointSize, 7);
+                        shapes.circle(shape.getRealCenterX(), shape.getRealCenterY(), getWidth() / debugPointSize, 3);
                     }
                 }
             }
@@ -238,10 +244,17 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         if (shapeMap!=null) {
             for (MyShape shape : shapeMap.values()) {
                 shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
+                shape.setOffsetX(shape.getOffsetX()*w);
+                shape.setOffsetY(shape.getOffsetY()*h);
+                shape.setOriginX(shape.getOriginX()*w);
+                shape.setOriginY(shape.getOriginY()*h);
+
+                /*
                 shape.offsetX *= w;
                 shape.offsetY *= h;
                 shape.originX *= w;
                 shape.originY *= h;
+                 */
             }
         }
         setOrigin(getOriginX() *w, getOriginY() *h);
