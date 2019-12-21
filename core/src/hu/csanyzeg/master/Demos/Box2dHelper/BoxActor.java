@@ -12,7 +12,7 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.ShapeType;
 
 public class BoxActor extends OneSpriteStaticActor {
     public static final String boxTexture = "box2dhelper/box.png";

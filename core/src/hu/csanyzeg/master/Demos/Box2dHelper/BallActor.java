@@ -14,7 +14,7 @@ import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyContactListener;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.ShapeType;
 
 public class BallActor extends OneSpriteStaticActor {
     public static final String ballTexture = "box2dhelper/ball.png";

@@ -8,7 +8,7 @@ import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2DWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.ShapeType;
 
 public class WallActor extends OneSpriteStaticActor {
     public static final String boxTexture = "box2dhelper/wall.png";

@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.ShapeType;
 
 /**
  * Created by tuskeb on 2016. 10. 29..

@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.WorldHelper;
 
 //Fizikai vagy játékmodell illesztését teszi lehetővé az actorok számára
 public abstract class WorldHelper<TBody, TActor> {

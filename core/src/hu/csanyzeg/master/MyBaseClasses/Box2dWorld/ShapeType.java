@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.Box2dWorld;
 
 /**
  * Created by tuskeb on 2016. 10. 03..

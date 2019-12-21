@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.MyBaseClasses.Scene2D;
+package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -375,6 +375,7 @@ public abstract class MyShape {
     public void setActive(boolean active) {
         this.active = active;
     }
+
 
 
 }
