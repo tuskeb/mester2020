@@ -25,7 +25,7 @@ import static hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor.overlaps;
 
 public class FlappyStage extends MyStage {
     public static String vcrFont = "demoflappy/vcr_font.ttf";
-    public static String flappyFont = "demoflappy/flappyttf.ttf";
+    public static String flappyFont = "demoflappy/flappyfont.ttf";
     private static String wing = "demoflappy/sfx_wing.mp3";
     private static String coin = "demoflappy/sfx_coin.mp3";
     private static String hit = "demoflappy/sfx_hit.mp3";
