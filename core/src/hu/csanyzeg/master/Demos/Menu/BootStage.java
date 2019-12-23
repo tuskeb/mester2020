@@ -30,6 +30,8 @@ public class BootStage extends LoadingStage {
         assetList.addSound(welcomeSound);
     }
 
+    OneSpriteStaticActor welcome;
+
     public BootStage(final MyGame game) {
         super(new ResponseViewport(720), game);
         if(firstBoot) {
@@ -41,17 +43,20 @@ public class BootStage extends LoadingStage {
                 }
             });
 
-            addActor(new OneSpriteStaticActor(game, welcomeTexture) {
+            welcome = new OneSpriteStaticActor(game, welcomeTexture) {
                 @Override
                 public void init() {
                     super.init();
+                    setAlpha(0);
                     setPosition(getViewport().getWorldWidth() / 2 - getWidth() / 2, getViewport().getWorldHeight() / 2 - getHeight() / 2);
                 }
-            });
+            };
+
+            addActor(welcome);
 
             game.getMyAssetManager().getSound(welcomeSound).play();
 
-            addTimer(new TickTimer(3f, false, new TickTimerListener() {
+            addTimer(new TickTimer(1.75f, false, new TickTimerListener() {
                 @Override
                 public void onRepeat(TickTimer sender) {
 
@@ -84,5 +89,15 @@ public class BootStage extends LoadingStage {
     @Override
     public AssetList getAssetList() {
         return assetList;
+    }
+
+    float alpha = 0;
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if(alpha < 0.98) alpha += 0.02;
+        else alpha = 1;
+        welcome.setAlpha(alpha);
     }
 }

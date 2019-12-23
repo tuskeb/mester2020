@@ -48,6 +48,7 @@ public class MenuStage extends MyStage {
     public static String shutdownTexture = "demomenu/shutdown.jpg";
     public static String shutdownSound = "demomenu/shutdown.mp3";
     public static String shutdownWallpaperTexture = "demomenu/shutdownWallpaper.jpg";
+    public static String cursorTexture = "demomenu/cursor.png";
 
     public static AssetList assetList = new AssetList();
     static {
@@ -63,6 +64,7 @@ public class MenuStage extends MyStage {
         assetList.addTexture(startMenuTexture);
         assetList.addTexture(powerOffTexture);
         assetList.addTexture(shutdownTexture);
+        assetList.addTexture(cursorTexture);
         assetList.addSound(shutdownSound);
         assetList.addTexture(shutdownWallpaperTexture);
         assetList.addFont(trebuchet,trebuchet, 16, Color.WHITE);
@@ -94,9 +96,15 @@ public class MenuStage extends MyStage {
 
     public MenuStage(final MyGame game) {
         super(new ResponseViewport(720), game);
-        addBackButtonScreenBackByStackPopListener();
+        addBackButtonListener(new BackButtonListener() {
+            @Override
+            public void backKeyDown() {
+                closeExplorer();
+            }
+        });
         makeDesktop();
         makeButtons();
+        showExplorer();
         BootStage.firstBoot = false;
         start.addListener(new ClickListener()
         {
@@ -188,6 +196,7 @@ public class MenuStage extends MyStage {
 
             @Override
             public void onTick(Timer sender, float correction) {
+                BootStage.firstBoot = true;
                 game.setScreenBackByStackPop();
             }
 
@@ -218,11 +227,6 @@ public class MenuStage extends MyStage {
         start = new OneSpriteStaticActor(game, startTexture);
         clock = new OneSpriteStaticActor(game, clockTexture);
         addActor(bliss);
-        addActor(kek);
-        addActor(start);
-        addActor(clock);
-        addActor(clockLabel);
-        addActor(startMenu);
 
         kek.setWidth(getViewport().getWorldWidth());
         clock.setWidth(clock.getWidth()*0.5f);
@@ -231,12 +235,155 @@ public class MenuStage extends MyStage {
         clockLabel.setX(clock.getX() + clock.getWidth()/2 - clockLabel.getWidth()/2);
         clockLabel.setY(clock.getY() + clock.getHeight()/2 - clockLabel.getHeight()/2);
         startMenu.setPosition(0,kek.getY()+kek.getHeight());
+        startMenu.setSize(startMenu.getWidth()*1.3f, startMenu.getHeight()*1.3f);
     }
 
     ClickListener linkListener;
     ClickListener fireworkListener;
     ClickListener boxListener;
     ClickListener flappyListener;
+
+    private void showExplorer()
+    {
+
+        addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                addActor(kek);
+                addActor(start);
+                addActor(clock);
+                addActor(clockLabel);
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
+        }));
+
+        addTimer(new TickTimer(1, false, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                addActor(startMenu);
+                addActor(linkActor);
+                addActor(fireworkActor);
+                addActor(boxActor);
+                addActor(flappyActor);
+                addActor(powerOff);
+
+                addActor(linkActorLabel);
+                addActor(fireworkActorLabel);
+                addActor(boxActorLabel);
+                addActor(flappyActorLabel);
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
+        }));
+
+    }
+
+    private void closeExplorer()
+    {
+        addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                startMenu.remove();
+                linkActor.remove();
+                fireworkActor.remove();
+                boxActor.remove();
+                flappyActor.remove();
+                powerOff.remove();
+
+                linkActorLabel.remove();
+                fireworkActorLabel.remove();
+                boxActorLabel.remove();
+                flappyActorLabel.remove();
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
+        }));
+
+        addTimer(new TickTimer(1f, false, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                kek.remove();
+                start.remove();
+                clock.remove();
+                clockLabel.remove();
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
+        }));
+
+        addTimer(new TickTimer(1.5f, false, new TickTimerListener() {
+            @Override
+            public void onRepeat(TickTimer sender) {
+
+            }
+
+            @Override
+            public void onTick(Timer sender, float correction) {
+                shutdown();
+            }
+
+            @Override
+            public void onStop(Timer sender) {
+
+            }
+
+            @Override
+            public void onStart(Timer sender) {
+
+            }
+        }));
+    }
 
     private void makeButtons()
     {
@@ -276,15 +423,16 @@ public class MenuStage extends MyStage {
             @Override
             public void init() {
                 super.init();
-                setPosition(5,startMenu.getY() + 60);
-                setSize(32,(32/getWidth()*getHeight()));
+                setPosition(7,startMenu.getY() + 80);
+                setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(linkListener);
             }
         };
             linkActorLabel = new MyLabel("B2D Join Demo", getLabelStyle()) {
                 @Override
                 public void init() {
-                    setPosition(44, linkActor.getY() - linkActor.getHeight()/2 + 4);
+                    setPosition(55, linkActor.getY() - linkActor.getHeight()/2 + 8);
+                    setFontScale(1.5f);
                     setColor(Color.BLACK);
                     addListener(linkListener);
                 }
@@ -295,8 +443,8 @@ public class MenuStage extends MyStage {
             @Override
             public void init() {
                 super.init();
-                setPosition(linkActor.getX(),linkActor.getY() + linkActor.getHeight() + 15);
-                setSize(32,(32/getWidth()*getHeight()));
+                setPosition(linkActor.getX(),linkActor.getY() + linkActor.getHeight() + 25);
+                setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(fireworkListener);
             }
         };
@@ -304,8 +452,9 @@ public class MenuStage extends MyStage {
             fireworkActorLabel = new MyLabel("Firework Demo", getLabelStyle()) {
                 @Override
                 public void init() {
-                    setPosition(44, fireworkActor.getY() + 4);
+                    setPosition(55, fireworkActor.getY() + 8);
                     setColor(Color.BLACK);
+                    setFontScale(1.5f);
                     addListener(fireworkListener);
                 }
             };
@@ -314,8 +463,8 @@ public class MenuStage extends MyStage {
             @Override
             public void init() {
                 super.init();
-                setPosition(linkActor.getX(),fireworkActor.getY() + fireworkActor.getHeight() + 10);
-                setSize(32,(32/getWidth()*getHeight()));
+                setPosition(linkActor.getX(),fireworkActor.getY() + fireworkActor.getHeight() + 15);
+                setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(boxListener);
             }
         };
@@ -323,8 +472,9 @@ public class MenuStage extends MyStage {
             boxActorLabel = new MyLabel("Box2D Helper", getLabelStyle()) {
                 @Override
                 public void init() {
-                    setPosition(44, boxActor.getY() + 4);
+                    setPosition(55, boxActor.getY() + 10);
                     setColor(Color.BLACK);
+                    setFontScale(1.5f);
                     addListener(boxListener);
                 }
             };
@@ -333,7 +483,7 @@ public class MenuStage extends MyStage {
             @Override
             public void init() {
                 super.init();
-                setPosition(linkActor.getX(),boxActor.getY() + boxActor.getHeight() + 10);
+                setPosition(linkActor.getX(),boxActor.getY() + boxActor.getHeight() + 20);
                 setFps(6);
                 addListener(flappyListener);
             }
@@ -342,8 +492,9 @@ public class MenuStage extends MyStage {
             flappyActorLabel = new MyLabel("Flappy Demo", getLabelStyle()) {
                 @Override
                 public void init() {
-                    setPosition(44, flappyActor.getY());
+                    setPosition(55, flappyActor.getY()+1);
                     setColor(Color.BLACK);
+                    setFontScale(1.5f);
                     addListener(flappyListener);
                 }
             };
@@ -352,27 +503,17 @@ public class MenuStage extends MyStage {
             @Override
             public void init() {
                 super.init();
+                setSize(getWidth()*1.3f,getHeight()*1.3f);
                 setPosition(startMenu.getX() + startMenu.getWidth() - getWidth(), startMenu.getY());
                 addListener(new ClickListener(){
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        shutdown();
+                        closeExplorer();
                     }
                 });
             }
         };
-
-        addActor(linkActor);
-        addActor(fireworkActor);
-        addActor(boxActor);
-        addActor(flappyActor);
-        addActor(powerOff);
-
-        addActor(linkActorLabel);
-        addActor(fireworkActorLabel);
-        addActor(boxActorLabel);
-        addActor(flappyActorLabel);
     }
 
     private Label.LabelStyle getLabelStyle()
