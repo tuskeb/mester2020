@@ -159,9 +159,11 @@ public class FlappyStage extends MyStage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                birdActor.setY(birdActor.getY()+50);
-                birdActor.setRotation(25);
-                game.getMyAssetManager().getSound(wing).play();
+                if(!isGameOver) {
+                    birdActor.setY(birdActor.getY() + 50);
+                    birdActor.setRotation(25);
+                    game.getMyAssetManager().getSound(wing).play();
+                }
             }
         });
     }
