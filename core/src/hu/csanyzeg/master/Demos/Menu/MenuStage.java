@@ -52,7 +52,6 @@ public class MenuStage extends MyStage {
     public static String shutdownTexture = "demomenu/shutdown.jpg";
     public static String shutdownSound = "demomenu/shutdown.mp3";
     public static String shutdownWallpaperTexture = "demomenu/shutdownWallpaper.jpg";
-    public static String cursorTexture = "demomenu/cursor.png";
 
     public static AssetList assetList = new AssetList();
     static {
@@ -68,7 +67,6 @@ public class MenuStage extends MyStage {
         assetList.addTexture(startMenuTexture);
         assetList.addTexture(powerOffTexture);
         assetList.addTexture(shutdownTexture);
-        assetList.addTexture(cursorTexture);
         assetList.addSound(shutdownSound);
         assetList.addTexture(shutdownWallpaperTexture);
         assetList.addFont(trebuchet,trebuchet, 16, Color.WHITE);
