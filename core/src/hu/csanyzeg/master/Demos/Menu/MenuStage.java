@@ -38,6 +38,7 @@ import static hu.csanyzeg.master.Demos.Menu.MenuButton.fontHash;
 
 /**
  * Created by tuskeb on 2016. 09. 30..
+ * Windows XP Theme by hdani1337 on 2019 Christmas
  */
 public class MenuStage extends MyStage {
     public static String blissTexture = "demomenu/bliss.jpg";
@@ -73,61 +74,62 @@ public class MenuStage extends MyStage {
         assetList.addFont(trebuchet,trebuchet, 16, Color.WHITE);
     }
 
-    OneSpriteStaticActor bliss;
-    OneSpriteStaticActor kek;
-    OneSpriteStaticActor start;
-    OneSpriteStaticActor clock;
-    OneSpriteStaticActor startMenu;
+    //-----ASZTAL-----
+    OneSpriteStaticActor bliss;//Háttérkép
+    OneSpriteStaticActor kek;//Tálca
+    OneSpriteStaticActor start;//Start menü gombja
+    OneSpriteStaticActor clock;//Óra háttere
+    OneSpriteStaticActor startMenu;//Üres Start menü
+    MyLabel clockLabel;//Óra
+    //-----ASZTAL VÉGE-----
 
-    OneSpriteStaticActor linkActor;
-    OneSpriteStaticActor fireworkActor;
-    OneSpriteStaticActor boxActor;
-    OneSpriteAnimatedActor flappyActor;
-    OneSpriteStaticActor powerOff;
-    OneSpriteStaticActor simpleActor;
+    //-----START MENÜ IKONOK ÉS SZÖVEGEK-----
+    OneSpriteStaticActor linkActor;//Box2D Join ikonja
+    OneSpriteStaticActor fireworkActor;//Firework Demo ikonja
+    OneSpriteStaticActor boxActor;//Box2D Helper ikonja
+    OneSpriteAnimatedActor flappyActor;//Flappy Demo ikonja
+    OneSpriteStaticActor powerOff;//Kikapcsológomb
+    OneSpriteStaticActor simpleActor;//SimpleWorld ikonja
+    MyLabel linkActorLabel;//Box2D Join szövege
+    MyLabel fireworkActorLabel;//Firework Demo szövege
+    MyLabel boxActorLabel;//Box2D Helper szövege
+    MyLabel flappyActorLabel;//Flappy Demo szövege
+    MyLabel simpleActorLabel;//SimpleWorld szövege
+    OneSpriteStaticActor shutdown;//A Windows leállítása...
+    OneSpriteStaticActor shutdownWall;//A kikapcsolóképernyő háttere
+    //-----START MENÜ IKONOK ÉS SZÖVEGEK VÉGE-----
 
-    OneSpriteStaticActor shutdown;
-    OneSpriteStaticActor shutdownWall;
+    private boolean show = true;//Szerepeljen e a Start menü és a parancsikonok a képernyőn
 
-    MyLabel linkActorLabel;
-    MyLabel fireworkActorLabel;
-    MyLabel boxActorLabel;
-    MyLabel flappyActorLabel;
-    MyLabel simpleActorLabel;
-
-    MyLabel clockLabel;
-
-    boolean show = true;
-
-    private ArrayList<MyActor> buttons = new ArrayList<>();
-    private ArrayList<MyLabel> labels = new ArrayList<>();
+    private ArrayList<MyActor> buttons = new ArrayList<>();//Start menü ikonjainak listája
+    private ArrayList<MyLabel> labels = new ArrayList<>();//Start menü szövegeinek listája
 
     public MenuStage(final MyGame game) {
         super(new ResponseViewport(720), game);
         addBackButtonListener(new BackButtonListener() {
             @Override
             public void backKeyDown() {
-                closeExplorer();
+                closeExplorer();//Ha megnyomjuk a vissza gombot, akkor ,,leállítjuk a gépet"
             }
         });
-        makeDesktop();
-        makeButtons();
-        showExplorer();
-        BootStage.firstBoot = false;
+        makeDesktop();//Az asztal definiálása
+        makeButtons();//A Start menü gombjainak (actorok és mellettük lévő labelök) definiálása
+        showExplorer();//Az asztal megnyitása
+        BootStage.firstBoot = false;//Többször ne hozza be az Üdvözöljük képernyőt
         start.addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if(show)
-                {
+                {//Ha a Start menü rajt a stagen, akkor levesszük őt, az ikonokat és a szövegeket is
                     startMenu.remove();
                     for (MyActor myActor : buttons) myActor.remove();
                     for (MyLabel myLabel : labels) myLabel.remove();
                     show = false;
                 }
                 else
-                {
+                {//Ha a Start menü nincs rajt a stagen, akkor visszarakjuk őt, az ikonokat és a szövegeket is
                     addActor(startMenu);
                     for (MyActor myActor : buttons) addActor(myActor);
                     for (MyLabel myLabel : labels) addActor(myLabel);
@@ -136,7 +138,10 @@ public class MenuStage extends MyStage {
             }
         });
 
-        /*addActor(new MenuButton(game, "Szakkör Demo"){
+        /**
+         * Ezeket nem adom hozzá a menühöz, mert nem találtam hozzájuk illő ikont, illetve még semmi jelentős nincs bennük
+         *
+        addActor(new MenuButton(game, "Szakkör Demo"){
             @Override
             public void init() {
                 super.init();
@@ -180,9 +185,10 @@ public class MenuStage extends MyStage {
 
         addActor(shutdownWall);
         addActor(shutdown);
-        game.getMyAssetManager().getSound(shutdownSound).play();
+        game.getMyAssetManager().getSound(shutdownSound).play();//Windows XP Shutdown hangeffekt
 
         addTimer(new TickTimer(3f, false, new TickTimerListener() {
+            //A hangeffekt lejátszása után 3 másodperc késéssel fut le az onTick() metódus
             @Override
             public void onRepeat(TickTimer sender) {
 
@@ -190,8 +196,8 @@ public class MenuStage extends MyStage {
 
             @Override
             public void onTick(Timer sender, float correction) {
-                BootStage.firstBoot = true;
-                game.setScreenBackByStackPop();
+                BootStage.firstBoot = true;//Visszaállítom a firstBootot, hogy bejöjjön az Üdvözöljük képernyő
+                game.setScreenBackByStackPop();//A program kilépési pontja
             }
 
             @Override
@@ -220,7 +226,7 @@ public class MenuStage extends MyStage {
         kek = new OneSpriteStaticActor(game, kekTexture);
         start = new OneSpriteStaticActor(game, startTexture);
         clock = new OneSpriteStaticActor(game, clockTexture);
-        addActor(bliss);
+        addActor(bliss);//A hátteret azonnal hozzáadjuk a stagehez
 
         kek.setWidth(getViewport().getWorldWidth());
         clock.setWidth(clock.getWidth()*0.5f);
@@ -232,15 +238,9 @@ public class MenuStage extends MyStage {
         startMenu.setSize(startMenu.getWidth()*1.3f, startMenu.getHeight()*1.3f);
     }
 
-    ClickListener linkListener;
-    ClickListener fireworkListener;
-    ClickListener boxListener;
-    ClickListener flappyListener;
-    ClickListener simpleListener;
-
     private void showExplorer()
     {
-
+        //Fél másodperc elteltével jöhet a tálca és az óra
         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
             @Override
             public void onRepeat(TickTimer sender) {
@@ -266,6 +266,7 @@ public class MenuStage extends MyStage {
             }
         }));
 
+        //Még fél másodperc múlva jön a Start menü és az ikonok
         addTimer(new TickTimer(1, false, new TickTimerListener() {
             @Override
             public void onRepeat(TickTimer sender) {
@@ -293,6 +294,7 @@ public class MenuStage extends MyStage {
 
     private void closeExplorer()
     {
+        //Először a Start menüt távolítjuk el
         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
             @Override
             public void onRepeat(TickTimer sender) {
@@ -316,6 +318,7 @@ public class MenuStage extends MyStage {
             }
         }));
 
+        //Utána eltűnik minden, csak a háttérkép marad
         addTimer(new TickTimer(1f, false, new TickTimerListener() {
             @Override
             public void onRepeat(TickTimer sender) {
@@ -341,6 +344,7 @@ public class MenuStage extends MyStage {
             }
         }));
 
+        //Leállítás
         addTimer(new TickTimer(1.5f, false, new TickTimerListener() {
             @Override
             public void onRepeat(TickTimer sender) {
@@ -364,45 +368,20 @@ public class MenuStage extends MyStage {
         }));
     }
 
+    ClickListener linkListener;//Box2D Join listener
+    ClickListener fireworkListener;//Firework Demo listener
+    ClickListener boxListener;//Box2D Helper listener
+    ClickListener flappyListener;//Flappy Demo listener
+    ClickListener simpleListener;//SimpleWorld listener
+
     private void makeButtons()
     {
+        //-----BOX2D JOIN-----
         linkListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 game.setScreen(new Box2dJoinScreen(game));
-            }
-        };
-
-        fireworkListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new FireworkScreen(game));
-            }
-        };
-
-        boxListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new Box2dHelperScreen(game));
-            }
-        };
-
-        flappyListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new FlappyScreen(game));
-            }
-        };
-
-        simpleListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new SWScreen(game));
             }
         };
 
@@ -426,6 +405,17 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
+
+
+        //-----FIREWORK DEMO-----
+        fireworkListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new FireworkScreen(game));
+            }
+        };
 
 
         fireworkActor = new OneSpriteStaticActor(game, fireworkTexture){
@@ -449,6 +439,17 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
+
+
+        //-----BOX2D HELPER-----
+        boxListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new Box2dHelperScreen(game));
+            }
+        };
 
         boxActor = new OneSpriteStaticActor(game, boxTexture){
             @Override
@@ -471,6 +472,17 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
+
+
+        //-----FLAPPY DEMO-----
+        flappyListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new FlappyScreen(game));
+            }
+        };
 
         flappyActor = new OneSpriteAnimatedActor(game, birdTexture){
             @Override
@@ -493,6 +505,17 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
+
+
+        //-----SIMPLE WORLD-----
+        simpleListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new SWScreen(game));
+            }
+        };
 
         simpleActor = new OneSpriteStaticActor(game, boxTexture){
             @Override
@@ -515,7 +538,10 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
 
+
+        //-----KIKAPCSOLÓGOMB-----
         powerOff = new OneSpriteStaticActor(game, powerOffTexture){
             @Override
             public void init() {
@@ -532,6 +558,7 @@ public class MenuStage extends MyStage {
                 buttons.add(this);
             }
         };
+        //----------
     }
 
     private Label.LabelStyle getLabelStyle()
@@ -549,14 +576,13 @@ public class MenuStage extends MyStage {
 
     }
 
-    private Date date = new Date();
-    private Calendar calendar = GregorianCalendar.getInstance();
+    private Date date = new Date();//Dátum új példánya
+    private Calendar calendar = GregorianCalendar.getInstance();//Gergely naptár új példánya
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        setClock();
-
+        setClock();//Az óra beállítása
     }
 
     private void setClock()
@@ -564,14 +590,18 @@ public class MenuStage extends MyStage {
         String time = "";
         calendar.setTime(date);
 
-        time += calendar.get(Calendar.HOUR_OF_DAY) + ":";
-        if(calendar.get(Calendar.MINUTE) < 10) time += "0";
-        time += calendar.get(Calendar.MINUTE);
+        if(calendar.get(Calendar.HOUR_OF_DAY) < 10) time += "0";//Ha 10 óránál kevesebb az idő, akkor egy 0-t rakunk az óra elé
+        time += calendar.get(Calendar.HOUR_OF_DAY) + ":";//Hozzáadjuk az időhöz az órát és egy kettőspontot
+        if(calendar.get(Calendar.MINUTE) < 10) time += "0";//Ha 10 percnél kevesebb perc van, akkor egy 0-t rakunk a perc elé
+        time += calendar.get(Calendar.MINUTE);//Hozzáadjuk az időhöz a percet
 
-        clockLabel.setText(time);
+        clockLabel.setText(time);//Az óra label szövege a time értéke lesz
+
+        //-----KÖZÉPRE HELYEZZÜK AZ ÓRÁT-----
         clockLabel.setAlignment(0);
         clockLabel.setX(clock.getX() + clock.getWidth()/2 - clockLabel.getWidth()/2);
         clockLabel.setY(clock.getY() + clock.getHeight()/2 - clockLabel.getHeight()/2);
+        //-----KÖZÉPRE HELYEZÉS VÉGE-----
     }
 
     @Override
