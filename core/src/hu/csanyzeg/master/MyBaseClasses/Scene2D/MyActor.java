@@ -122,7 +122,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
         }
         //shape.setOffset(shape.getX(), shape.getY());
         //shape.setBodyPosition(getX(),getY());
-        shape.setExtraData(this);
+        shape.setUserData(this);
         shapeMap.put(name, shape);
     }
 
@@ -164,7 +164,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     @Override
     protected void drawDebugBounds(ShapeRenderer shapes) {
         super.drawDebugBounds(shapes);
-
+/*
         if (shapeMap != null) {
             switch ((((int) ((elapsedTime) * 4)) % 4)) {
                 case 0:
@@ -189,6 +189,8 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
                 }
             }
         }
+
+ */
         shapes.setColor(Color.GREEN);
         shapes.circle(getOriginX() + getX(), getOriginY() + getY(), getWidth() / debugPointSize, 3);
     }
@@ -219,6 +221,8 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
             if(actorWorldHelper.getBody()!= null) {
                 actorWorldHelper.beginUpdate();
                 setPosition(actorWorldHelper.getBodyX(), actorWorldHelper.getBodyY());
+                //setOrigin(actorWorldHelper.getBodyOriginX(), actorWorldHelper.getBodyOriginY());
+                //setSize(actorWorldHelper.getBodyWidth(), actorWorldHelper.getBodyHeight());
                 setRotation(actorWorldHelper.getBodyRotation());
                 actorWorldHelper.endUpdate();
             }
@@ -722,7 +726,9 @@ abstract public class MyActor extends Actor implements InitableInterface, IZinde
     }
 
     protected void originChanged(){
-
+        if (actorWorldHelper != null && !actorWorldHelper.isModifyedByWorld()){
+            actorWorldHelper.setBodyOrigin(getOriginX(), getOriginY());
+        }
     }
 
     public boolean isInFrustum(){

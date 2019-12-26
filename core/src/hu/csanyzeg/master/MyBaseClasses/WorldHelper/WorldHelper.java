@@ -39,6 +39,8 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract float getBodyRotation();
     public abstract float getBodyOriginX();
     public abstract float getBodyOriginY();
+    public abstract float getBodyWidth();
+    public abstract float getBodyHeight();
 
     public abstract float getActorX();
     public abstract float getActorY();

@@ -5,5 +5,5 @@ package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
  */
 
 public enum ShapeType {
-    Circle, Rectangle
+    Circle, Rectangle, Null
 }

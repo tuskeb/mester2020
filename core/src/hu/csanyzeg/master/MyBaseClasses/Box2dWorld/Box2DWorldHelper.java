@@ -192,7 +192,18 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         originY = y;
         return this;
     }
-//------------------  ACTOR GETTERS -----------------------------------------
+
+    @Override
+    public float getBodyWidth() {
+        return actor.getWidth();
+    }
+
+    @Override
+    public float getBodyHeight() {
+        return actor.getHeight();
+    }
+
+    //------------------  ACTOR GETTERS -----------------------------------------
     //------------------  ACTOR GETTERS -----------------------------------------
     //------------------  ACTOR GETTERS -----------------------------------------
     //------------------  ACTOR GETTERS -----------------------------------------

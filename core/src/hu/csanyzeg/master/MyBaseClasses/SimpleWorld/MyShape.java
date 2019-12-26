@@ -81,7 +81,7 @@ public abstract class MyShape {
     /**
      * Az alakzathoz hozzácsatolható objektum, például egy Actor
      */
-    public Object extraData = null;
+    public Object userData = null;
 
     abstract public Vector2[] getCorners();
     abstract public boolean overlaps(MyShape other);
@@ -302,6 +302,28 @@ public abstract class MyShape {
         calculateCenterXY();
     }
 
+
+    public float getLeftBottomOriginY() {
+        return originY + offsetY  + height/2;
+    }
+
+
+    public float getLeftBottomOriginX() {
+        return originX + offsetX + width / 2;
+    }
+
+
+
+    public float getLeftBottomY() {
+        return originY + offsetY + centerY - (height + originY*2) / 2f;
+    }
+
+
+    public float getLeftBottomX() {
+        return originX + offsetX + centerX - (width + originX*2) / 2f;
+    }
+
+
     public void setWidth(float width) {
         this.width = width;
         calculateCenterXY();
@@ -360,12 +382,22 @@ public abstract class MyShape {
                 "}}";
     }
 
-    public Object getExtraData() {
-        return extraData;
+    public Object getUserData() {
+        return userData;
     }
 
-    public void setExtraData(Object extraData) {
-        this.extraData = extraData;
+    public void setUserData(Object extraData) {
+        this.userData = extraData;
+    }
+
+    @Deprecated
+    public void setExtraData(Object userData) {
+        this.userData = userData;
+    }
+
+    @Deprecated
+    public Object getExtraData() {
+        return userData;
     }
 
     public boolean isActive() {
