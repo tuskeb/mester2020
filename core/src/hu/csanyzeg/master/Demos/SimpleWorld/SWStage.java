@@ -40,6 +40,6 @@ public class SWStage extends SimpleWorldStage {
         addActor(new SimpleBoxActor(game, world,0,0,3,1,0));
         addActor(new SimpleBoxActor(game, world,0,7,1,1,0));
         addActor(new SimpleBoxActor(game, world,7,2,1,3,0));
-
+        addBackButtonScreenBackByStackPopListener();
     }
 }

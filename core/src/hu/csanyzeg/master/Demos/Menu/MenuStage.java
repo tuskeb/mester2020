@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,9 +16,11 @@ import hu.csanyzeg.master.Demos.Box2dHelper.Box2dHelperScreen;
 import hu.csanyzeg.master.Demos.Box2dJoin.Box2dJoinScreen;
 import hu.csanyzeg.master.Demos.Firework.FireworkScreen;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
+import hu.csanyzeg.master.Demos.SimpleWorld.SWScreen;
 import hu.csanyzeg.master.Demos.Szakkor.SzakkorScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteAnimatedActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
@@ -81,6 +84,7 @@ public class MenuStage extends MyStage {
     OneSpriteStaticActor boxActor;
     OneSpriteAnimatedActor flappyActor;
     OneSpriteStaticActor powerOff;
+    OneSpriteStaticActor simpleActor;
 
     OneSpriteStaticActor shutdown;
     OneSpriteStaticActor shutdownWall;
@@ -89,10 +93,14 @@ public class MenuStage extends MyStage {
     MyLabel fireworkActorLabel;
     MyLabel boxActorLabel;
     MyLabel flappyActorLabel;
+    MyLabel simpleActorLabel;
 
     MyLabel clockLabel;
 
     boolean show = true;
+
+    private ArrayList<MyActor> buttons = new ArrayList<>();
+    private ArrayList<MyLabel> labels = new ArrayList<>();
 
     public MenuStage(final MyGame game) {
         super(new ResponseViewport(720), game);
@@ -113,30 +121,16 @@ public class MenuStage extends MyStage {
                 super.clicked(event, x, y);
                 if(show)
                 {
-                    linkActor.remove();
-                    fireworkActor.remove();
-                    boxActor.remove();
-                    flappyActor.remove();
-                    powerOff.remove();
                     startMenu.remove();
-                    linkActorLabel.remove();
-                    fireworkActorLabel.remove();
-                    boxActorLabel.remove();
-                    flappyActorLabel.remove();
+                    for (MyActor myActor : buttons) myActor.remove();
+                    for (MyLabel myLabel : labels) myLabel.remove();
                     show = false;
                 }
                 else
                 {
                     addActor(startMenu);
-                    addActor(linkActor);
-                    addActor(fireworkActor);
-                    addActor(boxActor);
-                    addActor(flappyActor);
-                    addActor(powerOff);
-                    addActor(linkActorLabel);
-                    addActor(fireworkActorLabel);
-                    addActor(boxActorLabel);
-                    addActor(flappyActorLabel);
+                    for (MyActor myActor : buttons) addActor(myActor);
+                    for (MyLabel myLabel : labels) addActor(myLabel);
                     show = true;
                 }
             }
@@ -242,6 +236,7 @@ public class MenuStage extends MyStage {
     ClickListener fireworkListener;
     ClickListener boxListener;
     ClickListener flappyListener;
+    ClickListener simpleListener;
 
     private void showExplorer()
     {
@@ -279,16 +274,8 @@ public class MenuStage extends MyStage {
             @Override
             public void onTick(Timer sender, float correction) {
                 addActor(startMenu);
-                addActor(linkActor);
-                addActor(fireworkActor);
-                addActor(boxActor);
-                addActor(flappyActor);
-                addActor(powerOff);
-
-                addActor(linkActorLabel);
-                addActor(fireworkActorLabel);
-                addActor(boxActorLabel);
-                addActor(flappyActorLabel);
+                for (MyActor myActor : buttons) addActor(myActor);
+                for (MyLabel myLabel : labels) addActor(myLabel);
             }
 
             @Override
@@ -314,16 +301,8 @@ public class MenuStage extends MyStage {
             @Override
             public void onTick(Timer sender, float correction) {
                 startMenu.remove();
-                linkActor.remove();
-                fireworkActor.remove();
-                boxActor.remove();
-                flappyActor.remove();
-                powerOff.remove();
-
-                linkActorLabel.remove();
-                fireworkActorLabel.remove();
-                boxActorLabel.remove();
-                flappyActorLabel.remove();
+                for (MyActor myActor : buttons) myActor.remove();
+                for (MyLabel myLabel : labels) myLabel.remove();
             }
 
             @Override
@@ -419,6 +398,14 @@ public class MenuStage extends MyStage {
             }
         };
 
+        simpleListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new SWScreen(game));
+            }
+        };
+
         linkActor = new OneSpriteStaticActor(game, linkTexture){
             @Override
             public void init() {
@@ -426,6 +413,7 @@ public class MenuStage extends MyStage {
                 setPosition(7,startMenu.getY() + 80);
                 setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(linkListener);
+                buttons.add(this);
             }
         };
             linkActorLabel = new MyLabel("B2D Join Demo", getLabelStyle()) {
@@ -435,6 +423,7 @@ public class MenuStage extends MyStage {
                     setFontScale(1.5f);
                     setColor(Color.BLACK);
                     addListener(linkListener);
+                    labels.add(this);
                 }
             };
 
@@ -446,6 +435,7 @@ public class MenuStage extends MyStage {
                 setPosition(linkActor.getX(),linkActor.getY() + linkActor.getHeight() + 25);
                 setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(fireworkListener);
+                buttons.add(this);
             }
         };
 
@@ -456,6 +446,7 @@ public class MenuStage extends MyStage {
                     setColor(Color.BLACK);
                     setFontScale(1.5f);
                     addListener(fireworkListener);
+                    labels.add(this);
                 }
             };
 
@@ -466,6 +457,7 @@ public class MenuStage extends MyStage {
                 setPosition(linkActor.getX(),fireworkActor.getY() + fireworkActor.getHeight() + 15);
                 setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
                 addListener(boxListener);
+                buttons.add(this);
             }
         };
 
@@ -476,6 +468,7 @@ public class MenuStage extends MyStage {
                     setColor(Color.BLACK);
                     setFontScale(1.5f);
                     addListener(boxListener);
+                    labels.add(this);
                 }
             };
 
@@ -486,6 +479,7 @@ public class MenuStage extends MyStage {
                 setPosition(linkActor.getX(),boxActor.getY() + boxActor.getHeight() + 20);
                 setFps(6);
                 addListener(flappyListener);
+                buttons.add(this);
             }
         };
 
@@ -496,6 +490,29 @@ public class MenuStage extends MyStage {
                     setColor(Color.BLACK);
                     setFontScale(1.5f);
                     addListener(flappyListener);
+                    labels.add(this);
+                }
+            };
+
+        simpleActor = new OneSpriteStaticActor(game, boxTexture){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(linkActor.getX(),flappyActor.getY() + flappyActor.getHeight() + 15);
+                setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
+                addListener(simpleListener);
+                buttons.add(this);
+            }
+        };
+
+            simpleActorLabel = new MyLabel("Simple World", getLabelStyle()) {
+                @Override
+                public void init() {
+                    setPosition(55, simpleActor.getY() + 10);
+                    setColor(Color.BLACK);
+                    setFontScale(1.5f);
+                    addListener(simpleListener);
+                    labels.add(this);
                 }
             };
 
@@ -512,6 +529,7 @@ public class MenuStage extends MyStage {
                         closeExplorer();
                     }
                 });
+                buttons.add(this);
             }
         };
     }
@@ -543,8 +561,14 @@ public class MenuStage extends MyStage {
 
     private void setClock()
     {
+        String time = "";
         calendar.setTime(date);
-        clockLabel.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+
+        time += calendar.get(Calendar.HOUR_OF_DAY) + ":";
+        if(calendar.get(Calendar.MINUTE) < 10) time += "0";
+        time += calendar.get(Calendar.MINUTE);
+
+        clockLabel.setText(time);
         clockLabel.setAlignment(0);
         clockLabel.setX(clock.getX() + clock.getWidth()/2 - clockLabel.getWidth()/2);
         clockLabel.setY(clock.getY() + clock.getHeight()/2 - clockLabel.getHeight()/2);
