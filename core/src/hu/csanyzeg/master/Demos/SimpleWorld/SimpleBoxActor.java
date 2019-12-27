@@ -30,15 +30,14 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
         super(game, boxTexture);
         setSize(w, h);
         setRotation(rotation);
-        setOrigin(0.3f,0.3f);
+        setOrigin(1f,1f);
         setPosition(x,y);
-        setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Dinamic));
-        //((SimpleWorldHelper)getActorWorldHelper()).body.addBaseCollisionCircleShape();
+        setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Circle, SimpleBodyType.Dinamic));
         ((SimpleWorldHelper)getActorWorldHelper()).body.addCollisionRectangleShape("rect", 0.2f,0.2f,0.5f,0.5f,10f);
-        ((SimpleWorldHelper)getActorWorldHelper()).body.addCollisionCircleShape("circ", 0.2f,0.2f,0.25f);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.addCollisionCircleShape("circ", 0.2f,0.2f,0.25f, 0f);
         ((SimpleWorldHelper)getActorWorldHelper()).body.setAngularVelocity(10f);
-        //((SimpleWorldHelper)getActorWorldHelper()).body.setLinearVelocity(0.1f,0.1f);
-        //((SimpleWorldHelper)getActorWorldHelper()).body.setSizeVelocity(0.1f,0.1f);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.setLinearVelocity(0.1f,0.1f);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.setSizeVelocity(0.1f,0.1f);
 
         ((SimpleWorldHelper)getActorWorldHelper()).addContactListener(new SimpleBodyContactListener() {
             @Override

@@ -117,18 +117,39 @@ public abstract class MyShape {
 
 
     public void setSizeByCenter(float width, float height) {
+        originX = originX / this.width * width;
+        originY = originY / this.height * height;
         this.width = width;
         this.height = height;
         calculateCenterXY();
     }
 
     public void setSize(float width, float height) {
+        originX = originX / this.width * width;
+        originY = originY / this.height * height;
         this.centerX -= (this.width - width) / 2f;
         this.centerY -= (this.height - height) / 2f;
         this.width = width;
         this.height = height;
         calculateCenterXY();
     }
+
+
+    public void setSizeByOrigin(float width, float height) {
+        float oldOriginX = originX;
+        float oldOriginY = originY;
+        originX = originX / this.width * width;
+        originY = originY / this.height * height;
+
+        this.centerX -= originX - oldOriginX;
+        this.centerY -= originY - oldOriginY;
+        this.width = width;
+        this.height = height;
+
+        calculateCenterXY();
+
+    }
+
 
     protected void calculateCenterXY(){
         realRotation = rotation + offsetRotation;

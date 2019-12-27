@@ -19,7 +19,9 @@ public class DemoMyGame extends MyGame {
 	public void create () {
 		super.create();
 		setLoadingStage(new DemoLoadingStage(this));
+		debug = true;
 		setScreen(new MenuScreen(this));
+
 		//setScreen(new SWScreen(this));
 		//setScreen(new SWScreen(this));
 		//setScreen(new Box2dHelperStage(this));

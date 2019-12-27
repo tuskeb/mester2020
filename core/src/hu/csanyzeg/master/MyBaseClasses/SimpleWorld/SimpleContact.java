@@ -17,6 +17,6 @@ public class SimpleContact {
     }
 
     public ArrayList<Map.Entry<String, MyShape>> getOverlappedShapeEntriesB(){
-        return SimpleBody.getBodyAOverlappedShapeEntries(bodyB, bodyB);
+        return SimpleBody.getBodyAOverlappedShapeEntries(bodyB, bodyA);
     }
 }

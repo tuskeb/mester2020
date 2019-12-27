@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -28,11 +29,16 @@ public class SimpleBody extends MyRectangle {
 
     protected final Array<SimpleBody> connectedBodies = new Array<>();
 
+    protected float elapsedTime = 0;
+
+    protected RotationRule sizeChangeRule = RotationRule.Origin;
+
+
     protected boolean rotationChanged = false;
     protected boolean sizeChanged = false;
     protected boolean positionChanged = false;
+    protected boolean colorChanged = false;
 
-    protected float elapsedTime = 0;
 
     /** világegység / mp **/
     protected Vector2 linearVelocity = new Vector2(0,0);
@@ -40,14 +46,21 @@ public class SimpleBody extends MyRectangle {
     protected float angularVelocity = 0f;
     /** világegység / mp **/
     protected Vector2 sizeVelocity = new Vector2(0,0);
+    /** színválzotás / mp **/
+    protected Color colorVelocity = new Color(0,0,0,0);
+
 
     protected Vector2 targetPosition;
     protected float targetRotation;
     protected Vector2 targetSize;
+    protected Color targetColor;
+
+
 
     protected float linearTimer = 0;
     protected float angularTimer = 0;
     protected float sizeTimer = 0;
+    protected float colorTimer = 0;
 
 
     protected static float debugPointSize = 30f;
@@ -61,7 +74,6 @@ public class SimpleBody extends MyRectangle {
     public SimpleBodyType getBodyType() {
         return bodyType;
     }
-
 
     public Vector2 getLinearVelocity() {
         return linearVelocity;
@@ -125,14 +137,24 @@ public class SimpleBody extends MyRectangle {
 
     public void step(float deltaTime){
         elapsedTime += deltaTime;
-        if (angularVelocity >0) {
+        if (angularVelocity != 0) {
             setRotation(getRotation() + deltaTime * angularVelocity);
         }
-        if (linearVelocity.len() > 0) {
+        if (linearVelocity.len() != 0) {
             setPosition(getLeftBottomX() + linearVelocity.x * deltaTime, getLeftBottomY() + linearVelocity.y * deltaTime);
         }
-        if (sizeVelocity.len() > 0) {
-            setSize(getWidth() + sizeVelocity.x * deltaTime, getHeight() + sizeVelocity.y * deltaTime);
+        if (sizeVelocity.len() != 0) {
+            switch (sizeChangeRule) {
+                case Center:
+                    setSizeByCenter(getWidth() + sizeVelocity.x * deltaTime, getHeight() + sizeVelocity.y * deltaTime);
+                break;
+                case LeftBottom:
+                    setSize(getWidth() + sizeVelocity.x * deltaTime, getHeight() + sizeVelocity.y * deltaTime);
+                    break;
+                case Origin:
+                    setSizeByOrigin(getWidth() + sizeVelocity.x * deltaTime, getHeight() + sizeVelocity.y * deltaTime);
+                    break;
+            }
         }
     }
 
@@ -140,11 +162,12 @@ public class SimpleBody extends MyRectangle {
 
     public void addBaseCollisionRectangleShape(){
         System.out.println(getWidth());
-            addCollisionShape(BASERECTANGLE,new MyRectangle(getWidth(),getHeight(),0,0, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), 0, getX(), getY(),true));
+            addCollisionShape(BASERECTANGLE,new MyRectangle(width, height,offsetX,offsetY, originX, originY, rotation, offsetRotation, centerX, centerY,false));
+            //addCollisionShape(BASERECTANGLE,new MyRectangle(getWidth(),getHeight(),0,0, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), 0, getX(), getY(),true));
     }
 
     public void addBaseCollisionCircleShape() {
-        addCollisionShape(BASECIRCLE, new MyCircle((float) Math.sqrt(getWidth() * getHeight()) / 2, 0, 0, getLeftBottomOriginX(), getLeftBottomOriginY(), getX(), getY(), true));
+        addCollisionShape(BASECIRCLE, new MyCircle(width, height,offsetX,offsetY, originX, originY, rotation, offsetRotation, centerX, centerY,false));
     }
 
     public void removeBaseCollisionRectangleShape(){
@@ -166,14 +189,14 @@ public class SimpleBody extends MyRectangle {
     }
 
     public void addCollisionRectangleShape(String name, float offsetX, float offsetY, float w, float h, float offsetR){
-        MyRectangle shape = new MyRectangle(w,h,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), offsetR, getX(), getY(),true);
+        MyRectangle shape = new MyRectangle(w,h,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), offsetR, getLeftBottomX(), getLeftBottomY(),true);
         shape.setUserData(this);
         shapeMap.put(name, shape);
     }
 
 
-    public void addCollisionCircleShape(String name, float offsetX, float offsetY, float radius){
-         MyCircle shape = new MyCircle(radius,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getX(), getY(),true);
+    public void addCollisionCircleShape(String name, float offsetX, float offsetY, float radius, float offsetR){
+        MyCircle shape = new MyCircle(radius,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), offsetR, getLeftBottomX(), getLeftBottomY(),true);
         shape.setUserData(this);
         shapeMap.put(name, shape);
     }
@@ -315,8 +338,8 @@ public class SimpleBody extends MyRectangle {
                 shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
                 shape.setOffsetX(shape.getOffsetX()*w);
                 shape.setOffsetY(shape.getOffsetY()*h);
-                shape.setOriginX(shape.getOriginX()*w);
-                shape.setOriginY(shape.getOriginY()*h);
+                shape.setOriginX(shape.getOriginX());
+                shape.setOriginY(shape.getOriginY());
             }
     }
 
@@ -344,6 +367,27 @@ public class SimpleBody extends MyRectangle {
     public void setSize(float width, float height) {
         sizeChanged(width, height);
         super.setSize(width, height);
+    }
 
+    @Override
+    public void setSizeByCenter(float width, float height) {
+        sizeChanged(width, height);
+        super.setSizeByCenter(width, height);
+        positionChanged();
+    }
+
+    @Override
+    public void setSizeByOrigin(float width, float height) {
+        sizeChanged(width, height);
+        super.setSizeByOrigin(width, height);
+        positionChanged();
+    }
+
+    public RotationRule getSizeChangeRule() {
+        return sizeChangeRule;
+    }
+
+    public void setSizeChangeRule(RotationRule sizeChangeRule) {
+        this.sizeChangeRule = sizeChangeRule;
     }
 }

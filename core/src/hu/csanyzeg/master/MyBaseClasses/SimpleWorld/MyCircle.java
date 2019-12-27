@@ -19,7 +19,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius) {
         super(0, 0, radius, radius, 0, 0, 0, 0, 0, 0, true);
-        setRadius(radius);
+        this.radius = radius;
     }
 
 
@@ -30,7 +30,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius, float offsetX, float offsetY) {
         super(0, 0, radius*2, radius*2, 0, 0,0, 0, offsetX, offsetY, true);
-        setRadius(radius);
+        this.radius = radius;
     }
 
 
@@ -42,7 +42,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius, float offsetX, float offsetY, float originX, float originY) {
         super(0, 0, radius*2, radius*2, 0, 0, originX, originY, offsetX, offsetY, true);
-        setRadius(radius);
+        this.radius = radius;
     }
 
     /**
@@ -56,7 +56,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius, float offsetX, float offsetY, float originX, float originY, float x, float y) {
         super(x, y, radius*2, radius*2, 0, 0, originX, originY, offsetX, offsetY, true);
-        setRadius(radius);
+        this.radius = radius;
     }
 
 
@@ -66,7 +66,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius,  boolean alignToLeftBottom) {
         super(0, 0, radius*2, radius*2, 0, 0, 0, 0, 0, 0, alignToLeftBottom);
-        setRadius(radius);
+        this.radius = radius;
     }
     /**
      * @param offsetX Eltolás az X koordinátától
@@ -76,7 +76,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle( float radius, float offsetX, float offsetY, boolean alignToLeftBottom) {
         super(0, 0, radius*2, radius*2, 0, 0,0, 0, offsetX, offsetY, alignToLeftBottom);
-        setRadius(radius);
+        this.radius = radius;
     }
 
     /**
@@ -89,7 +89,7 @@ public class MyCircle extends MyShape {
      */
     public MyCircle( float radius, float offsetX, float offsetY, float originX, float originY,  boolean alignToLeftBottom) {
         super(0, 0, radius*2, radius*2, 0, 0, originX, originY, offsetX, offsetY, alignToLeftBottom);
-        setRadius(radius);
+        this.radius = radius;
     }
 
     /**
@@ -104,9 +104,41 @@ public class MyCircle extends MyShape {
      */
     public MyCircle(float radius, float offsetX, float offsetY, float originX, float originY, float x, float y,  boolean alignToLeftBottom) {
         super(x, y, radius*2, radius*2, 0, 0, originX, originY, offsetX, offsetY, alignToLeftBottom);
-        setRadius(radius);
+        this.radius = radius;
     }
 
+    /**
+     * @param y Az alakzat helye
+     * @param rotation Az alakzat forgatása az origin körül
+     * @param offsetRotation Az alakzat forgatása saját maga körül
+     * @param originX A forgatás középpontja
+     * @param originY A forgatás középpontja
+     * @param offsetX Eltolás az X koordinátától
+     * @param offsetY Eltolás az Y koordinátától
+     * @param alignToLeftBottom Igaz esetén az alakzatot a bal alsó sarkától számított X és Y koordinátákkal hozza létre, ellenkező esetben a küzepétől.
+     */
+    public MyCircle(float radius, float offsetX, float offsetY, float originX, float originY,  float rotation,  float offsetRotation, float x, float y, boolean alignToLeftBottom) {
+        super(x, y, radius*2, radius*2, rotation, offsetRotation, originX, originY, offsetX, offsetY, alignToLeftBottom);
+        this.radius = radius;
+    }
+
+    /**
+     * @param x Az alakzat helye
+     * @param y Az alakzat helye
+     * @param width  Az alakzat szélessége
+     * @param height Az alakzat magassága
+     * @param rotation Az alakzat forgatása az origin körül
+     * @param offsetRotation Az alakzat forgatása saját maga körül
+     * @param originX A forgatás középpontja
+     * @param originY A forgatás középpontja
+     * @param offsetX Eltolás az X koordinátától
+     * @param offsetY Eltolás az Y koordinátától
+     * @param alignToLeftBottom Igaz esetén az alakzatot a bal alsó sarkától számított X és Y koordinátákkal hozza létre, ellenkező esetben a küzepétől.
+     */
+    public MyCircle(float width, float height, float offsetX, float offsetY, float originX, float originY,  float rotation,  float offsetRotation, float x, float y, boolean alignToLeftBottom) {
+        super(x, y, width, height, rotation, offsetRotation, originX, originY, offsetX, offsetY, alignToLeftBottom);
+        radius = width < height ? width / 2f  : height / 2f;
+    }
 
 
     @Override
@@ -144,9 +176,8 @@ public class MyCircle extends MyShape {
 
     @Override
     public void setSize(float width, float height) {
-        radius = (float)Math.sqrt(width*height)/2;
-        setRadius(radius);
-
+        radius = width < height ? width / 2f  : height / 2f;
+        super.setSize(width, height);
     }
 
     public float getRadius() {
@@ -155,14 +186,10 @@ public class MyCircle extends MyShape {
 
     public void setRadius(float radius) {
         this.radius = radius;
-        float rx2=radius*2;
-        this.centerX -= (this.width - rx2) / 2f;
-        this.centerY -= (this.height - rx2) / 2f;
-        this.width = rx2;
-        this.height = rx2;
-        calculateCenterXY();
+        super.setSize(radius * 2f, radius * 2f);
     }
 
+    @Deprecated
     public void setRadiusByCenter(float radius) {
         this.radius = radius;
         this.width = radius*2;
