@@ -11,12 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
@@ -30,6 +27,10 @@ public class MyAssetManager implements Disposable {
     public interface ProgressChangeListener {
         public void change(int percent);
     }
+
+
+    public Texture.TextureFilter textureMinFilter = Texture.TextureFilter.Linear;
+    public Texture.TextureFilter textureMagFilter = Texture.TextureFilter.Linear;
 
 
     protected DebugChangeListener DebugChangeListener = null;
@@ -49,7 +50,6 @@ public class MyAssetManager implements Disposable {
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".otf", new FreetypeFontLoader(resolver));
-
         DebugChangeListener = new DebugChangeListener() {
             @Override
             public void change(String info) {
@@ -77,7 +77,7 @@ public class MyAssetManager implements Disposable {
         setDebug("Loading...");
         setProgress(0);
 
-        ArrayList<String> remove = new ArrayList<>();
+        Array<String> remove = new Array<>();
 
 
         for (Map.Entry<String, MyAssetDescriptor> e : assetList.getMap().entrySet()) {
@@ -122,12 +122,16 @@ public class MyAssetManager implements Disposable {
         setDebug(getProgress() + " % ("+ getActualLoadingName() +")");
     }
 
+    private Array<String> lastList = new Array<>();
+    private String lastLoadedName = "";
     public String getActualLoadingName(){
-        String[] s = assetManager.getDiagnostics().split("\n");
-        if (s.length == 1){
-            return s[0].split(", ")[0];
+        Array<String> a = assetManager.getAssetNames();
+        a.removeAll(lastList, true);
+        if (a.size>0){
+            lastLoadedName = a.get(0);
         }
-        return s[1].split(", ")[0];
+        lastList = assetManager.getAssetNames();
+        return lastLoadedName;
     }
 
 
@@ -156,11 +160,17 @@ public class MyAssetManager implements Disposable {
     }
 
     public Texture getTexture(String hash){
-        return assetManager.get((MyAssetDescriptor<Texture>)(assetList.getAssetDescriptor(hash)));
+        Texture t = assetManager.get((MyAssetDescriptor<Texture>)(assetList.getAssetDescriptor(hash)));
+        t.setFilter(textureMinFilter, textureMagFilter);
+        return t;
     }
 
     public TextureAtlas getTextureAtlas(String hash){
-        return assetManager.get((MyAssetDescriptor<TextureAtlas>)(assetList.getAssetDescriptor(hash)));
+        TextureAtlas t = assetManager.get((MyAssetDescriptor<TextureAtlas>)(assetList.getAssetDescriptor(hash)));
+        for(Texture texture : t.getTextures()){
+            texture.setFilter(textureMinFilter, textureMagFilter);
+        }
+        return t;
     }
 
     public Sound getSound(String hash){
@@ -182,6 +192,22 @@ public class MyAssetManager implements Disposable {
 
     public void setDebugChangeListener(DebugChangeListener DebugChangeListener) {
         this.DebugChangeListener = DebugChangeListener;
+    }
+
+    public Texture.TextureFilter getTextureMinFilter() {
+        return textureMinFilter;
+    }
+
+    public void setTextureMinFilter(Texture.TextureFilter textureMinFilter) {
+        this.textureMinFilter = textureMinFilter;
+    }
+
+    public Texture.TextureFilter getTextureMagFilter() {
+        return textureMagFilter;
+    }
+
+    public void setTextureMagFilter(Texture.TextureFilter textureMagFilter) {
+        this.textureMagFilter = textureMagFilter;
     }
 
     public void setDebug(String Debug) {

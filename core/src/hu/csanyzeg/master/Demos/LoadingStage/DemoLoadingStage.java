@@ -50,7 +50,7 @@ public class DemoLoadingStage extends LoadingStage {
 
         addActor(filenameLabel);
         filenameLabel.setAlignment(Align.center, Align.center);
-        filenameLabel.setSize(1024,50);
+        filenameLabel.setSize(getWidth(),50);
         filenameLabel.setPosition(0,cimerActor.getY() - cimerActor.getHeight()/10 * 3.2f);
 
 
