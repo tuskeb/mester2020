@@ -117,14 +117,27 @@ public abstract class MyShape {
 
 
     public void setSizeByCenter(float width, float height) {
+        float oldW = width;
+        float oldH = height;
+        float oldOriginX = originX;
+        float oldOriginY = originY;
         originX = originX / this.width * width;
         originY = originY / this.height * height;
         this.width = width;
         this.height = height;
         calculateCenterXY();
+        originChanged(originX, originY, oldOriginX, oldOriginY);
+        sizeChanged(width, height, oldW, oldH);
     }
 
     public void setSize(float width, float height) {
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
+        float oldOriginX = originX;
+        float oldOriginY = originY;
+        float oldW = this.width;
+        float oldH = this.height;
+
         originX = originX / this.width * width;
         originY = originY / this.height * height;
         this.centerX -= (this.width - width) / 2f;
@@ -132,21 +145,32 @@ public abstract class MyShape {
         this.width = width;
         this.height = height;
         calculateCenterXY();
+
+        sizeChanged(width, height, oldW, oldH);
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
+        originChanged(originX, originY, oldOriginX, oldOriginY);
     }
 
 
     public void setSizeByOrigin(float width, float height) {
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
         float oldOriginX = originX;
         float oldOriginY = originY;
+        float oldW = this.width;
+        float oldH = this.height;
+
         originX = originX / this.width * width;
         originY = originY / this.height * height;
-
         this.centerX -= originX - oldOriginX;
         this.centerY -= originY - oldOriginY;
         this.width = width;
         this.height = height;
-
         calculateCenterXY();
+
+        sizeChanged(width, height, oldW, oldH);
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
+        originChanged(originX, originY, oldOriginX, oldOriginY);
 
     }
 
@@ -158,52 +182,55 @@ public abstract class MyShape {
         Vector2 v = origCenter.sub(origin);
         v.rotate(rotation);
         Vector2 s = v.add(origin);
-        //this.realCenterX = centerX + offsetX;
-        //this.realCenterY = centerY + offsetY;
         this.realCenterX = s.x;
         this.realCenterY = s.y;
-        //System.out.println(this.toString());
     }
 
     public void setPosition(float X, float Y) {
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
         this.centerX = X + width/2;
         this.centerY = Y + height/2;
         calculateCenterXY();
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
     }
 
-    public void setX(float X) {
-        this.centerX = X + width/2;
-        //this.centerY = Y + height/2;
-        calculateCenterXY();
+    public void setX(float x) {
+        setPosition(x,getLeftBottomY());
     }
 
-    public void setY(float Y) {
-        //this.centerX = X + width/2;
-        this.centerY = Y + height/2;
-        calculateCenterXY();
+    public void setY(float y) {
+        setPosition(getLeftBottomX(),y);
     }
 
 
     public void setPositionFromCenter(float centerX, float centerY) {
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
         this.centerX = centerX;
         this.centerY = centerY;
         calculateCenterXY();
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
     }
 
     public void setOffset(float offsetX, float offsetY){
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         calculateCenterXY();
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
     }
 
     public void rotateBy(float degree) {
-        rotation += degree;
-        calculateCenterXY();
+        setRotation(rotation + degree);
     }
 
     public void setRotation(float degree) {
+        float or = rotation;
         rotation = degree;
         calculateCenterXY();
+        rotationChanged(rotation, or);
     }
 
     public float getRealCenterX() {
@@ -260,9 +287,12 @@ public abstract class MyShape {
 
 
     public void setOriginToCenter(){
+        float ox = originX;
+        float oy = originY;
         originX = 0;
         originY = 0;
         calculateCenterXY();
+        originChanged(originX, originY, ox, oy);
     }
 
     /**
@@ -271,9 +301,12 @@ public abstract class MyShape {
      * @param y
      */
     public void setOriginFromCenter(float x, float y){
+        float ox = originX;
+        float oy = originY;
         originX = x - offsetX;
         originY = y - offsetY;
         calculateCenterXY();
+        originChanged(originX, originY, ox, oy);
     }
 
     /**
@@ -282,10 +315,51 @@ public abstract class MyShape {
      * @param y
      */
     public void setOrigin(float x, float y){
+        float ox = originX;
+        float oy = originY;
         originX = x - width / 2 - offsetX;
         originY = y - height / 2 - offsetY;
         calculateCenterXY();
+        originChanged(originX, originY, ox, oy);
     }
+
+    public void setOriginFixedPositionAbsolute(float x, float y){
+        setOriginFixedPosition(x - getLeftBottomX(),y - getLeftBottomY());
+    }
+
+    public void setOriginFixedPosition(float x, float y){
+        float ox = originX;
+        float oy = originY;
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
+        Vector2 v0 = new Vector2(realCenterX,realCenterY);
+        setOrigin(x,y);
+        calculateCenterXY();
+        v0.sub(realCenterX, realCenterY);
+        centerX += v0.x;
+        centerY += v0.y;
+        calculateCenterXY();
+        originChanged(originX, originY, ox, oy);
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
+    }
+
+
+    public void setOriginFixedOrigin(float x, float y){
+        float ox = originX;
+        float oy = originY;
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
+        Vector2 v0 = new Vector2(getLeftBottomOriginX() + getLeftBottomX(),getLeftBottomOriginY() + getLeftBottomY());
+        setOrigin(x,y);
+        calculateCenterXY();
+        v0.sub(getLeftBottomOriginX() + getLeftBottomX(),getLeftBottomOriginY() + getLeftBottomY());
+        centerX += v0.x;
+        centerY += v0.y;
+        calculateCenterXY();
+        originChanged(originX, originY, ox, oy);
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
+    }
+
 
     public float getOffsetRotation() {
         return offsetRotation;
@@ -310,8 +384,7 @@ public abstract class MyShape {
     }
 
     public void setOriginX(float originX) {
-        this.originX = originX;
-        calculateCenterXY();
+        setOrigin(originX, originY);
     }
 
     public float getOriginY() {
@@ -319,8 +392,7 @@ public abstract class MyShape {
     }
 
     public void setOriginY(float originY) {
-        this.originY = originY;
-        calculateCenterXY();
+        setOrigin(originX, originY);
     }
 
 
@@ -334,7 +406,6 @@ public abstract class MyShape {
     }
 
 
-
     public float getLeftBottomY() {
         return originY + offsetY + centerY - (height + originY*2) / 2f;
     }
@@ -346,33 +417,37 @@ public abstract class MyShape {
 
 
     public void setWidth(float width) {
-        this.width = width;
-        calculateCenterXY();
+        setSize(width, height);
     }
 
     public void setHeight(float height) {
-        this.height = height;
-        calculateCenterXY();
+        setSize(width, height);
     }
 
+
     public void setOffsetX(float offsetX) {
-        this.offsetX = offsetX;
-        calculateCenterXY();
+        setOffset(offsetX, offsetY);
     }
 
     public void setOffsetY(float offsetY) {
-        this.offsetY = offsetY;
+        setOffset(offsetX, offsetY);
+    }
+
+    public void setCenter(float cx, float cy){
+        float x = getLeftBottomX();
+        float y = getLeftBottomY();
+        this.centerX = cx;
+        this.centerY = cy;
         calculateCenterXY();
+        positionChanged( getLeftBottomX(), getLeftBottomY(), x,y);
     }
 
     public void setCenterX(float centerX) {
-        this.centerX = centerX;
-        calculateCenterXY();
+        setCenter(centerX, centerY);
     }
 
     public void setCenterY(float centerY) {
-        this.centerY = centerY;
-        calculateCenterXY();
+        setCenter(centerX, centerY);
     }
 
     @Override
@@ -398,9 +473,7 @@ public abstract class MyShape {
                 ", centerX=" + centerX +
                 ", centerY=" + centerY +
                 ", originX=" + originX +
-                ", originY=" + originY +
-                " getCorners {" + corners +
-                "}}";
+                ", originY=" + originY;
     }
 
     public Object getUserData() {
@@ -428,6 +501,11 @@ public abstract class MyShape {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    protected void originChanged(float newX, float newY, float oldX, float oldY){}
+    protected void positionChanged(float newX, float newY, float oldX, float oldY) {}
+    protected void sizeChanged(float newW, float newH, float oldW, float oldH) {}
+    protected void rotationChanged(float newR, float oldR) {}
 
 
 

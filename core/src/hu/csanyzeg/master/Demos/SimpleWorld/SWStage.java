@@ -37,9 +37,9 @@ public class SWStage extends SimpleWorldStage {
         super(new ExtendViewport(16,9), game);
         setCameraResetToLeftBottomOfScreen();
         addActor(new SimpleBoxActor(game, world,5,3,1,3,0));
-        addActor(new SimpleBoxActor(game, world,0,0,3,1,0));
-        addActor(new SimpleBoxActor(game, world,0,7,1,1,0));
-        addActor(new SimpleBoxActor(game, world,7,2,1,3,0));
+        addActor(new SimpleBoxActor(game, world,0,0,1,3,90));
+        addActor(new SimpleBoxActor(game, world,0,7,1,3,180));
+        addActor(new SimpleBoxActor(game, world,7,2,1,3,270));
         addBackButtonScreenBackByStackPopListener();
     }
 }

@@ -10,6 +10,11 @@ public class SimpleWorld {
 
     protected final Array<SimpleBody> bodies = new Array<>();
 
+    private boolean locked = false;
+
+    public boolean isLocked() {
+        return locked;
+    }
 
     protected SimpleWorldContactListener contactListener = new SimpleWorldContactListener() {
         @Override
@@ -35,12 +40,12 @@ public class SimpleWorld {
 
     //optimalizáció miatt
     protected final Array<SimpleBody> collisionBodiesA = new Array<SimpleBody>();
-    protected final Array<SimpleBody> collisionBodiesB = new Array<SimpleBody>();
     protected final Array<SimpleBody> moveBodies = new Array<>();
 
 
 
     public void step(float deltaTime, int moveIterations, int positionCorrectionIterations){
+        locked = true;
         elapsedTime+=deltaTime;
         float stepTime = deltaTime / moveIterations;
         for(int i = 0; i<moveIterations; i ++){
@@ -72,6 +77,7 @@ public class SimpleWorld {
                 }
             }
         }
+        locked = false;
     }
 
     protected void setBodyType(SimpleBody body, SimpleBodyType bodyType){
@@ -81,7 +87,6 @@ public class SimpleWorld {
             case Dinamic:
             case Sensor:
                 collisionBodiesA.add(body);
-                collisionBodiesB.add(body);
                 moveBodies.add(body);
                 break;
             case Ghost:
@@ -89,8 +94,6 @@ public class SimpleWorld {
                 break;
             case Static:
                 collisionBodiesA.add(body);
-                collisionBodiesB.add(body);
-
                 break;
         }
     }
@@ -100,16 +103,20 @@ public class SimpleWorld {
         setBodyType(body, body.bodyType);
     }
 
-    public boolean removeBody(SimpleBody body){
+    public boolean removeBody(SimpleBody body) throws UnsupportedOperationException {
+        if (locked){
+            throw new UnsupportedOperationException("A test nem távolítható el a world.step futása közben.");
+        }
         collisionBodiesA.removeValue(body,true);
-        collisionBodiesB.removeValue(body,true);
         moveBodies.removeValue(body, true);
         return bodies.removeValue(body,true);
     }
 
-    public void clearBodies(){
+    public void clearBodies() throws UnsupportedOperationException {
+        if (locked){
+            throw new UnsupportedOperationException("A test nem távolítható el a world.step futása közben.");
+        }
         collisionBodiesA.clear();
-        collisionBodiesB.clear();
         moveBodies.clear();
         bodies.clear();
     }

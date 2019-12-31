@@ -1,11 +1,14 @@
 package hu.csanyzeg.master.Demos.SimpleWorld;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.Direction;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyContactListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
@@ -30,25 +33,28 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
         super(game, boxTexture);
         setSize(w, h);
         setRotation(rotation);
-        setOrigin(1f,1f);
         setPosition(x,y);
+        setOrigin(1f,1f);
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Circle, SimpleBodyType.Dinamic));
         ((SimpleWorldHelper)getActorWorldHelper()).body.addCollisionRectangleShape("rect", 0.2f,0.2f,0.5f,0.5f,10f);
         ((SimpleWorldHelper)getActorWorldHelper()).body.addCollisionCircleShape("circ", 0.2f,0.2f,0.25f, 0f);
-        ((SimpleWorldHelper)getActorWorldHelper()).body.setAngularVelocity(10f);
-        ((SimpleWorldHelper)getActorWorldHelper()).body.setLinearVelocity(0.1f,0.1f);
-        ((SimpleWorldHelper)getActorWorldHelper()).body.setSizeVelocity(0.1f,0.1f);
+        //((SimpleWorldHelper)getActorWorldHelper()).body.setAngularVelocity(10f);
+        //((SimpleWorldHelper)getActorWorldHelper()).body.setLinearVelocity(0.1f,0.1f);
+        //((SimpleWorldHelper)getActorWorldHelper()).body.setSizeVelocity(0.1f,0.1f);
+        //((SimpleWorldHelper)getActorWorldHelper()).body.setColorVelocity(-0.1f,-0.1f,-0.1f,-0.1f);
+
+
 
         ((SimpleWorldHelper)getActorWorldHelper()).addContactListener(new SimpleBodyContactListener() {
             @Override
             public void beginContact(SimpleContact contact, SimpleWorldHelper myHelper, SimpleWorldHelper otherHelper) {
                 setFlash();
+                //remove();
             }
 
             @Override
             public void endContact(SimpleContact contact, SimpleWorldHelper myHelper, SimpleWorldHelper otherHelper) {
                 setFlash();
-                //contactWithBall();
             }
         });
 
@@ -56,16 +62,23 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                setPosition(5,5);
+
+
+                SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
+                //helper.body.moveTo(4,4,1f, PositionRule.Center);
+                helper.body.rotateTo(310, 1, Direction.ClockWise);
+                //helper.body.scaleTo(2, 1, PositionRule.Origin);
+                //helper.body.setSizeByOrigin(2,2);
+                helper.body.colorTo(Color.BLUE, 2f);
+                //helper.body.setColor(Color.BLUE);
+                //setSize(2f,2f);
+                //setOrigin(0.2f,0.2f);
+                //setOrigin((float)Math.random()*getWidth(),(float)Math.random()*getHeight());
+
             }
         });
 
         addTimer(new IntervalTimer(1f, new IntervalTimerListener() {
-            @Override
-            public void onRepeat(IntervalTimer sender) {
-
-            }
-
             @Override
             public void onTick(IntervalTimer sender, float correction) {
                 setAlpha(sender.getElapsedTime());
@@ -82,24 +95,14 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
                 setAlpha(0);
             }
         } ));
-        /*
+
         addTimer(new PermanentTimer(new PermanentTimerListener() {
             @Override
             public void onTick(PermanentTimer sender, float correction) {
-                setRotation(getRotation() + correction*10);
-                //setX(getX()+correction);
+                SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
+                //helper.body.setOriginFixedPositionAbsolute((float)Math.random()*10f,(float)Math.random()*10f);
             }
-
-            @Override
-            public void onStop(PermanentTimer sender) {
-
-            }
-
-            @Override
-            public void onStart(PermanentTimer sender) {
-
-            }
-        }));*/
+        }));
     }
 
     public void contactWithBall(){
@@ -116,11 +119,6 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
 
     public void setFlash(){
         addTimer(new IntervalTimer(0.85f, new IntervalTimerListener() {
-            @Override
-            public void onRepeat(IntervalTimer sender) {
-
-            }
-
             @Override
             public void onTick(IntervalTimer sender, float correction) {
                 setColor(1, sender.getElapsedTime()*2f, sender.getElapsedTime()*2f,1);

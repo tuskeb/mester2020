@@ -9,20 +9,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 public class SimpleBody extends MyRectangle {
     protected final HashMap<String, MyShape> shapeMap = new HashMap<>();
 
 
-    public SimpleBody(float width, float height, float originX, float originY, float rotation, float x, float y, SimpleBodyType bodyType) {
+
+    public SimpleBody(float width, float height, float originX, float originY, float rotation, float x, float y, SimpleBodyType bodyType, Color color) {
         super(width, height, 0,0, originX,originY, rotation, 0, x, y, true);
         this.bodyType = bodyType;
+        this.color = color;
     }
 
     /**
     * A világba rakás után csak a világon keresztül lehet megváltoztatni
      */
     protected SimpleBodyType bodyType;
+    protected SimpleBodyBehaviorListener simpleBodyBehaviorListener = new SimpleBodyBehaviorListener();
+
+    public SimpleBodyBehaviorListener getSimpleBodyBehaviorListener() {
+        return simpleBodyBehaviorListener;
+    }
+
+    public void setSimpleBodyBehaviorListener(SimpleBodyBehaviorListener simpleBodyBehaviorListener) {
+        this.simpleBodyBehaviorListener = simpleBodyBehaviorListener;
+    }
 
     public static final String BASERECTANGLE = "BaseRectangle";
     public static final String BASECIRCLE = "BaseCircle";
@@ -31,13 +44,8 @@ public class SimpleBody extends MyRectangle {
 
     protected float elapsedTime = 0;
 
-    protected RotationRule sizeChangeRule = RotationRule.Origin;
-
-
-    protected boolean rotationChanged = false;
-    protected boolean sizeChanged = false;
-    protected boolean positionChanged = false;
-    protected boolean colorChanged = false;
+    protected PositionRule sizingPositionRule = PositionRule.Origin;
+    protected Color color = Color.WHITE;
 
 
     /** világegység / mp **/
@@ -47,24 +55,28 @@ public class SimpleBody extends MyRectangle {
     /** világegység / mp **/
     protected Vector2 sizeVelocity = new Vector2(0,0);
     /** színválzotás / mp **/
-    protected Color colorVelocity = new Color(0,0,0,0);
+    protected float colorVelocityA = 0f;
+    protected float colorVelocityR = 0f;
+    protected float colorVelocityG = 0f;
+    protected float colorVelocityB = 0f;
 
 
-    protected Vector2 targetPosition;
-    protected float targetRotation;
-    protected Vector2 targetSize;
-    protected Color targetColor;
+    protected Vector2 targetPosition = new Vector2();
+    protected float targetRotation = 0;
+    protected Vector2 targetSize = new Vector2();
+    protected Color targetColor = Color.WHITE;
 
 
 
-    protected float linearTimer = 0;
-    protected float angularTimer = 0;
-    protected float sizeTimer = 0;
-    protected float colorTimer = 0;
+    protected float linearTimer = INVALIDTIMER;
+    protected float angularTimer = INVALIDTIMER;
+    protected float sizeTimer = INVALIDTIMER;
+    protected float colorTimer = INVALIDTIMER;
+    protected static final float INVALIDTIMER = Float.NEGATIVE_INFINITY;
 
 
     protected static float debugPointSize = 30f;
-
+    protected boolean changedByWorld = false;
 
 
     public HashMap<String, MyShape> getCollisionShapeMap(){
@@ -80,22 +92,21 @@ public class SimpleBody extends MyRectangle {
     }
 
     public void setLinearVelocity(Vector2 linearVelocity) {
-        linearTimer = 0;
+        linearTimer = INVALIDTIMER;
         this.linearVelocity.set(linearVelocity);
     }
 
     public void setLinearVelocity(float x, float y) {
-        linearTimer = 0;
+        linearTimer = INVALIDTIMER;
         this.linearVelocity.set(x,y);
     }
-
 
     public float getAngularVelocity() {
         return angularVelocity;
     }
 
     public void setAngularVelocity(float angularVelocity) {
-        angularTimer = 0;
+        angularTimer = INVALIDTIMER;
         this.angularVelocity = angularVelocity;
     }
 
@@ -104,30 +115,73 @@ public class SimpleBody extends MyRectangle {
     }
 
     public void setSizeVelocity(Vector2 sizeVelocity) {
-        sizeTimer = 0;
+        sizeTimer = INVALIDTIMER;
         this.sizeVelocity.set(sizeVelocity);
     }
 
     public void setSizeVelocity(float w, float h) {
-        sizeTimer = 0;
+        sizeTimer = INVALIDTIMER;
         this.sizeVelocity.set(w,h);
     }
 
-    public void moveTo(float x, float y, float sec){
 
+    public void moveTo(float x, float y, float sec, PositionRule positionRule) {
+        switch (positionRule) {
+            case Center:
+                targetPosition.set(x - getRealCenterX() + getLeftBottomX(), y - getRealCenterY() + getLeftBottomY());
+                linearVelocity.set((x - getRealCenterX()) / sec, (y - getRealCenterY()) / sec);
+                break;
+            case LeftBottom:
+                targetPosition.set(x, y);
+                linearVelocity.set((x - getLeftBottomX()) / sec, (y - getLeftBottomY()) / sec);
+                break;
+            case Origin:
+                targetPosition.set(x - getLeftBottomOriginX(), y - getLeftBottomOriginY());
+                linearVelocity.set((x - getLeftBottomOriginX() - getLeftBottomX()) / sec, (y - getLeftBottomOriginY() - getLeftBottomY()) / sec);
+                break;
+        }
+        linearTimer = sec;
     }
 
-    public void rotateTo(float rot, float sec){
 
+    public void rotateTo(float rot, float sec, Direction direction){
+        float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / sec;
+        float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / sec;
+        switch (direction){
+            case ClockWise:
+                angularVelocity = cw;
+                break;
+            case CounterClockWise:
+                angularVelocity = ccw;
+                break;
+            case Shorter:
+                angularVelocity = Math.abs(cw) < Math.abs(ccw) ? cw : ccw;
+                break;
+            case Longer:
+                angularVelocity = Math.abs(cw) >= Math.abs(ccw) ? cw : ccw;
+                break;
+        }
+        angularTimer = sec;
+        targetRotation = rot;
     }
 
-    public void sizeTo(float width, float height, float sec){
-
+    public void sizeTo(float width, float height, float sec, PositionRule sizingPositionRule) {
+        this.sizingPositionRule = sizingPositionRule;
+        targetSize.set(width, height);
+        sizeVelocity.set((width - this.width) / sec, (height - this.height) / sec);
+        sizeTimer = sec;
     }
 
+    public void scaleTo(float scale, float sec, PositionRule sizingPositionRule){
+        sizeTo(width * scale, height * scale, sec, sizingPositionRule);
+    }
 
-    public void scaleTo(float scale, float sec){
-
+    public void colorTo(Color color, float sec){
+        targetColor = color;
+        colorVelocityA = -(this.color.a-color.a)/sec;
+        colorVelocityR = -(this.color.r-color.r)/sec;
+        colorVelocityG = -(this.color.g-color.g)/sec;
+        colorVelocityB = -(this.color.b-color.b)/sec;
     }
 
 
@@ -136,15 +190,49 @@ public class SimpleBody extends MyRectangle {
 
 
     public void step(float deltaTime){
+        changedByWorld = true;
         elapsedTime += deltaTime;
+
+        if (angularTimer >= 0f){
+            angularTimer -= deltaTime;
+            if (angularTimer <= 0f){
+                angularTimer = INVALIDTIMER;
+                angularVelocity = 0f;
+                setRotation(targetRotation);
+                simpleBodyBehaviorListener.onStop(this);
+            }
+        }
         if (angularVelocity != 0) {
             setRotation(getRotation() + deltaTime * angularVelocity);
         }
-        if (linearVelocity.len() != 0) {
+
+
+
+        if (linearTimer >= 0f){
+            linearTimer -= deltaTime;
+            if (linearTimer <= 0f){
+                linearTimer = INVALIDTIMER;
+                linearVelocity.set(0f,0f);
+                setPosition(targetPosition.x, targetPosition.y);
+                simpleBodyBehaviorListener.onStop(this);
+            }
+        }
+        if (linearVelocity.len() != 0f) {
             setPosition(getLeftBottomX() + linearVelocity.x * deltaTime, getLeftBottomY() + linearVelocity.y * deltaTime);
         }
-        if (sizeVelocity.len() != 0) {
-            switch (sizeChangeRule) {
+
+
+        if (sizeTimer >= 0f){
+            sizeTimer -= deltaTime;
+            if (sizeTimer <= 0f){
+                sizeTimer = INVALIDTIMER;
+                sizeVelocity.set(0f,0f);
+                setSize(targetSize.x, targetSize.y);
+                simpleBodyBehaviorListener.onStop(this);
+            }
+        }
+        if (sizeVelocity.len() != 0f) {
+            switch (sizingPositionRule) {
                 case Center:
                     setSizeByCenter(getWidth() + sizeVelocity.x * deltaTime, getHeight() + sizeVelocity.y * deltaTime);
                 break;
@@ -156,9 +244,40 @@ public class SimpleBody extends MyRectangle {
                     break;
             }
         }
+        changedByWorld = false;
+
+
+        if (colorTimer >= 0f){
+            colorTimer -= deltaTime;
+            if (colorTimer <= 0f){
+                colorTimer = INVALIDTIMER;
+                colorVelocityA=0;
+                colorVelocityR=0;
+                colorVelocityG=0;
+                colorVelocityB=0;
+                color = targetColor;
+                simpleBodyBehaviorListener.onStop(this);
+            }
+        }
+        if (colorVelocityA != 0f || colorVelocityB != 0f || colorVelocityG != 0f || colorVelocityR != 0f){
+            color.add(colorVelocityR * deltaTime, colorVelocityG * deltaTime, colorVelocityB* deltaTime, colorVelocityA* deltaTime);
+        }
     }
 
+    public void setColorVelocity(float r, float g, float b, float a) {
+        this.colorVelocityA = a;
+        this.colorVelocityR = r;
+        this.colorVelocityG = g;
+        this.colorVelocityB = b;
+    }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     public void addBaseCollisionRectangleShape(){
         System.out.println(getWidth());
@@ -322,72 +441,58 @@ public class SimpleBody extends MyRectangle {
     }
 
 
-    protected void rotationChanged() {
+    @Override
+    protected void rotationChanged(float newR, float oldR) {
         if (shapeMap == null) return;
         if (shapeMap!=null) {
             for (MyShape shape:shapeMap.values()) {
-                shape.setRotation(getRotation());
+                shape.setRotation(newR);
+            }
+        }
+        if (!changedByWorld){
+            angularTimer = INVALIDTIMER;
+        }
+    }
+
+    @Override
+    protected void sizeChanged(float newW, float newH, float oldW, float oldH) {
+        if (shapeMap == null) return;
+        float w = newW / oldW;
+        float h = newH / oldH;
+        for (MyShape shape : shapeMap.values()) {
+            shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
+            shape.setOffset(shape.getOffsetX()*w, shape.getOffsetY()*h);
+            shape.setOrigin(getLeftBottomOriginX(), getLeftBottomOriginY());
+        }
+        if (!changedByWorld){
+            sizeTimer = INVALIDTIMER;
+        }
+    }
+
+    @Override
+    protected void originChanged(float newX, float newY, float oldX, float oldY){
+        if (shapeMap == null) return;
+        if (shapeMap!=null) {
+            for (MyShape shape:shapeMap.values()) {
+                shape.setOrigin (getLeftBottomOriginX(), getLeftBottomOriginY());
             }
         }
     }
-    protected void sizeChanged(float newW, float newH) {
-        if (shapeMap == null) return;
-        float w = newW / getWidth();
-        float h = newH / getHeight();
-            for (MyShape shape : shapeMap.values()) {
-                shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
-                shape.setOffsetX(shape.getOffsetX()*w);
-                shape.setOffsetY(shape.getOffsetY()*h);
-                shape.setOriginX(shape.getOriginX());
-                shape.setOriginY(shape.getOriginY());
-            }
-    }
 
-    protected void positionChanged() {
+    @Override
+    protected void positionChanged(float newX, float newY, float oldX, float oldY) {
         if (shapeMap == null) return;
         for (MyShape shape : shapeMap.values()) {
             shape.setPosition(getLeftBottomX(), getLeftBottomY());
         }
+        if (!changedByWorld){
+            linearTimer = INVALIDTIMER;
+        }
     }
 
-
-    @Override
-    public void setPosition(float X, float Y) {
-        super.setPosition(X, Y);
-        positionChanged();
-    }
-
-    @Override
-    public void setRotation(float degree) {
-        super.setRotation(degree);
-        rotationChanged();
-    }
-
-    @Override
-    public void setSize(float width, float height) {
-        sizeChanged(width, height);
-        super.setSize(width, height);
-    }
-
-    @Override
-    public void setSizeByCenter(float width, float height) {
-        sizeChanged(width, height);
-        super.setSizeByCenter(width, height);
-        positionChanged();
-    }
-
-    @Override
-    public void setSizeByOrigin(float width, float height) {
-        sizeChanged(width, height);
-        super.setSizeByOrigin(width, height);
-        positionChanged();
-    }
-
-    public RotationRule getSizeChangeRule() {
-        return sizeChangeRule;
-    }
-
-    public void setSizeChangeRule(RotationRule sizeChangeRule) {
-        this.sizeChangeRule = sizeChangeRule;
+    protected void colorChanged(Color newC, Color oldC) {
+        if (!changedByWorld){
+            colorTimer = INVALIDTIMER;
+        }
     }
 }

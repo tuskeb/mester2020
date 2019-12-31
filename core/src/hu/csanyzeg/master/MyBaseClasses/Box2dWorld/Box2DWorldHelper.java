@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Box2dWorld;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,7 +29,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
     protected  float originX;
     protected  float originY;
 
-    protected Array<Runnable> runnables = new Array<>();
+
     protected Array<MyJoint> joints = new Array<MyJoint>();
 
     public void addContactListener(MyContactListener contactListener){
@@ -74,6 +75,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         this.fixtureDef = fixtureDef;
         this.world = world;
         this.actor = actor;
+        resetChangeFlags();
     }
 
     public Box2DWorldHelper(World world, Actor actor, ShapeType shapeType, MyFixtureDef fixtureDef, BodyDef.BodyType bodyType) {
@@ -83,6 +85,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         this.shapeType = shapeType;
         this.world = world;
         this.actor = actor;
+        resetChangeFlags();
     }
 
 
@@ -106,6 +109,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         return this;
     }
 
+    @Override
     public void refreshBodyOnWorld(){
         float av = body.getAngularVelocity();
         Vector2 lv = body.getLinearVelocity();
@@ -336,13 +340,6 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
 
 
     @Override
-    public void act(float delta) {
-        while (runnables.size>0){
-            runnables.removeIndex(0).run();
-        }
-    }
-
-    @Override
     public float getActorWidth() {
         return actor.getWidth();
     }
@@ -352,6 +349,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         return actor.getHeight();
     }
 
+    @Override
     public void remove(){
         invoke(new Runnable() {
             @Override
@@ -364,6 +362,7 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         });
     }
 
+    @Override
     public void invoke(Runnable runnable){
         if (!world.isLocked()){
             runnable.run();
@@ -378,4 +377,27 @@ public class Box2DWorldHelper extends WorldHelper<Body, Actor> {
         }
     }
 
+    @Override
+    public void resetChangeFlags() {
+        rotationChanged = true;
+        sizeChanged = false;
+        positionChanged = true;
+        colorChanged = false;
+        originChanged = false;
+    }
+
+    @Override
+    public Color getBodyColor() {
+        return null;
+    }
+
+    @Override
+    public Color getActorColor() {
+        return null;
+    }
+
+    @Override
+    public WorldHelper setBodyColor(Color color) {
+        return null;
+    }
 }

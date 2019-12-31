@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
@@ -26,8 +27,7 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
 
 
     public SimpleWorldHelper(SimpleWorld world, Actor actor, ShapeType shapeType, SimpleBodyType bodyType) {
-        super(actor, new SimpleBody(actor.getWidth(), actor.getHeight(), actor.getOriginX(), actor.getOriginY(), actor.getRotation(), actor.getX(), actor.getY(), bodyType));
-        //System.out.println(body);
+        super(actor, new SimpleBody(actor.getWidth(), actor.getHeight(), actor.getOriginX(), actor.getOriginY(), actor.getRotation(), actor.getX(), actor.getY(), bodyType, actor.getColor()));
         switch (shapeType){
             case Null:
                 break;
@@ -40,17 +40,13 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
         }
         body.setUserData(this);
         this.world = world;
+        resetChangeFlags();
     }
 
     public void setBodyType(SimpleBodyType bodyType){
         removeFromWorld();
         body.bodyType = bodyType;
         addToWorld();
-    }
-
-    @Override
-    public void remove() {
-
     }
 
     @Override
@@ -138,14 +134,14 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
 
     @Override
     public WorldHelper setBodySize(float w, float h) {
-        body.setSize(w,h);
-        return null;
+        body.setSizeByOrigin(w,h);
+        return this;
     }
 
     @Override
     public WorldHelper setBodyPosition(float x, float y) {
         body.setPosition(x,y);
-        return null;
+        return this;
     }
 
     @Override
@@ -178,7 +174,7 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
     @Override
     public void removeFromWorld() {
         beforeRemoveFromWorld();
-
+        world.removeBody(body);
         afterRemoveFromWorld();
     }
 
@@ -188,8 +184,49 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
         addToWorld();
     }
 
-    @Override
-    public void act(float delta) {
 
+    @Override
+    public void remove(){
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                removeFromWorld();
+                actor.getStage().getActors().removeValue(actor, true);
+                actor.getParent().removeActor(actor);
+            }
+        });
+    }
+
+    @Override
+    public void invoke(Runnable runnable){
+        if (!world.isLocked()){
+            runnable.run();
+        }else{
+            runnables.add(runnable);
+        }
+    }
+
+    @Override
+    public Color getBodyColor() {
+        return body.getColor();
+    }
+
+    @Override
+    public Color getActorColor() {
+        return actor.getColor();
+    }
+
+    public void resetChangeFlags(){
+        rotationChanged = true;
+        sizeChanged = true;
+        positionChanged = true;
+        colorChanged = true;
+        originChanged = true;
+    }
+
+    @Override
+    public WorldHelper setBodyColor(Color color) {
+        body.setColor(color);
+        return this;
     }
 }

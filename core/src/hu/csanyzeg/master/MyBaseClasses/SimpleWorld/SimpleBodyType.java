@@ -11,7 +11,10 @@ public enum  SimpleBodyType {
      *  Ütközés esetén az ütközésben részt vevő testek sebessége az átlag eredő lesz.
      *  A testek együtt haladnak tovább. Űjabb ütközésben ugyan azok nem vehetnek részt, amíg el nem hagyják egymást.
      *  Ütközés eseményt vált ki, amennyiben hozzáér egy új tárgyhoz vagy elhagyja azt.
+     *
+     *  MÉG NEM MŰKÖDIK
      */
+    @Deprecated
     Dinamic,
 
 
@@ -34,7 +37,7 @@ public enum  SimpleBodyType {
 
 
     /**
-     *  Csak az átfedésben, ütközésben vesz részt. Nem lehet sebessége, nem mozdulhat el.
+     *  Csak az átfedésben, ütközésben vesz részt. Nem lehet sebessége, nem mozdulhat el. A sebessége mindig minden irányban 0.
      *  Ütközés eseményt vált ki, amennyiben hozzáér egy új tárgyhoz vagy elhagyja azt.
      */
     Static,

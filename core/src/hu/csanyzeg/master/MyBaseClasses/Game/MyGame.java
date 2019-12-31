@@ -103,4 +103,10 @@ abstract public class MyGame extends Game {
     public void dispose() {
         myAssetManager.dispose();
     }
+
+    public static void printStackTrace(){
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            Gdx.app.log("Stack", ste.toString());
+        }
+    }
 }

@@ -1,11 +1,23 @@
 package hu.csanyzeg.master.MyBaseClasses.WorldHelper;
 
-//Fizikai vagy játékmodell illesztését teszi lehetővé az actorok számára
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
+
+//Fizikai vagy játékmodell illesztését teszi lehetővé az actorok számára. Az actor is bármilyen típusú lehet.
 public abstract class WorldHelper<TBody, TActor> {
     public TActor actor;
     public TBody body;
 
+    protected Array<Runnable> runnables = new Array<>();
+
     public boolean modifyedByWorld = false;
+
+    public boolean rotationChanged = false;
+    public boolean sizeChanged = false;
+    public boolean positionChanged = false;
+    public boolean colorChanged = false;
+    public boolean originChanged = false;
+
 
     public void beginUpdate(){
         modifyedByWorld = true;
@@ -42,6 +54,8 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract float getBodyWidth();
     public abstract float getBodyHeight();
 
+    public abstract Color getBodyColor();
+
     public abstract float getActorX();
     public abstract float getActorY();
     public abstract float getActorWidth();
@@ -51,11 +65,13 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract float getActorOriginX();
     public abstract float getActorOriginY();
 
+    public abstract Color getActorColor();
+
     public abstract WorldHelper setBodyRotation(float rotation);
     public abstract WorldHelper setBodyOrigin(float x, float y);
     public abstract WorldHelper setBodySize(float w, float h);
     public abstract WorldHelper setBodyPosition(float x, float y);
-
+    public abstract WorldHelper setBodyColor(Color color);
 
     protected abstract void beforeAddToWorld();
     protected abstract void afterAddToWorld();
@@ -66,9 +82,14 @@ public abstract class WorldHelper<TBody, TActor> {
     public abstract void removeFromWorld();
     public abstract void refreshBodyOnWorld();
 
-    public abstract void act(float delta);
 
+    public void act(float delta) {
+        while (runnables.size>0){
+            runnables.removeIndex(0).run();
+        }
+    }
 
-
+    public abstract void resetChangeFlags();
+    public abstract void invoke(Runnable runnable);
 
 }
