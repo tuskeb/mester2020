@@ -39,7 +39,7 @@ public class SimpleWorld {
     }
 
     //optimalizáció miatt
-    protected final Array<SimpleBody> collisionBodiesA = new Array<SimpleBody>();
+    protected final Array<SimpleBody> collisionBodies = new Array<SimpleBody>();
     protected final Array<SimpleBody> moveBodies = new Array<>();
 
 
@@ -55,12 +55,12 @@ public class SimpleWorld {
 
             SimpleBody bodyA = null;
             SimpleBody bodyB = null;
-            for(int x = 0; x < collisionBodiesA.size; x++)
+            for(int x = 0; x < collisionBodies.size; x++)
             {
-                for(int y = x+1; y < collisionBodiesA.size; y++)
+                for(int y = x+1; y < collisionBodies.size; y++)
                 {
-                    bodyA = collisionBodiesA.get(x);
-                    bodyB = collisionBodiesA.get(y);
+                    bodyA = collisionBodies.get(x);
+                    bodyB = collisionBodies.get(y);
                     if (bodyA.overlaps(bodyB)){
                         if (!bodyA.connectedBodies.contains(bodyB,true)) {
                             bodyA.connectedBodies.add(bodyB);
@@ -81,19 +81,28 @@ public class SimpleWorld {
     }
 
     protected void setBodyType(SimpleBody body, SimpleBodyType bodyType){
+        if (locked){
+            throw new UnsupportedOperationException("A test típusa nem változtatható meg a world.step futása közben.");
+        }
         if (!bodies.contains(body, true)) return;
         body.bodyType = bodyType;
         switch (bodyType){
             case Dinamic:
             case Sensor:
-                collisionBodiesA.add(body);
+                collisionBodies.add(body);
                 moveBodies.add(body);
                 break;
             case Ghost:
                 moveBodies.add(body);
+                collisionBodies.removeValue(body, true);
                 break;
             case Static:
-                collisionBodiesA.add(body);
+                collisionBodies.add(body);
+                moveBodies.removeValue(body, true);
+                break;
+            case Passive:
+                collisionBodies.removeValue(body, true);
+                moveBodies.removeValue(body, true);
                 break;
         }
     }
@@ -107,7 +116,7 @@ public class SimpleWorld {
         if (locked){
             throw new UnsupportedOperationException("A test nem távolítható el a world.step futása közben.");
         }
-        collisionBodiesA.removeValue(body,true);
+        collisionBodies.removeValue(body,true);
         moveBodies.removeValue(body, true);
         return bodies.removeValue(body,true);
     }
@@ -116,7 +125,7 @@ public class SimpleWorld {
         if (locked){
             throw new UnsupportedOperationException("A test nem távolítható el a world.step futása közben.");
         }
-        collisionBodiesA.clear();
+        collisionBodies.clear();
         moveBodies.clear();
         bodies.clear();
     }

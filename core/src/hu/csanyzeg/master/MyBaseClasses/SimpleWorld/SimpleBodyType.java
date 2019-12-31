@@ -1,7 +1,7 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 /**
- * A típus a világ passzív állapotában a body ki és berakásával a helpren keresztül bármikor megváloztatható.
+ * A típus a világ passzív állapotában a világon vagy a helperen keresztül passzív állapotban bármikor megváloztatható.
  */
 public enum  SimpleBodyType {
 

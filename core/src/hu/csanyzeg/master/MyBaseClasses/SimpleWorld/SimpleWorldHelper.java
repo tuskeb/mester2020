@@ -43,12 +43,6 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
         resetChangeFlags();
     }
 
-    public void setBodyType(SimpleBodyType bodyType){
-        removeFromWorld();
-        body.bodyType = bodyType;
-        addToWorld();
-    }
-
     @Override
     public float getBodyX() {
         return body.getLeftBottomX();
@@ -227,6 +221,16 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
     @Override
     public WorldHelper setBodyColor(Color color) {
         body.setColor(color);
+        return this;
+    }
+
+    public SimpleWorldHelper setBodyType(final SimpleBodyType bodyType){
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                world.setBodyType(body, bodyType);
+            }
+        });
         return this;
     }
 }

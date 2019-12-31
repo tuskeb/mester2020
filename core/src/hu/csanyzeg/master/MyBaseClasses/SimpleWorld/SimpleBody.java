@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class SimpleBody extends MyRectangle {
@@ -147,6 +146,7 @@ public class SimpleBody extends MyRectangle {
     public void rotateTo(float rot, float sec, Direction direction){
         float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / sec;
         float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / sec;
+
         switch (direction){
             case ClockWise:
                 angularVelocity = cw;
@@ -156,9 +156,15 @@ public class SimpleBody extends MyRectangle {
                 break;
             case Shorter:
                 angularVelocity = Math.abs(cw) < Math.abs(ccw) ? cw : ccw;
+                if (rot == getRotation()){
+                    angularVelocity = 0;
+                }
                 break;
             case Longer:
                 angularVelocity = Math.abs(cw) >= Math.abs(ccw) ? cw : ccw;
+                if (rot == getRotation()){
+                    angularVelocity = 360 / sec;
+                }
                 break;
         }
         angularTimer = sec;
