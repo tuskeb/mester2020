@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class SimpleBody extends MyRectangle {
@@ -123,8 +124,33 @@ public class SimpleBody extends MyRectangle {
         this.sizeVelocity.set(w,h);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param speed egység / sec
+     * @param positionRule
+     */
+    public void moveToFixSpeed(float x, float y, float speed, PositionRule positionRule) {
+        switch (positionRule) {
+            case Center:
+                targetPosition.set(x - getRealCenterX() + getLeftBottomX(), y - getRealCenterY() + getLeftBottomY());
+                break;
+            case LeftBottom:
+                targetPosition.set(x, y);
+                break;
+            case Origin:
+                targetPosition.set(x - getLeftBottomOriginX(), y - getLeftBottomOriginY());
+                break;
+        }
+        linearVelocity.set(speed, 0);
+        Vector2 trip = new Vector2(targetPosition);
+        trip.sub(getLeftBottomX(),getLeftBottomY());
+        linearVelocity.rotate(trip.angle());
+        linearTimer = trip.len() / speed;
+    }
 
-    public void moveTo(float x, float y, float sec, PositionRule positionRule) {
+    public void moveToFixTime(float x, float y, float sec, PositionRule positionRule) {
         switch (positionRule) {
             case Center:
                 targetPosition.set(x - getRealCenterX() + getLeftBottomX(), y - getRealCenterY() + getLeftBottomY());
@@ -142,8 +168,47 @@ public class SimpleBody extends MyRectangle {
         linearTimer = sec;
     }
 
+    /**
+     *
+     * @param rot
+     * @param speed deg / sec
+     * @param direction
+     */
+    public void rotateToFixSpeed(float rot, float speed, Direction direction) {
+        float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / speed;
+        float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / speed;
 
-    public void rotateTo(float rot, float sec, Direction direction){
+        switch (direction){
+            case ClockWise:
+                angularVelocity = -speed;
+                angularTimer = Math.abs(cw);
+                break;
+            case CounterClockWise:
+                angularVelocity = speed;
+                angularTimer = Math.abs(ccw);
+                break;
+            case Shorter:
+                angularVelocity = Math.abs(cw) < Math.abs(ccw) ? -speed : speed;
+                angularTimer = Math.abs( Math.abs(cw) < Math.abs(ccw) ? cw : ccw);
+                if (rot == getRotation()){
+                    angularVelocity = 0;
+                    angularTimer = INVALIDTIMER;
+                }
+                break;
+            case Longer:
+                angularVelocity = Math.abs(cw) >= Math.abs(ccw) ? -speed : speed;
+                angularTimer = Math.abs( Math.abs(cw) >= Math.abs(ccw) ? cw : ccw);
+                if (rot == getRotation()){
+                    angularVelocity = speed;
+                    angularTimer = 360 / speed;
+                }
+                break;
+        }
+        targetRotation = rot;
+        System.out.println(angularTimer);
+    }
+
+    public void rotateToFixTime(float rot, float sec, Direction direction){
         float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / sec;
         float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / sec;
 
@@ -171,15 +236,43 @@ public class SimpleBody extends MyRectangle {
         targetRotation = rot;
     }
 
-    public void sizeTo(float width, float height, float sec, PositionRule sizingPositionRule) {
+    /**
+     *
+     * @param width
+     * @param height
+     * @param speed egység / sec
+     * @param sizingPositionRule
+     */
+    public void sizeToFixSpeed(float width, float height, float speed, PositionRule sizingPositionRule) {
+        this.sizingPositionRule = sizingPositionRule;
+        targetSize.set(width, height);
+        if ((width - this.width) > (height - this.height)) {
+            sizeTimer = (width - this.width) / speed / 2f;
+        }else{
+            sizeTimer = (height - this.height) / speed / 2f;
+        }
+        sizeVelocity.set((width - this.width) / sizeTimer, (height - this.height) / sizeTimer);
+    }
+
+    public void sizeToFixTime(float width, float height, float sec, PositionRule sizingPositionRule) {
         this.sizingPositionRule = sizingPositionRule;
         targetSize.set(width, height);
         sizeVelocity.set((width - this.width) / sec, (height - this.height) / sec);
         sizeTimer = sec;
     }
 
-    public void scaleTo(float scale, float sec, PositionRule sizingPositionRule){
-        sizeTo(width * scale, height * scale, sec, sizingPositionRule);
+    /**
+     *
+     * @param scale
+     * @param speed egység / sec
+     * @param sizingPositionRule
+     */
+    public void scaleToFixSpeed(float scale, float speed, PositionRule sizingPositionRule) {
+        sizeToFixTime(width * scale, height * scale, speed, sizingPositionRule);
+    }
+
+    public void scaleToFixTime(float scale, float sec, PositionRule sizingPositionRule){
+        sizeToFixTime(width * scale, height * scale, sec, sizingPositionRule);
     }
 
     public void colorTo(Color color, float sec){

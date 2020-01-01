@@ -117,17 +117,27 @@ public abstract class MyShape {
 
 
     public void setSizeByCenter(float width, float height) {
-        float oldW = width;
-        float oldH = height;
+        float olx = getLeftBottomX();
+        float oly = getLeftBottomY();
+        float oldW = this.width;
+        float oldH = this.height;
         float oldOriginX = originX;
         float oldOriginY = originY;
+        float orcx = realCenterX;
+        float orcy = realCenterY;
+
         originX = originX / this.width * width;
         originY = originY / this.height * height;
         this.width = width;
         this.height = height;
         calculateCenterXY();
-        originChanged(originX, originY, oldOriginX, oldOriginY);
+        this.centerX += orcx - realCenterX;
+        this.centerY += orcy - realCenterY;
+        calculateCenterXY();
+
         sizeChanged(width, height, oldW, oldH);
+        positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
+        //originChanged(originX, originY, oldOriginX, oldOriginY);
     }
 
     public void setSize(float width, float height) {

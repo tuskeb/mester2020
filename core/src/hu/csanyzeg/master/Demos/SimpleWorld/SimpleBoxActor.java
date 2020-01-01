@@ -65,9 +65,12 @@ public class SimpleBoxActor extends OneSpriteStaticActor {
 
 
                 SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
-                //helper.body.moveTo(4,4,1f, PositionRule.Center);
-                helper.body.rotateTo(310, 1, Direction.Longer);
-                //helper.body.scaleTo(2, 1, PositionRule.Origin);
+                //helper.body.moveToFixTime(4,4,1f, PositionRule.Center);
+                //helper.body.rotateToFixSpeed(310, 360, Direction.Longer);
+                //helper.body.moveToFixSpeed(0,0,1, PositionRule.Origin);
+//                helper.body.moveToFixTime(0,0,1, PositionRule.Center);
+                //helper.body.scaleToFixTime(2, 1, PositionRule.Origin);
+                helper.body.sizeToFixSpeed(8,6,1,PositionRule.Origin);
                 //helper.body.setSizeByOrigin(2,2);
                 helper.body.colorTo(Color.BLUE, 2f);
                 //helper.setBodyType(SimpleBodyType.Ghost);
