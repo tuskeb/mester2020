@@ -226,6 +226,8 @@ public class MenuStage extends MyStage {
         clock = new OneSpriteStaticActor(game, clockTexture);
         addActor(bliss);//A hátteret azonnal hozzáadjuk a stagehez
 
+        if(getViewport().getWorldWidth() > bliss.getWidth()) bliss.setWidth(getViewport().getWorldWidth());
+        if(getViewport().getWorldHeight() > bliss.getHeight()) bliss.setHeight(getViewport().getWorldHeight());
         kek.setWidth(getViewport().getWorldWidth());
         clock.setWidth(clock.getWidth()*0.5f);
         clock.setX(kek.getX() + kek.getWidth() - clock.getWidth());
