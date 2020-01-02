@@ -1,4 +1,4 @@
-package hu.csanyzeg.master.Demos.SimpleWorld;
+package hu.csanyzeg.master.Demos.SimpleClock;
 
 import hu.csanyzeg.master.Demos.Box2dJoin.ControlStage;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;

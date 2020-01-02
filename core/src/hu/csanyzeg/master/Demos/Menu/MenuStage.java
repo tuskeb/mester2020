@@ -4,20 +4,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import hu.csanyzeg.master.Demos.Actor.ActorScreen;
 import hu.csanyzeg.master.Demos.Box2dHelper.Box2dHelperScreen;
 import hu.csanyzeg.master.Demos.Box2dJoin.Box2dJoinScreen;
 import hu.csanyzeg.master.Demos.Firework.FireworkScreen;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
-import hu.csanyzeg.master.Demos.SimpleWorld.SWScreen;
-import hu.csanyzeg.master.Demos.Szakkor.SzakkorScreen;
+import hu.csanyzeg.master.Demos.SimpleClock.SWScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
@@ -33,8 +30,6 @@ import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 import static hu.csanyzeg.master.Demos.Box2dHelper.BoxActor.boxTexture;
 import static hu.csanyzeg.master.Demos.Box2dJoin.ChainLinkActor.linkTexture;
 import static hu.csanyzeg.master.Demos.FlappyBird.BirdActor.birdTexture;
-import static hu.csanyzeg.master.Demos.FlappyBird.FlappyStage.flappyFont;
-import static hu.csanyzeg.master.Demos.Menu.MenuButton.fontHash;
 
 /**
  * Created by tuskeb on 2016. 09. 30..

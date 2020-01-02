@@ -158,7 +158,7 @@ public abstract class MyShape {
 
         sizeChanged(width, height, oldW, oldH);
         positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
-        originChanged(originX, originY, oldOriginX, oldOriginY);
+        //originChanged(originX, originY, oldOriginX, oldOriginY);
     }
 
 
@@ -180,7 +180,7 @@ public abstract class MyShape {
 
         sizeChanged(width, height, oldW, oldH);
         positionChanged(getLeftBottomX(), getLeftBottomY(), olx, oly);
-        originChanged(originX, originY, oldOriginX, oldOriginY);
+        //originChanged(originX, originY, oldOriginX, oldOriginY);
 
     }
 

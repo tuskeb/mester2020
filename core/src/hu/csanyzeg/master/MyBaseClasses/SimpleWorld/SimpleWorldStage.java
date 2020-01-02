@@ -64,7 +64,7 @@ public class SimpleWorldStage extends MyStage {
 
         world.setContactListener(new SimpleWorldContactListener() {
             @Override
-            public void beginContact(SimpleContact contact) {
+            public void beginContact(SimpleWorld world, SimpleContact contact) {
                 if (contact.bodyA.userData instanceof SimpleWorldHelper && contact.bodyB.userData instanceof SimpleWorldHelper) {
                     SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.userData);
                     SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.userData);
@@ -78,7 +78,7 @@ public class SimpleWorldStage extends MyStage {
             }
 
             @Override
-            public void endContact(SimpleContact contact) {
+            public void endContact(SimpleWorld world, SimpleContact contact) {
                 if (contact.bodyA.userData instanceof SimpleWorldHelper && contact.bodyB.userData instanceof SimpleWorldHelper) {
                     SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.userData);
                     SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.userData);

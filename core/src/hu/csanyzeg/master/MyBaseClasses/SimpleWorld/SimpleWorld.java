@@ -2,7 +2,7 @@ package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 import com.badlogic.gdx.utils.Array;
 
-//TODO: méret és origin átvétele a világból az actorba, dinamic test típus implementálása, remove tesztelése, fejlesztése, méretezésnél az origin nem jó helyre kerül, gomb a menübe a demóhoz
+//TODO: dinamic test típus implementálása
 
 
 public class SimpleWorld {
@@ -16,15 +16,7 @@ public class SimpleWorld {
         return locked;
     }
 
-    protected SimpleWorldContactListener contactListener = new SimpleWorldContactListener() {
-        @Override
-        public void beginContact(SimpleContact contact) {
-        }
-
-        @Override
-        public void endContact(SimpleContact contact) {
-        }
-    };
+    protected SimpleWorldContactListener contactListener = new SimpleWorldContactListener();
 
     public SimpleWorldContactListener getContactListener() {
         return contactListener;
@@ -45,10 +37,11 @@ public class SimpleWorld {
 
 
     public void step(float deltaTime, int moveIterations, int positionCorrectionIterations){
-        locked = true;
         elapsedTime+=deltaTime;
         float stepTime = deltaTime / moveIterations;
         for(int i = 0; i<moveIterations; i ++){
+            contactListener.beforeIteration(this, stepTime);
+            locked = true;
             for(SimpleBody body : moveBodies){
                 body.step(stepTime);
             }
@@ -65,19 +58,24 @@ public class SimpleWorld {
                         if (!bodyA.connectedBodies.contains(bodyB,true)) {
                             bodyA.connectedBodies.add(bodyB);
                             bodyB.connectedBodies.add(bodyA);
-                            contactListener.beginContact(new SimpleContact(bodyA, bodyB));
+                            bodyA.simpleBodyBehaviorListener.onContactAdded(bodyA, bodyB);
+                            bodyB.simpleBodyBehaviorListener.onContactAdded(bodyB, bodyA);
+                            contactListener.beginContact(this, new SimpleContact(bodyA, bodyB));
                         }
                     }else{
                         if (bodyA.connectedBodies.contains(bodyB,true)) {
                             bodyA.connectedBodies.removeValue(bodyB,true);
                             bodyB.connectedBodies.removeValue(bodyA, true);
-                            contactListener.endContact(new SimpleContact(bodyA, bodyB));
+                            bodyA.simpleBodyBehaviorListener.onContactRemoved(bodyA, bodyB);
+                            bodyB.simpleBodyBehaviorListener.onContactRemoved(bodyB, bodyA);
+                            contactListener.endContact(this, new SimpleContact(bodyA, bodyB));
                         }
                     }
                 }
             }
+            locked = false;
+            contactListener.afterIteration(this, stepTime);
         }
-        locked = false;
     }
 
     protected void setBodyType(SimpleBody body, SimpleBodyType bodyType){

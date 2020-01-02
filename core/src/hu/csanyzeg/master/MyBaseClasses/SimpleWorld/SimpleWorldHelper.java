@@ -160,16 +160,26 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
 
     @Override
     public void addToWorld() {
-        beforeAddToWorld();
-        world.addBody(body);
-        afterAddToWorld();
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                beforeAddToWorld();
+                world.addBody(body);
+                afterAddToWorld();
+            }
+        });
     }
 
     @Override
     public void removeFromWorld() {
-        beforeRemoveFromWorld();
-        world.removeBody(body);
-        afterRemoveFromWorld();
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                beforeRemoveFromWorld();
+                world.removeBody(body);
+                afterRemoveFromWorld();
+            }
+        });
     }
 
     @Override
