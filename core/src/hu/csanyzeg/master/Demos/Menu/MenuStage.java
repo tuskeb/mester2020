@@ -47,6 +47,7 @@ public class MenuStage extends MyStage {
     public static String shutdownTexture = "demomenu/shutdown.jpg";
     public static String shutdownSound = "demomenu/shutdown.mp3";
     public static String shutdownWallpaperTexture = "demomenu/shutdownWallpaper.jpg";
+    public static String simpleClockTexture = "demomenu/simpleClock.png";
 
     public static AssetList assetList = new AssetList();
     static {
@@ -64,6 +65,7 @@ public class MenuStage extends MyStage {
         assetList.addTexture(shutdownTexture);
         assetList.addSound(shutdownSound);
         assetList.addTexture(shutdownWallpaperTexture);
+        assetList.addTexture(simpleClockTexture);
         assetList.addFont(trebuchet,trebuchet, 16, Color.WHITE);
     }
 
@@ -367,7 +369,7 @@ public class MenuStage extends MyStage {
     ClickListener fireworkListener;//Firework Demo listener
     ClickListener boxListener;//Box2D Helper listener
     ClickListener flappyListener;//Flappy Demo listener
-    ClickListener simpleListener;//SimpleWorld listener
+    ClickListener clockListener;//SimpleWorld listener
 
     private void makeButtons()
     {
@@ -504,7 +506,7 @@ public class MenuStage extends MyStage {
 
 
         //-----SIMPLE WORLD-----
-        simpleListener = new ClickListener(){
+        clockListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -512,24 +514,24 @@ public class MenuStage extends MyStage {
             }
         };
 
-        simpleActor = new OneSpriteStaticActor(game, boxTexture){
+        simpleActor = new OneSpriteStaticActor(game, simpleClockTexture){
             @Override
             public void init() {
                 super.init();
                 setPosition(linkActor.getX(),flappyActor.getY() + flappyActor.getHeight() + 15);
                 setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
-                addListener(simpleListener);
+                addListener(clockListener);
                 buttons.add(this);
             }
         };
 
-            simpleActorLabel = new MyLabel("Simple World", getLabelStyle()) {
+            simpleActorLabel = new MyLabel("Simple Clock", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, simpleActor.getY() + 10);
                     setColor(Color.BLACK);
                     setFontScale(1.5f);
-                    addListener(simpleListener);
+                    addListener(clockListener);
                     labels.add(this);
                 }
             };
