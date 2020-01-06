@@ -178,7 +178,6 @@ public class MyAssetManager implements Disposable {
     }
 
     public BitmapFont getFont(String hash){
-        System.out.println(assetManager.get((MyAssetDescriptor<BitmapFont>)(assetList.getAssetDescriptor(hash))));
         return assetManager.get((MyAssetDescriptor<BitmapFont>)(assetList.getAssetDescriptor(hash)));
     }
 

@@ -57,10 +57,6 @@ public class BootStage extends LoadingStage {
             game.getMyAssetManager().getSound(welcomeSound).play();
 
             addTimer(new TickTimer(1.75f, false, new TickTimerListener() {
-                @Override
-                public void onRepeat(TickTimer sender) {
-
-                }
 
                 @Override
                 public void onTick(Timer sender, float correction) {
@@ -68,15 +64,6 @@ public class BootStage extends LoadingStage {
                     getScreen().removeStage(BootStage.this);
                 }
 
-                @Override
-                public void onStop(Timer sender) {
-
-                }
-
-                @Override
-                public void onStart(Timer sender) {
-
-                }
             }));
         }
         else

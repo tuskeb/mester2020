@@ -40,30 +40,16 @@ public class FireworkStage extends Box2dStage {
         setTimer();
     }
 
-    private void setTimer()
-    {
+    private void setTimer() {
         stop = false;
 
         myTimer = new TickTimer(1f, true, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
-                if(!stop) fireworks.add(new makeFirework((int) (Math.random() * 128) + 24));
+                if (!stop) fireworks.add(new makeFirework((int) (Math.random() * 128) + 24));
             }
-
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }});
+        });
         addTimer(myTimer);
     }
 

@@ -248,18 +248,9 @@ public class FlappyStage extends MyStage {
     {
         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
             @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
-
-            @Override
             public void onTick(Timer sender, float correction) {
                 addActor(new GameOverActor(game,getViewport()));
                 addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
-                    @Override
-                    public void onRepeat(TickTimer sender) {
-
-                    }
 
                     @Override
                     public void onTick(Timer sender, float correction) {
@@ -270,10 +261,6 @@ public class FlappyStage extends MyStage {
                         }
                         addActor(new ScoreTable(game,getViewport(),score,flappySave.getInteger("highscore")));
                         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
-                            @Override
-                            public void onRepeat(TickTimer sender) {
-
-                            }
 
                             @Override
                             public void onTick(Timer sender, float correction) {
@@ -312,39 +299,9 @@ public class FlappyStage extends MyStage {
                                     }
                                 });
                             }
-
-                            @Override
-                            public void onStop(Timer sender) {
-
-                            }
-
-                            @Override
-                            public void onStart(Timer sender) {
-
-                            }
                         }));
                     }
-
-                    @Override
-                    public void onStop(Timer sender) {
-
-                    }
-
-                    @Override
-                    public void onStart(Timer sender) {
-
-                    }
                 }));
-            }
-
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
             }
         }));
     }

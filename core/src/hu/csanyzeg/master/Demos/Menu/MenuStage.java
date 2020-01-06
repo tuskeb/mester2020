@@ -184,10 +184,6 @@ public class MenuStage extends MyStage {
 
         addTimer(new TickTimer(3f, false, new TickTimerListener() {
             //A hangeffekt lejátszása után 3 másodperc késéssel fut le az onTick() metódus
-            @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
@@ -195,15 +191,6 @@ public class MenuStage extends MyStage {
                 game.setScreenBackByStackPop();//A program kilépési pontja
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
     }
 
@@ -239,10 +226,6 @@ public class MenuStage extends MyStage {
     {
         //Fél másodperc elteltével jöhet a tálca és az óra
         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
@@ -252,22 +235,11 @@ public class MenuStage extends MyStage {
                 addActor(clockLabel);
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
 
         //Még fél másodperc múlva jön a Start menü és az ikonok
         addTimer(new TickTimer(1, false, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-            }
+
 
             @Override
             public void onTick(Timer sender, float correction) {
@@ -276,15 +248,6 @@ public class MenuStage extends MyStage {
                 for (MyLabel myLabel : labels) addActor(myLabel);
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
 
     }
@@ -293,9 +256,6 @@ public class MenuStage extends MyStage {
     {
         //Először a Start menüt távolítjuk el
         addTimer(new TickTimer(0.5f, false, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
@@ -303,24 +263,10 @@ public class MenuStage extends MyStage {
                 for (MyActor myActor : buttons) myActor.remove();
                 for (MyLabel myLabel : labels) myLabel.remove();
             }
-
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
 
         //Utána eltűnik minden, csak a háttérkép marad
         addTimer(new TickTimer(1f, false, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
@@ -330,38 +276,16 @@ public class MenuStage extends MyStage {
                 clockLabel.remove();
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
 
         //Leállítás
         addTimer(new TickTimer(1.5f, false, new TickTimerListener() {
-            @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
 
             @Override
             public void onTick(Timer sender, float correction) {
                 shutdown();
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
     }
 

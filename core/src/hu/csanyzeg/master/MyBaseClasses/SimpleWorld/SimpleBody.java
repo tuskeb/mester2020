@@ -204,6 +204,7 @@ public class SimpleBody extends MyRectangle {
      * @param direction
      */
     public void rotateToFixSpeed(float rot, float speed, Direction direction) {
+        rot = rot % 360f;
         float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / speed;
         float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / speed;
 
@@ -229,7 +230,7 @@ public class SimpleBody extends MyRectangle {
                 angularTimer = Math.abs( Math.abs(cw) >= Math.abs(ccw) ? cw : ccw);
                 if (rot == getRotation()){
                     angularVelocity = speed;
-                    angularTimer = 360 / speed;
+                    angularTimer = 360f / speed;
                 }
                 break;
         }
@@ -241,6 +242,7 @@ public class SimpleBody extends MyRectangle {
     }
 
     public void rotateToFixTime(float rot, float sec, Direction direction){
+        rot = rot % 360f;
         float cw = ( rot < getRotation() ?  rot  - getRotation() : - 360 + rot - getRotation()) / sec;
         float ccw = (rot < getRotation() ? rot + 360 - getRotation() : rot - getRotation()) / sec;
 
@@ -462,9 +464,7 @@ public class SimpleBody extends MyRectangle {
     }
 
     public void addBaseCollisionRectangleShape(){
-        System.out.println(getWidth());
-            addCollisionShape(BASERECTANGLE,new MyRectangle(width, height,offsetX,offsetY, originX, originY, rotation, offsetRotation, centerX, centerY,false));
-            //addCollisionShape(BASERECTANGLE,new MyRectangle(getWidth(),getHeight(),0,0, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), 0, getX(), getY(),true));
+        addCollisionShape(BASERECTANGLE,new MyRectangle(width, height,offsetX,offsetY, originX, originY, rotation, offsetRotation, centerX, centerY,false));
     }
 
     public void addBaseCollisionCircleShape() {

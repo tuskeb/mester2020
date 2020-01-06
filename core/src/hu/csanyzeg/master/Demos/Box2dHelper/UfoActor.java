@@ -43,10 +43,6 @@ public class UfoActor extends OneSpriteStaticActor {
                 super.clicked(event, x, y);
                 getTimers().clear();
                 addTimer(new IntervalTimer(0.9f, new IntervalTimerListener() {
-                    @Override
-                    public void onRepeat(IntervalTimer sender) {
-
-                    }
 
                     @Override
                     public void onTick(IntervalTimer sender, float correction) {
@@ -68,24 +64,10 @@ public class UfoActor extends OneSpriteStaticActor {
         });
         addTimer(new TickTimer(0.5f, true, new TickTimerListener() {
             @Override
-            public void onRepeat(TickTimer sender) {
-
-            }
-
-            @Override
             public void onTick(Timer sender, float correction) {
                 setColor(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
             }
 
-            @Override
-            public void onStop(Timer sender) {
-
-            }
-
-            @Override
-            public void onStart(Timer sender) {
-
-            }
         }));
     }
 }

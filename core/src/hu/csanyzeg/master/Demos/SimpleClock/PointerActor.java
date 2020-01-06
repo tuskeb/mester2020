@@ -23,7 +23,7 @@ public class PointerActor extends OneSpriteStaticActor {
     }
 
 
-    public PointerActor(final MyGame game, final SimpleWorld world, float x, float y, float w, float h, float rotation) {
+    public PointerActor(final MyGame game, final SimpleWorld world, final float x, final float y, final float w, float h, float rotation) {
         super(game, boxTexture);
         setSize(w, h);
         setRotation(rotation);
@@ -37,12 +37,15 @@ public class PointerActor extends OneSpriteStaticActor {
                 SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
                 helper.body.setOriginFixedPosition(getOriginX() + correction*2f,getOriginY());
                 helper.body.setPosition(getX()-correction*2f, getY());
+                System.out.println(PointerActor.this);
             }
 
             @Override
             public void onStop(IntervalTimer sender) {
                 super.onStop(sender);
                 SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
+                helper.body.setOrigin(4f + getWidth() / 2f,getOriginY());
+                //helper.body.setPosition(x-helper.body.getOriginX() + w / 2f, getY());
                 helper.setBodyType(SimpleBodyType.Sensor);
 
             }

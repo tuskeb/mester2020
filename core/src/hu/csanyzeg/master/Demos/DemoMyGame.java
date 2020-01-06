@@ -1,5 +1,7 @@
 package hu.csanyzeg.master.Demos;
 
+import com.badlogic.gdx.Gdx;
+
 import hu.csanyzeg.master.Demos.LoadingStage.DemoLoadingStage;
 import hu.csanyzeg.master.Demos.Menu.MenuScreen;
 import hu.csanyzeg.master.Demos.SimpleClock.SWScreen;
@@ -19,9 +21,9 @@ public class DemoMyGame extends MyGame {
 		super.create();
 		setLoadingStage(new DemoLoadingStage(this));
 		debug = true;
-		//setScreen(new MenuScreen(this));
+		setScreen(new MenuScreen(this));
 
-		setScreen(new SWScreen(this));
+		//setScreen(new SWScreen(this));
 		//setScreen(new SWScreen(this));
 		//setScreen(new Box2dJoinScreen(this));
 		//setScreen(new FlappyScreen(this));

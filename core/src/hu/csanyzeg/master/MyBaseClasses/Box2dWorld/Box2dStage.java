@@ -99,21 +99,6 @@ public abstract class Box2dStage extends MyStage {
                 public void onRepeat(TickTimer sender) {
                     Gdx.app.log("world", "DT stage: " + (lastDelta * 1000f) +" ms; \tDT world: " + (worldDelta*1000f) + " ms. \tET real: " + realElapsedTime + " \tET world & B2Dstage: " + elapsedTime + " \tWorld iterations per delta: " + iterations + ".\tWorldT-stageT diff: " + (elapsedTime - realElapsedTime)+ " s");
                 }
-
-                @Override
-                public void onTick(Timer sender, float correction) {
-
-                }
-
-                @Override
-                public void onStop(Timer sender) {
-
-                }
-
-                @Override
-                public void onStart(Timer sender) {
-
-                }
             }));
         };
     }

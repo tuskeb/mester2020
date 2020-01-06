@@ -8,7 +8,6 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 public class SWScreen extends MyScreen {
     public SWScreen(MyGame game) {
         super(game);
-        game.debug = true;
     }
 
     @Override

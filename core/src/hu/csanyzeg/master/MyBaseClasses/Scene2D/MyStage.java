@@ -96,23 +96,8 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         if(game.debug){
             addTimer(new TickTimer(2f, true, new TickTimerListener() {
                 @Override
-                public void onRepeat(TickTimer sender) {
-
-                }
-
-                @Override
                 public void onTick(Timer sender, float correction) {
                     Gdx.app.log("stage","Stage (" + this.hashCode() +") \tfps: " + 1f / Gdx.graphics.getDeltaTime() + ". \tActor count: " + getActors().size + ". \tDraw DT: " + drawTime + " ms. Act DT: " + actTime + " ms");
-                }
-
-                @Override
-                public void onStop(Timer sender) {
-
-                }
-
-                @Override
-                public void onStart(Timer sender) {
-
                 }
             }));
         }

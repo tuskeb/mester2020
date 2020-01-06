@@ -44,21 +44,6 @@ public class SimpleWorldStage extends MyStage {
                 public void onRepeat(TickTimer sender) {
                     Gdx.app.log("world", "DT world step: " + (lastWorldMs / 1000000f) +" ms; ET world & SWstage: " + elapsedTime + " \tWorld iterations per delta: " + iterations);
                 }
-
-                @Override
-                public void onTick(Timer sender, float correction) {
-
-                }
-
-                @Override
-                public void onStop(Timer sender) {
-
-                }
-
-                @Override
-                public void onStart(Timer sender) {
-
-                }
             }));
         };
 
