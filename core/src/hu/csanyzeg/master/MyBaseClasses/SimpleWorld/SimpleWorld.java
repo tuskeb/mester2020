@@ -1,12 +1,14 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 //TODO: dinamic test típus implementálása
 
 
 public class SimpleWorld {
-    protected float elapsedTime=0;
+    protected float elapsedTime = 0;
 
     protected final Array<SimpleBody> bodies = new Array<>();
 
@@ -35,48 +37,54 @@ public class SimpleWorld {
     protected final Array<SimpleBody> moveBodies = new Array<>();
 
 
-
-    public void step(float deltaTime, int moveIterations, int positionCorrectionIterations){
-        elapsedTime+=deltaTime;
+    public void step(float deltaTime, int moveIterations, int positionCorrectionIterations) {
+        elapsedTime += deltaTime;
         float stepTime = deltaTime / moveIterations;
-        for(int i = 0; i<moveIterations; i ++){
+        for (int i = 0; i < moveIterations; i++) {
+            //long t = TimeUtils.nanoTime();
+
             contactListener.beforeIteration(this, stepTime);
             locked = true;
-            for(SimpleBody body : moveBodies){
+            for (SimpleBody body : moveBodies) {
                 body.step(stepTime);
             }
 
             SimpleBody bodyA = null;
             SimpleBody bodyB = null;
-            for(int x = 0; x < collisionBodies.size; x++)
-            {
-                for(int y = x+1; y < collisionBodies.size; y++)
-                {
-                    bodyA = collisionBodies.get(x);
-                    bodyB = collisionBodies.get(y);
-                    if (bodyA.overlaps(bodyB)){
-                        if (!bodyA.connectedBodies.contains(bodyB,true)) {
-                            bodyA.connectedBodies.add(bodyB);
-                            bodyB.connectedBodies.add(bodyA);
-                            bodyA.simpleBodyBehaviorListener.onContactAdded(bodyA, bodyB);
-                            bodyB.simpleBodyBehaviorListener.onContactAdded(bodyB, bodyA);
-                            contactListener.beginContact(this, new SimpleContact(bodyA, bodyB));
-                        }
-                    }else{
-                        if (bodyA.connectedBodies.contains(bodyB,true)) {
-                            bodyA.connectedBodies.removeValue(bodyB,true);
-                            bodyB.connectedBodies.removeValue(bodyA, true);
-                            bodyA.simpleBodyBehaviorListener.onContactRemoved(bodyA, bodyB);
-                            bodyB.simpleBodyBehaviorListener.onContactRemoved(bodyB, bodyA);
-                            contactListener.endContact(this, new SimpleContact(bodyA, bodyB));
+            for (int x = 0; x < collisionBodies.size; x++) {
+                bodyA = collisionBodies.get(x);
+                if (bodyA.needToCalculateOverlaps) {
+                    for (int y = x + 1; y < collisionBodies.size; y++) {
+                        bodyB = collisionBodies.get(y);
+                        if (bodyA.overlaps(bodyB)) {
+                            if (!bodyA.connectedBodies.contains(bodyB, true)) {
+                                bodyA.connectedBodies.add(bodyB);
+                                bodyB.connectedBodies.add(bodyA);
+                                bodyA.simpleBodyBehaviorListener.onContactAdded(bodyA, bodyB);
+                                bodyB.simpleBodyBehaviorListener.onContactAdded(bodyB, bodyA);
+                                contactListener.beginContact(this, new SimpleContact(bodyA, bodyB));
+                            }
+                        } else {
+                            if (bodyA.connectedBodies.contains(bodyB, true)) {
+                                bodyA.connectedBodies.removeValue(bodyB, true);
+                                bodyB.connectedBodies.removeValue(bodyA, true);
+                                bodyA.simpleBodyBehaviorListener.onContactRemoved(bodyA, bodyB);
+                                bodyB.simpleBodyBehaviorListener.onContactRemoved(bodyB, bodyA);
+                                contactListener.endContact(this, new SimpleContact(bodyA, bodyB));
+                            }
                         }
                     }
+                    bodyA.needToCalculateOverlaps = false;
                 }
             }
-            locked = false;
-            contactListener.afterIteration(this, stepTime);
         }
+        locked = false;
+
+        //Gdx.app.log("time", TimeUtils.nanoTime() - t + "");
+        contactListener.afterIteration(this, stepTime);
     }
+
+
 
     protected void setBodyType(SimpleBody body, SimpleBodyType bodyType){
         if (locked){

@@ -172,6 +172,13 @@ public class MyRectangle extends MyShape{
         //x10, y10 is centre point of rect1. x20, y20 is centre point of rect2
         //height1, width1 are half heights/widths of rect1, radrot is rotation of rect in radians
 
+        if ((rectangle.realCenterX - objB.realCenterX) * (rectangle.realCenterX - objB.realCenterX) +
+                (rectangle.realCenterY - objB.realCenterY) * (rectangle.realCenterY - objB.realCenterY) >
+                (rectangle.realRadius + objB.realRadius) * (rectangle.realRadius + objB.realRadius)){
+            return false;
+        }
+
+
         MyCircle circle = (MyCircle)objB;
 
         //System.out.println(circle);
@@ -256,6 +263,14 @@ public class MyRectangle extends MyShape{
 
     //https://forums.coronalabs.com/topic/39094-code-for-rotated-rectangle-collision-detection/
     public static boolean overlaps(MyRectangle objA, MyRectangle objB) {
+
+        if ((objA.realCenterX - objB.realCenterX) * (objA.realCenterX - objB.realCenterX) +
+                (objA.realCenterY - objB.realCenterY) * (objA.realCenterY - objB.realCenterY) >
+                (objA.realRadius + objB.realRadius) * (objA.realRadius + objB.realRadius)){
+            return false;
+        }
+
+
         //x10, y10 is centre point of rect1. x20, y20 is centre point of rect2
         //height1, width1 are half heights/widths of rect1, radrot is rotation of rect in radians
 

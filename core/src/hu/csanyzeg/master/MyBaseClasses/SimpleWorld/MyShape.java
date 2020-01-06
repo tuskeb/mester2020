@@ -19,6 +19,12 @@ public abstract class MyShape {
     protected float realCenterY = 0;
 
     /**
+     * A szélességből és magasságból számított, körülvevő kür sugara
+     */
+    protected float realRadius = 0f;
+
+
+    /**
      * Tényleges forgatás. A offsetRotation forgatás és az elforgatás összege.
      */
     protected float realRotation = 0;
@@ -77,6 +83,9 @@ public abstract class MyShape {
     static protected float PI = (float) Math.PI;
 
     public boolean active = true;
+
+
+
 
     /**
      * Az alakzathoz hozzácsatolható objektum, például egy Actor
@@ -194,6 +203,7 @@ public abstract class MyShape {
         Vector2 s = v.add(origin);
         this.realCenterX = s.x;
         this.realCenterY = s.y;
+        this.realRadius = (float)Math.sqrt(width * width + height * height) / 2f;
     }
 
     public void setPosition(float X, float Y) {

@@ -48,6 +48,8 @@ public class SimpleBody extends MyRectangle {
 
     protected Color color = Color.WHITE;
 
+    protected boolean needToCalculateOverlaps = true;
+
 
     /** világegység / mp **/
     protected Vector2 linearVelocity = new Vector2(0,0);
@@ -632,6 +634,7 @@ public class SimpleBody extends MyRectangle {
         if (!changedByWorld){
             angularTimer = INVALIDTIMER;
         }
+        needToCalculateOverlaps = true;
     }
 
     @Override
@@ -647,6 +650,7 @@ public class SimpleBody extends MyRectangle {
         if (!changedByWorld){
             sizeTimer = INVALIDTIMER;
         }
+        needToCalculateOverlaps = true;
     }
 
     @Override
@@ -657,6 +661,7 @@ public class SimpleBody extends MyRectangle {
                 shape.setOrigin (getLeftBottomOriginX(), getLeftBottomOriginY());
             }
         }
+        needToCalculateOverlaps = true;
     }
 
     @Override
@@ -668,6 +673,7 @@ public class SimpleBody extends MyRectangle {
         if (!changedByWorld){
             linearTimer = INVALIDTIMER;
         }
+        needToCalculateOverlaps = true;
     }
 
     protected void colorChanged(Color newC, Color oldC) {

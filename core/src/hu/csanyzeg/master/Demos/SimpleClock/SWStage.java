@@ -36,7 +36,7 @@ public class SWStage extends SimpleWorldStage {
         addBackButtonScreenBackByStackPopListener();
 
 
-        for(int i =0 ; i<60; i++){
+        for(int i =0 ; i<60; i ++){
             PointerActor sba;
             addActor(sba = new PointerActor(game, world,getWidth()/2 - (i % 5 == 0 ? 0.5f : 0.25f),getHeight()/2-0.05f,i % 5 == 0 ? 1f : 0.5f,0.1f,0));
             ((SimpleWorldHelper)sba.getActorWorldHelper()).body.rotateToFixTime(i*6,3, Direction.Shorter);

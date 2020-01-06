@@ -96,6 +96,9 @@ public class SimpleWorldStage extends MyStage {
     @Override
     public void act(float delta) {
         long m = TimeUtils.nanoTime();
+        if (delta > 0.1f){
+            delta = 0.1f;
+        }
         iterations = 1 + (int)(delta*iterationPerSec);
         world.step(delta, iterations, 10);
         lastWorldMs = TimeUtils.nanoTime() - m;
