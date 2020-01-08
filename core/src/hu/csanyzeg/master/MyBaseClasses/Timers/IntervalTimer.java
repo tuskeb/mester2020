@@ -99,4 +99,10 @@ public class IntervalTimer extends Timer<IntervalTimerListener> {
     public void reset(){
         elapsedTime = 0;
     }
+
+    @Override
+    public void start() {
+        super.start();
+        elapsedTime = 0f;
+    }
 }

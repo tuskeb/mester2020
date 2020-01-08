@@ -9,13 +9,13 @@ import java.util.Map;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
 
-public abstract class LoadingStage extends MyStage {
+public abstract class LoadingStage extends SimpleWorldStage implements AssetCollector {
 
     public LoadingStage(Viewport viewport, MyGame game) {
         super(viewport, game);
         game.getMyAssetManager().loadAsset(getAssetList());
-        //game.getMyAssetManager().updateManager();
     }
 
     @Override
@@ -31,8 +31,6 @@ public abstract class LoadingStage extends MyStage {
     public String getActualLoadingName(){
         return game.getMyAssetManager().getActualLoadingName();
     }
-
-    public abstract AssetList getAssetList();
 
     public void show(){
         getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

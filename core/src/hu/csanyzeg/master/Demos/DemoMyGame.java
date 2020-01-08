@@ -20,7 +20,7 @@ public class DemoMyGame extends MyGame {
 	public void create () {
 		super.create();
 		setLoadingStage(new DemoLoadingStage(this));
-		debug = true;
+		//debug = true;
 		setScreen(new MenuScreen(this));
 
 		//setScreen(new SWScreen(this));

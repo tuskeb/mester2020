@@ -627,7 +627,16 @@ public class SimpleBody extends MyRectangle {
             }
         }
         if (colorVelocityA != 0f || colorVelocityB != 0f || colorVelocityG != 0f || colorVelocityR != 0f){
-            color.add(colorVelocityR * deltaTime, colorVelocityG * deltaTime, colorVelocityB* deltaTime, colorVelocityA* deltaTime);
+            float v;
+            if (color.r + colorVelocityR * deltaTime > 1f) v=1f; else if ((v = color.r + colorVelocityR * deltaTime) < 0f) v = 0f;
+            color.r = v;
+            if (color.g + colorVelocityG * deltaTime > 1f) v=1f; else if ((v = color.g + colorVelocityG * deltaTime) < 0f) v = 0f;
+            color.g = v;
+            if (color.b + colorVelocityB * deltaTime > 1f) v=1f; else if ((v = color.b + colorVelocityB * deltaTime) < 0f) v = 0f;
+            color.b = v;
+            if (color.a + colorVelocityA * deltaTime > 1f) v=1f; else if ((v = color.a + colorVelocityA * deltaTime) < 0f) v = 0f;
+            color.a = v;
+            //color.add(colorVelocityR * deltaTime, colorVelocityG * deltaTime, colorVelocityB* deltaTime, colorVelocityA* deltaTime);
         }
 
         changedByWorld = false;
