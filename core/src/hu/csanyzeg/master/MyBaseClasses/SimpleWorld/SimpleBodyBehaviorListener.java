@@ -18,6 +18,7 @@ public class SimpleBodyBehaviorListener {
     public void onAngularVelocityChanged(SimpleBody sender){}
     public void onSizeVelocityChanged(SimpleBody sender){}
     public void onColorVelocityChanged(SimpleBody sender){}
+    public void onOriginVelocityChanged(SimpleBody sender){}
 
     /**
      * Akkor fut le, ha egy másik test átfedésbe került vele. Csak a belépésjor fut le egyszer.

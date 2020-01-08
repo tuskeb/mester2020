@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 public class SimpleBody extends MyRectangle {
     protected final HashMap<String, MyShape> shapeMap = new HashMap<>();
@@ -44,6 +46,7 @@ public class SimpleBody extends MyRectangle {
 
     protected PositionRule sizingPositionRule = PositionRule.Origin;
     protected PositionRule movingPositionRule = PositionRule.LeftBottom;
+    protected OriginRule originRule = OriginRule.Normal;
     protected boolean positionCorrection = true;
 
     protected Color color = Color.WHITE;
@@ -51,6 +54,8 @@ public class SimpleBody extends MyRectangle {
     protected boolean needToCalculateOverlaps = true;
 
 
+    /** világegység / mp **/
+    protected Vector2 originVelocity = new Vector2(0,0);
     /** világegység / mp **/
     protected Vector2 linearVelocity = new Vector2(0,0);
     /** Fok / mp **/
@@ -64,13 +69,14 @@ public class SimpleBody extends MyRectangle {
     protected float colorVelocityB = 0f;
 
 
+    protected Vector2 targetOrigin = new Vector2();
     protected Vector2 targetPosition = new Vector2();
     protected float targetRotation = 0;
     protected Vector2 targetSize = new Vector2();
     protected Color targetColor = Color.WHITE;
 
 
-
+    protected float originTimer = INVALIDTIMER;
     protected float linearTimer = INVALIDTIMER;
     protected float angularTimer = INVALIDTIMER;
     protected float sizeTimer = INVALIDTIMER;
@@ -126,21 +132,97 @@ public class SimpleBody extends MyRectangle {
         return sizeVelocity;
     }
 
-    public void setSizeVelocity(Vector2 sizeVelocity) {
+    public void setSizeVelocity(Vector2 sizeVelocity, PositionRule sizingPositionRule) {
+        this.sizingPositionRule = sizingPositionRule;
         sizeTimer = INVALIDTIMER;
         this.sizeVelocity.set(sizeVelocity);
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
 
-    public void setSizeVelocity(float w, float h) {
+    public void setSizeVelocity(float w, float h, PositionRule sizingPositionRule) {
         sizeTimer = INVALIDTIMER;
+        this.sizingPositionRule = sizingPositionRule;
         this.sizeVelocity.set(w,h);
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
+    }
+
+
+    public Vector2 getOriginVelocity() {
+        return originVelocity;
+    }
+
+    public void setOriginVelocity(Vector2 originVelocity, OriginRule originRule) {
+        this.originVelocity.set(originVelocity);
+        this.originRule = originRule;
+        originTimer = INVALIDTIMER;
+        if (stopped && !isStopped()){
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onOriginVelocityChanged(this);
+    }
+
+    public PositionRule getSizingPositionRule() {
+        return sizingPositionRule;
+    }
+
+    public OriginRule getOriginRule() {
+        return originRule;
+    }
+
+    /**
+     * Az origint mozgatja, ami mindig a bal alsó (forgatás nélküli) saroktól relatív.
+     * @param x Relatív a bal alsó saroktól
+     * @param y Relatív a bal alsó saroktól
+     * @param sec
+     * @param originRule
+     */
+    public void originToFixTime(float x, float y, float sec, OriginRule originRule){
+        targetOrigin.set(x,y);
+        originVelocity.set((x - getLeftBottomOriginX()) / sec, (y - getLeftBottomOriginY()) / sec);
+        this.originRule = originRule;
+        originTimer = sec;
+        if (stopped && !isStopped()){
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onOriginVelocityChanged(this);
+    }
+
+    /**
+     * Az origint mozgatja, ami mindig a bal alsó (forgatás nélküli) saroktól relatív.
+     * @param x Relatív a bal alsó saroktól
+     * @param y Relatív a bal alsó saroktól
+     * @param speed egység / sec
+     * @param originRule
+     */
+    public void originToFixSpeed(float x, float y, float speed, OriginRule originRule){
+        targetOrigin.set(x,y);
+        this.originRule = originRule;
+        originVelocity.set(speed, 0);
+        Vector2 trip = new Vector2(targetOrigin);
+        trip.sub(getLeftBottomOriginX(),getLeftBottomOriginY());
+        originVelocity.rotate(trip.angle());
+        originTimer = trip.len() / speed;
+        if (stopped && !isStopped()){
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onOriginVelocityChanged(this);
+    }
+
+    public void originTo(float sec, float velocityX, float velocityY, OriginRule originRule){
+        this.originRule = originRule;
+        originTimer = sec;
+        originVelocity.set(velocityX, velocityY);
+        targetOrigin.set(velocityX * sec + getLeftBottomOriginX(), velocityY * sec + getLeftBottomOriginY());
+        if (stopped && !isStopped()){
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onOriginVelocityChanged(this);
     }
 
     /**
@@ -174,6 +256,16 @@ public class SimpleBody extends MyRectangle {
         simpleBodyBehaviorListener.onLinearVelocityChanged(this);
     }
 
+    public void moveTo(float sec, float velocityX, float velocityY) {
+        linearTimer = sec;
+        linearVelocity.set(velocityX, velocityY);
+        targetPosition.set(velocityX * sec + getLeftBottomX(), velocityY * sec + getLeftBottomY());
+        if (stopped && !isStopped()) {
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onLinearVelocityChanged(this);
+    }
+
     public void moveToFixTime(float x, float y, float sec, PositionRule positionRule) {
         movingPositionRule = positionRule;
         switch (positionRule) {
@@ -191,7 +283,7 @@ public class SimpleBody extends MyRectangle {
                 break;
         }
         linearTimer = sec;
-        if (stopped && !isStopped()){
+        if (stopped && !isStopped()) {
             simpleBodyBehaviorListener.onStart(this);
         }
         simpleBodyBehaviorListener.onLinearVelocityChanged(this);
@@ -274,6 +366,19 @@ public class SimpleBody extends MyRectangle {
         simpleBodyBehaviorListener.onAngularVelocityChanged(this);
     }
 
+
+
+    public void rotateTo(float sec, float velocity) {
+        angularTimer = sec;
+        angularVelocity = velocity;
+        targetRotation = velocity * sec + realRotation;
+        if (stopped && !isStopped()) {
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onAngularVelocityChanged(this);
+    }
+
+
     /**
      *
      * @param width
@@ -310,6 +415,18 @@ public class SimpleBody extends MyRectangle {
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
 
+
+    public void sizeTo(float sec, float velocityX, float velocityY, PositionRule sizingPositionRule) {
+        this.sizingPositionRule = sizingPositionRule;
+        targetSize.set(width + velocityX *sec, height + velocityY * sec);
+        sizeVelocity.set(velocityX, velocityY);
+        sizeTimer = sec;
+        if (stopped && !isStopped()){
+            simpleBodyBehaviorListener.onStart(this);
+        }
+        simpleBodyBehaviorListener.onSizeVelocityChanged(this);
+    }
+
     /**
      *
      * @param scale
@@ -324,7 +441,11 @@ public class SimpleBody extends MyRectangle {
         sizeToFixTime(width * scale, height * scale, sec, sizingPositionRule);
     }
 
-    public void colorTo(Color color, float sec){
+    public void scaleTo(float sec, float widthVelocity, PositionRule sizingPositionRule){
+        sizeTo(sec, widthVelocity, height / width * widthVelocity, sizingPositionRule);
+    }
+
+    public void colorToFixTime(Color color, float sec){
         targetColor = color;
         setColorVelocity(-(this.color.r-color.r)/sec, -(this.color.g-color.g)/sec, -(this.color.b-color.b)/sec, -(this.color.a-color.a)/sec);
         colorTimer = sec;
@@ -334,10 +455,20 @@ public class SimpleBody extends MyRectangle {
     }
 
 
+    public void colorTo(float sec, float r, float g, float b, float a) {
+        targetColor = color;
+        setColorVelocity(r, g, b, a);
+        colorTimer = sec;
+        if (stopped && !isStopped()) {
+            simpleBodyBehaviorListener.onStart(this);
+        }
+    }
+
+
 
     protected boolean stopped = true;
     public boolean isStopped(){
-        stopped = linearVelocity.len() == 0f && angularVelocity == 0f && sizeVelocity.len() == 0f && colorVelocityA == 0f && colorVelocityR == 0f && colorVelocityG == 0f && colorVelocityB == 0f;
+        stopped =  originVelocity.len() == 0f && linearVelocity.len() == 0f && angularVelocity == 0f && sizeVelocity.len() == 0f && colorVelocityA == 0f && colorVelocityR == 0f && colorVelocityG == 0f && colorVelocityB == 0f;
         return stopped;
     }
 
@@ -346,6 +477,47 @@ public class SimpleBody extends MyRectangle {
     public void step(float deltaTime){
         changedByWorld = true;
         elapsedTime += deltaTime;
+
+
+
+
+        if (originTimer >= 0f){
+            originTimer -= deltaTime;
+            if (originTimer <= 0f){
+                originTimer = INVALIDTIMER;
+                originVelocity.set(0f,0f);
+                if (positionCorrection) setOriginFixedOrigin(targetOrigin.x, targetOrigin.y);
+                simpleBodyBehaviorListener.onOriginVelocityChanged(this);
+                if (!stopped && isStopped()) {
+                    simpleBodyBehaviorListener.onStop(this);
+                }
+            }
+        }
+
+        if (originVelocity.len() != 0f) {
+            float x1 = getLeftBottomX();
+            float y1 = getLeftBottomY();
+            switch (originRule) {
+                case Normal:
+                    setOrigin(getLeftBottomOriginX() + originVelocity.x * deltaTime, getLeftBottomOriginY() + originVelocity.y * deltaTime);
+                    break;
+                case FixOrigin:
+                    setOriginFixedOrigin(getLeftBottomOriginX() + originVelocity.x * deltaTime, getLeftBottomOriginY() + originVelocity.y * deltaTime);
+                    break;
+                case FixPosition:
+                    setOriginFixedPosition(getLeftBottomOriginX() + originVelocity.x * deltaTime, getLeftBottomOriginY() + originVelocity.y * deltaTime);
+                    break;
+            }
+            float x2 = getLeftBottomX();
+            float y2 = getLeftBottomY();
+            targetPosition.add(x2-x1, y2-y1);
+        }
+
+
+
+
+
+
 
         if (angularTimer >= 0f){
             angularTimer -= deltaTime;
@@ -367,6 +539,8 @@ public class SimpleBody extends MyRectangle {
 
         if (linearTimer >= 0f){
             linearTimer -= deltaTime;
+            System.out.println(linearTimer);
+
             if (linearTimer <= 0f){
                 linearTimer = INVALIDTIMER;
                 linearVelocity.set(0f,0f);
@@ -401,13 +575,26 @@ public class SimpleBody extends MyRectangle {
             if (sizeTimer <= 0f){
                 sizeTimer = INVALIDTIMER;
                 sizeVelocity.set(0f,0f);
-                if (positionCorrection) setSize(targetSize.x, targetSize.y);
+                if (positionCorrection){
+                    switch (sizingPositionRule) {
+                        case Center:
+                            setSizeByCenter(targetSize.x, targetSize.y);
+                            break;
+                        case LeftBottom:
+                            setSize(targetSize.x, targetSize.y);
+                            break;
+                        case Origin:
+                            setSizeByOrigin(targetSize.x, targetSize.y);
+                            break;
+                    }
+                }
                 simpleBodyBehaviorListener.onSizeVelocityChanged(this);
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
                 }
             }
         }
+
         if (sizeVelocity.len() != 0f) {
             float x1 = getLeftBottomX();
             float y1 = getLeftBottomY();

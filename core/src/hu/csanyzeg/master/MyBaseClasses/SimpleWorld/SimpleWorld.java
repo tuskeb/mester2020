@@ -54,23 +54,26 @@ public class SimpleWorld {
             for (int x = 0; x < collisionBodies.size; x++) {
                 bodyA = collisionBodies.get(x);
                 if (bodyA.needToCalculateOverlaps) {
-                    for (int y = x + 1; y < collisionBodies.size; y++) {
+                    //for (int y = x + 1; y < collisionBodies.size; y++) {
+                    for (int y = 0; y < collisionBodies.size; y++) {
                         bodyB = collisionBodies.get(y);
-                        if (bodyA.overlaps(bodyB)) {
-                            if (!bodyA.connectedBodies.contains(bodyB, true)) {
-                                bodyA.connectedBodies.add(bodyB);
-                                bodyB.connectedBodies.add(bodyA);
-                                bodyA.simpleBodyBehaviorListener.onContactAdded(bodyA, bodyB);
-                                bodyB.simpleBodyBehaviorListener.onContactAdded(bodyB, bodyA);
-                                contactListener.beginContact(this, new SimpleContact(bodyA, bodyB));
-                            }
-                        } else {
-                            if (bodyA.connectedBodies.contains(bodyB, true)) {
-                                bodyA.connectedBodies.removeValue(bodyB, true);
-                                bodyB.connectedBodies.removeValue(bodyA, true);
-                                bodyA.simpleBodyBehaviorListener.onContactRemoved(bodyA, bodyB);
-                                bodyB.simpleBodyBehaviorListener.onContactRemoved(bodyB, bodyA);
-                                contactListener.endContact(this, new SimpleContact(bodyA, bodyB));
+                        if (bodyA != bodyB) {
+                            if (bodyA.overlaps(bodyB)) {
+                                if (!bodyA.connectedBodies.contains(bodyB, true)) {
+                                    bodyA.connectedBodies.add(bodyB);
+                                    bodyB.connectedBodies.add(bodyA);
+                                    bodyA.simpleBodyBehaviorListener.onContactAdded(bodyA, bodyB);
+                                    bodyB.simpleBodyBehaviorListener.onContactAdded(bodyB, bodyA);
+                                    contactListener.beginContact(this, new SimpleContact(bodyA, bodyB));
+                                }
+                            } else {
+                                if (bodyA.connectedBodies.contains(bodyB, true)) {
+                                    bodyA.connectedBodies.removeValue(bodyB, true);
+                                    bodyB.connectedBodies.removeValue(bodyA, true);
+                                    bodyA.simpleBodyBehaviorListener.onContactRemoved(bodyA, bodyB);
+                                    bodyB.simpleBodyBehaviorListener.onContactRemoved(bodyB, bodyA);
+                                    contactListener.endContact(this, new SimpleContact(bodyA, bodyB));
+                                }
                             }
                         }
                     }
@@ -86,7 +89,7 @@ public class SimpleWorld {
 
 
 
-    protected void setBodyType(SimpleBody body, SimpleBodyType bodyType){
+    public void setBodyType(SimpleBody body, SimpleBodyType bodyType){
         if (locked){
             throw new UnsupportedOperationException("A test típusa nem változtatható meg a world.step futása közben.");
         }
@@ -95,15 +98,25 @@ public class SimpleWorld {
         switch (bodyType){
             case Dinamic:
             case Sensor:
-                collisionBodies.add(body);
-                moveBodies.add(body);
+                body.needToCalculateOverlaps = true;
+                if (!collisionBodies.contains(body, true)) {
+                    collisionBodies.add(body);
+                }
+                if (!moveBodies.contains(body, true)) {
+                    moveBodies.add(body);
+                }
                 break;
             case Ghost:
-                moveBodies.add(body);
                 collisionBodies.removeValue(body, true);
+                if (!moveBodies.contains(body, true)) {
+                    moveBodies.add(body);
+                }
                 break;
             case Static:
-                collisionBodies.add(body);
+                body.needToCalculateOverlaps = true;
+                if (!collisionBodies.contains(body, true)) {
+                    collisionBodies.add(body);
+                }
                 moveBodies.removeValue(body, true);
                 break;
             case Passive:

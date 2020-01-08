@@ -9,8 +9,6 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.Direction;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyBehaviorListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyContactListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleContact;
@@ -47,7 +45,7 @@ public class ClockSecPointer extends OneSpriteStaticActor {
         }));
         final SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
         helper.getBodyColor().a = 0f;
-        helper.body.colorTo(Color.WHITE, 2f);
+        helper.body.colorToFixTime(Color.WHITE, 2f);
         helper.body.addCollisionCircleShape("mutatovege", 0,h-w/2f,w/2f, 0);
         helper.body.addCollisionCircleShape("mutatokozepe", 0,1.5f,w/2f, 0);
         helper.addContactListener(new SimpleBodyContactListener(){
@@ -60,6 +58,12 @@ public class ClockSecPointer extends OneSpriteStaticActor {
                         v2.rotate(getRotation());
                         v2.add(getX(), getY());
                         getStage().addActor(new PowderActor(game, world, v2.x ,v2.y));
+                    }
+                }
+
+                if (otherHelper.actor instanceof PointerActor){
+                    for(int i = 0; i< 10; i++){
+                        getStage().addActor(new PowderActor(game, world, otherHelper.body.getRealCenterX(), otherHelper.body.getRealCenterY()));
                     }
                 }
             }

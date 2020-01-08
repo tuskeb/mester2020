@@ -39,7 +39,7 @@ public class ClockHourPointer extends OneSpriteStaticActor {
         }));
         final SimpleWorldHelper helper = (SimpleWorldHelper) getActorWorldHelper();
         helper.getBodyColor().a = 0f;
-        helper.body.colorTo(Color.WHITE, 4f);
+        helper.body.colorToFixTime(Color.WHITE, 4f);
         helper.body.addCollisionCircleShape("mutatovege", 0,h-w/2f,w/2f, 0);
         helper.body.addCollisionCircleShape("mutatokozepe", 0,1.5f,w/2f, 0);
 
