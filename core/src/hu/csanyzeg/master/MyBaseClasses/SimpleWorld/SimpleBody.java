@@ -539,7 +539,6 @@ public class SimpleBody extends MyRectangle {
 
         if (linearTimer >= 0f){
             linearTimer -= deltaTime;
-            System.out.println(linearTimer);
 
             if (linearTimer <= 0f){
                 linearTimer = INVALIDTIMER;
