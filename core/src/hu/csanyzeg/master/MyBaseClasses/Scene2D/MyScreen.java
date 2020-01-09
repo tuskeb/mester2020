@@ -142,13 +142,13 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
             if (s.visible && !s.pause) {
                 s.act(delta);
             }
-        }
-        for(MyStage s : stages){
             if (s.visible){
-                //s.getBatch().setProjectionMatrix(s.getCamera().projection);
-                //s.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                s.getViewport().apply(false);
                 s.draw();
             }
+        }
+        for(MyStage s : stages){
+
         }
     }
 

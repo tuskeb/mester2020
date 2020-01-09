@@ -75,8 +75,7 @@ public class FlappyStage extends MyStage {
 
     public FlappyStage(final MyGame game) {
         super(new FitViewport(320,490), game);
-        addBackButtonScreenBackByStackPopListener();
-        //addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
+        addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
         assignment();
         setSizesAndPositions();
         addListeners();

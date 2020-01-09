@@ -42,7 +42,7 @@ public class DemoPreLoadingStage extends LoadingStage {
         final float cx = getViewport().getWorldWidth() / 2f - 386;
         final float cy = getViewport().getWorldHeight() / 2f;
 
-        addTimer(new IntervalTimer(0,5,new IntervalTimerListener(){
+        addTimer(new IntervalTimer(0,3,new IntervalTimerListener(){
             @Override
             public void onStart(IntervalTimer sender) {
                 super.onStart(sender);
@@ -58,14 +58,14 @@ public class DemoPreLoadingStage extends LoadingStage {
                     addActor(m);
                     final int finalI = i;
                     finalSwh.body.setColor(new Color(1,1,1,0.3f));
-                    finalSwh.body.rotateToFixTime(-355, 2 + 0.2f * finalI, Direction.ClockWise);
-                    finalSwh.body.colorToFixTime(new Color(1,1,1,1), 1f + 0.2f * finalI);
+                    finalSwh.body.rotateToFixTime(-355, 0.7f + 0.1f * finalI, Direction.ClockWise);
+                    finalSwh.body.colorToFixTime(new Color(1,1,1,1), 0.5f + 0.2f * finalI);
                     //finalSwh.body.originToFixTime(0,0,2, OriginRule.FixOrigin);
-                    m.addTimer(new IntervalTimer(1f + 0.18f * finalI, new IntervalTimerListener() {
+                    m.addTimer(new IntervalTimer(0.5f + 0.08f * finalI, new IntervalTimerListener() {
                         @Override
                         public void onStop(IntervalTimer sender) {
                             super.onStop(sender);
-                            finalSwh.body.colorToFixTime(new Color(1,1,1,0), 1);
+                            finalSwh.body.colorToFixTime(new Color(1,1,1,0), 0.2f);
                         }
                     }));
 
