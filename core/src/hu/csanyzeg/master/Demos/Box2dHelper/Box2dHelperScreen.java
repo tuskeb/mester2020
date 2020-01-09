@@ -1,10 +1,18 @@
 package hu.csanyzeg.master.Demos.Box2dHelper;
 
+import hu.csanyzeg.master.Demos.FlappyBird.FlappyStage;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
 
 public class Box2dHelperScreen extends MyScreen {
+    public static AssetList assetList;
+    static {
+        assetList = new AssetList();
+        AssetList.collectAssetDescriptor(Box2dHelperStage.class,assetList);
+    }
+
+
     public Box2dHelperScreen(MyGame game) {
         super(game);
     }
@@ -16,8 +24,6 @@ public class Box2dHelperScreen extends MyScreen {
 
     @Override
     public AssetList getAssetList() {
-        AssetList assetList = new AssetList();
-        AssetList.collectAssetDescriptor(Box2dHelperStage.class,assetList);
         return assetList;
     }
 

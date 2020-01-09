@@ -3,19 +3,23 @@ package hu.csanyzeg.master.Demos.FlappyBird;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.Random;
 
 import hu.csanyzeg.master.Demos.LoadingStage.DemoLoadingStage;
+import hu.csanyzeg.master.Demos.LoadingStage.DemoPreLoadingStage;
 import hu.csanyzeg.master.Demos.Menu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.ResponseViewport;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
@@ -72,6 +76,7 @@ public class FlappyStage extends MyStage {
     public FlappyStage(final MyGame game) {
         super(new FitViewport(320,490), game);
         addBackButtonScreenBackByStackPopListener();
+        //addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
         assignment();
         setSizesAndPositions();
         addListeners();
@@ -293,7 +298,7 @@ public class FlappyStage extends MyStage {
                                             @Override
                                             public void clicked(InputEvent event, float x, float y) {
                                                 super.clicked(event, x, y);
-                                                game.setScreenBackByStackPop();
+                                                game.setScreenBackByStackPopWithPreloadAssets(new DemoPreLoadingStage(game));
                                             }
                                         });
                                     }

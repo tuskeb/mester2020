@@ -135,6 +135,16 @@ public class MyAssetManager implements Disposable {
     }
 
 
+    public void loadAssetAsync(MyAssetDescriptor MyAssetDescriptor, String hash){
+        if (!assetList.getMap().containsKey(hash)) {
+            assetManager.load(MyAssetDescriptor);
+            assetList.add(MyAssetDescriptor, hash);
+            setDebug("Queue: " + hash + " !!!! CALL updateManager FROM LOADINGSCREEN WHILE DONE. !!!!");
+        }else{
+            setDebug("Queue: " + hash + " already loaded.");
+        }
+    }
+
     public void loadAsset(MyAssetDescriptor MyAssetDescriptor, String hash){
         if (!assetList.getMap().containsKey(hash)) {
             setDebug("Loading: " + hash);
@@ -156,6 +166,12 @@ public class MyAssetManager implements Disposable {
     public void loadAsset(AssetList assetList) {
         for (Map.Entry<String, MyAssetDescriptor> e : assetList.getMap().entrySet()) {
             loadAsset(e.getValue(), e.getKey());
+        }
+    }
+
+    public void loadAssetAsync(AssetList assetList) {
+        for (Map.Entry<String, MyAssetDescriptor> e : assetList.getMap().entrySet()) {
+            loadAssetAsync(e.getValue(), e.getKey());
         }
     }
 

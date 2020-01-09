@@ -50,7 +50,7 @@ public class SWStage extends SimpleWorldStage {
             final SimpleBody body;
             body = ((SimpleWorldHelper)sba.getActorWorldHelper()).body;
             body.rotateToFixTime(i*6,4, Direction.Shorter);
-            body.originToFixTime(body.getLeftBottomOriginX() - 4, body.getLeftBottomOriginY(), 2, OriginRule.FixOrigin);
+            body.originToFixTime(body.getLeftBottomOriginX() - 4, body.getLeftBottomOriginY(), 1, OriginRule.FixOrigin);
             body.setSimpleBodyBehaviorListener(new SimpleBodyBehaviorListener(){
                 @Override
                 public void onStop(SimpleBody sender) {

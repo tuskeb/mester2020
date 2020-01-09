@@ -14,8 +14,12 @@ import hu.csanyzeg.master.Demos.Box2dHelper.Box2dHelperScreen;
 import hu.csanyzeg.master.Demos.Box2dJoin.Box2dJoinScreen;
 import hu.csanyzeg.master.Demos.Firework.FireworkScreen;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
+import hu.csanyzeg.master.Demos.LoadingStage.DemoLoadingStage;
+import hu.csanyzeg.master.Demos.LoadingStage.DemoPreLoadingStage;
 import hu.csanyzeg.master.Demos.SimpleClock.SWScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingListener;
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
@@ -302,7 +306,7 @@ public class MenuStage extends MyStage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new Box2dJoinScreen(game));
+                game.setScreenWithPreloadAssets(Box2dJoinScreen.class, new DemoPreLoadingStage(game));
             }
         };
 
@@ -368,7 +372,7 @@ public class MenuStage extends MyStage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new Box2dHelperScreen(game));
+                game.setScreenWithPreloadAssets(Box2dHelperScreen.class, new DemoPreLoadingStage(game));
             }
         };
 
@@ -401,7 +405,7 @@ public class MenuStage extends MyStage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new FlappyScreen(game));
+                game.setScreenWithPreloadAssets(FlappyScreen.class, new DemoPreLoadingStage(game));
             }
         };
 

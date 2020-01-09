@@ -102,8 +102,8 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
 
     @Override
     public void dispose() {
-        for(MyStage s : stages){
-            s.dispose();
+        for (int i = 0; i< stages.size; i++){
+            stages.get(i).dispose();
         }
     }
 
@@ -121,16 +121,17 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
     public void render(float delta) {
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(!game.getMyAssetManager().isLoadingComplete()){
-            if (game.getLoadingStage()!= null){
-                game.getLoadingStage().act(delta);
-                game.getLoadingStage().draw();
-            }else{
-                game.getMyAssetManager().updateManager();
+        if (!assetsLoaded) {
+            if (!game.getMyAssetManager().isLoadingComplete()) {
+                if (game.getLoadingStage() != null) {
+                    game.getLoadingStage().act(delta);
+                    game.getLoadingStage().draw();
+                } else {
+                    game.getMyAssetManager().updateManager();
+                }
+                return;
             }
-            return;
-        }
-        if (!assetsLoaded){
+
             assetsLoaded = true;
             if (game.getLoadingStage() != null) {
                 game.getLoadingStage().hide();
@@ -145,6 +146,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         for(MyStage s : stages){
             if (s.visible){
                 //s.getBatch().setProjectionMatrix(s.getCamera().projection);
+                //s.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 s.draw();
             }
         }

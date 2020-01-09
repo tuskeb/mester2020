@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
@@ -129,6 +130,17 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
             @Override
             public void backKeyDown() {
                 game.setScreenBackByStackPop();
+            }
+        });
+    }
+
+
+
+    public void addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(final LoadingStage loadingStage) {
+        addBackButtonListener(new BackButtonListener() {
+            @Override
+            public void backKeyDown() {
+                game.setScreenBackByStackPopWithPreloadAssets(loadingStage);
             }
         });
     }

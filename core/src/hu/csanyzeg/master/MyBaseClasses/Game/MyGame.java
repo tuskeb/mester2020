@@ -5,9 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
+import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
+import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
+import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingListener;
 import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Assets.MyAssetManager;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
@@ -109,4 +113,97 @@ abstract public class MyGame extends Game {
             Gdx.app.log("Stack", ste.toString());
         }
     }
+
+    public void preloadAssets(Class assetSource, LoadingStage preloadAssetStage) {
+        AssetList assetList = new AssetList();
+        AssetList.collectAssetDescriptor(assetSource, assetList);
+        preloadAssets(assetList, preloadAssetStage);
+    }
+
+    public void preloadAssets(AssetList assetSource, LoadingStage preloadAssetStage){
+        myAssetManager.loadAssetAsync(assetSource);
+
+        preloadAssetStage.addLoadingListener(new LoadingListener(){
+            @Override
+            public void complete(LoadingStage sender) {
+                super.complete(sender);
+                ((MyScreen)getScreen()).removeStage(sender);
+            }
+        });
+
+        ((MyScreen)getScreen()).addStage(preloadAssetStage, Integer.MAX_VALUE, true);
+    }
+
+    public void setScreenWithPreloadAssets(final Class myScreenClass, final boolean pushToStack, LoadingStage preloadAssetStage){
+        if (!myAssetManager.isLoadingComplete()){
+            return;
+        }
+        preloadAssets(myScreenClass, preloadAssetStage);
+        preloadAssetStage.addLoadingListener(new LoadingListener(){
+            @Override
+            public void complete(LoadingStage sender) {
+                super.complete(sender);
+                MyScreen screen = null;
+                try {
+                    screen = (MyScreen) myScreenClass.getConstructor(MyGame.class).newInstance(MyGame.this);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+                setScreen(screen, pushToStack);
+            }
+        });
+    }
+
+    public void setScreenWithPreloadAssets(Class myScreenClass, LoadingStage preloadAssetStage){
+        setScreenWithPreloadAssets(myScreenClass, true, preloadAssetStage);
+    }
+
+
+
+    public void setScreenBackByStackPopWithPreloadAssets( LoadingStage preloadAssetStage){
+        setScreenBackByStackPopWithPreloadAssets(null, preloadAssetStage);
+    }
+
+
+    public void setScreenBackByStackPopWithPreloadAssets(final ScreenInit init, LoadingStage preloadAssetStage) {
+        if (!myAssetManager.isLoadingComplete()){
+            return;
+        }
+        if (backButtonStack.size() > 0) {
+            final Class c = backButtonStack.pop();
+            preloadAssets(c, preloadAssetStage);
+            preloadAssetStage.addLoadingListener(new LoadingListener() {
+                @Override
+                public void complete(LoadingStage sender) {
+                    super.complete(sender);
+                    try {
+                        MyScreen scr = (MyScreen) c.getConstructor(MyGame.class).newInstance(MyGame.this);
+                        if (init != null) {
+                            init.init(scr);
+                        }
+                        setScreen(scr, false);
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+        } else {
+            Gdx.app.exit();
+        }
+    }
+
 }

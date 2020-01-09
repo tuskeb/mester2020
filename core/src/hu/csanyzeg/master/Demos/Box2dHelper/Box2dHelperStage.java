@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.util.Random;
 
+import hu.csanyzeg.master.Demos.LoadingStage.DemoPreLoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.WorldBodyEditorLoader;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -34,7 +35,7 @@ public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorl
 
     public Box2dHelperStage(final MyGame game) {
         super(new ExtendViewport(16, 9), game);
-        addBackButtonScreenBackByStackPopListener();
+        addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
 
         setCameraResetToLeftBottomOfScreen();
 

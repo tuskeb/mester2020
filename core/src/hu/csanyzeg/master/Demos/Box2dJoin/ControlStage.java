@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Random;
 
+import hu.csanyzeg.master.Demos.LoadingStage.DemoPreLoadingStage;
 import hu.csanyzeg.master.Demos.Menu.MenuButton;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -49,7 +50,7 @@ public class ControlStage extends MyStage {
         super(new ExtendViewport(720,720), game);
         this.box2dJoinStage = box2dJoinStage;
         setCameraResetToLeftBottomOfScreen();
-        addBackButtonScreenBackByStackPopListener();
+        addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
         addActor(new MenuButton(game, "New Box"){
             @Override
             public void init() {
