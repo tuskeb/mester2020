@@ -43,7 +43,7 @@ public class Box2dHelperStage extends hu.csanyzeg.master.MyBaseClasses.Box2dWorl
 
         addActor(new UfoActor(game, world, loader, 7, 7, 2, 2));
 
-        addActor(new WallActor(game, world, 0, getViewport().getWorldHeight() - 1, 16, 1, 0));
+        //addActor(new WallActor(game, world, 0, getViewport().getWorldHeight() - 1, 16, 1, 0));
         addActor(new WallActor(game, world, 0, 0, 16, 1, 0));
         addActor(new WallActor(game, world, -7.5f, 7.5f, 16, 1, 90));
         addActor(new WallActor(game, world, 7.5f, 7.5f, 16, 1, 90));

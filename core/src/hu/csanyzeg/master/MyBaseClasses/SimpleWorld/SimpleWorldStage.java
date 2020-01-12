@@ -2,18 +2,25 @@ package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+
+import java.util.ArrayList;
+
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldActor;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
+import hu.csanyzeg.master.MyBaseClasses.WorldHelper.HelperStage;
 
-public class SimpleWorldStage extends MyStage {
+public class SimpleWorldStage extends HelperStage<SimpleWorld, SimpleWorldHelper> {
 
-    protected SimpleWorld world;
     private long lastWorldMs = 0;
     protected int iterations = 1;
     protected float iterationPerSec = 111f;
@@ -42,7 +49,7 @@ public class SimpleWorldStage extends MyStage {
             addTimer(new TickTimer(1.017f, true, new TickTimerListener() {
                 @Override
                 public void onRepeat(TickTimer sender) {
-                    Gdx.app.log("world", "DT world step: " + (lastWorldMs / 1000000f) +" ms; ET world & SWstage: " + elapsedTime + " \tWorld iterations per delta: " + iterations);
+                    Gdx.app.log("world", "DT world step: " + (lastWorldMs / 1000000f) +" ms; ET world & SWstage: " + elapsedTime + " \tWorld iterations per delta: " + iterations + " Helper count: " + getHelpers().size);
                 }
             }));
         };
@@ -95,6 +102,5 @@ public class SimpleWorldStage extends MyStage {
         super.draw();
         if(game.debug) simpleWorldDebugRenderer.render(world, Gdx.graphics.getDeltaTime(), getCamera().combined);
     }
-
 
 }

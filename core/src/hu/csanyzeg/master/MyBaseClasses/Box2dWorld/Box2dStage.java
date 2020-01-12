@@ -16,10 +16,10 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
+import hu.csanyzeg.master.MyBaseClasses.WorldHelper.HelperStage;
 
-public abstract class Box2dStage extends MyStage {
+public abstract class Box2dStage extends HelperStage<World, Box2DWorldHelper> {
 
-    protected World world;
     protected Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
     protected WorldBodyEditorLoader loader;
 

@@ -68,7 +68,7 @@ public class SWStage extends SimpleWorldStage {
                 if (circle) {
                     for (Actor a : getActors()) {
                         if (a instanceof PointerActor) {
-                            SimpleBody body = ((SimpleWorldHelper) ((PointerActor) a).getActorWorldHelper()).body;
+                            SimpleBody body = getHelper(a).body;
                             body.originTo(1, -4, -4, OriginRule.Normal);
                             body.moveTo(1, 4,4);
                         }
@@ -76,7 +76,7 @@ public class SWStage extends SimpleWorldStage {
                 }else{
                     for (Actor a : getActors()) {
                         if (a instanceof PointerActor) {
-                            SimpleBody body = ((SimpleWorldHelper) ((PointerActor) a).getActorWorldHelper()).body;
+                            SimpleBody body = getHelper(a).body;
                             body.originTo(1, 4, 4, OriginRule.Normal);
                             body.moveTo(1, -4, -4);
                         }
