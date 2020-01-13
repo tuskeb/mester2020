@@ -36,13 +36,17 @@ public class DemoPreLoadingStage extends LoadingStage {
     private ProgressActor progressActor;
     private CimerActor cimerActor;
     private OneSpriteStaticActor bgActor;
+    protected boolean first = true;
+
 
     public DemoPreLoadingStage(MyGame game) {
         super(new ExtendViewport(1024, 720, new OrthographicCamera()), game);
         final float cx = getViewport().getWorldWidth() / 2f - 386;
         final float cy = getViewport().getWorldHeight() / 2f;
+        setCameraResetToLeftBottomOfScreen();
 
-        addTimer(new IntervalTimer(0,3,new IntervalTimerListener(){
+
+        addTimer(new IntervalTimer(0,1,new IntervalTimerListener(){
             @Override
             public void onStart(IntervalTimer sender) {
                 super.onStart(sender);
@@ -50,17 +54,19 @@ public class DemoPreLoadingStage extends LoadingStage {
                 for (int i = 0; i < 20; i++) {
                     final SimpleWorldHelper finalSwh;
                     final MyActor m = new WhiteCircleActor(DemoPreLoadingStage.this.game);
-                    m.setOrigin(256,5);
-                    m.setPosition(cx,cy);
                     m.setRotation(0);
-
                     m.setActorWorldHelper(finalSwh = new SimpleWorldHelper(world, m, ShapeType.Null, SimpleBodyType.Ghost));
                     addActor(m);
+                    m.setPositionCenterOfActorToCenterOfViewport();
                     final int finalI = i;
                     finalSwh.body.setColor(new Color(1,1,1,0.3f));
+                    if (first) {
+                        finalSwh.body.originToFixTime(finalSwh.body.getLeftBottomOriginX() - 256, finalSwh.body.getLeftBottomOriginY(), 1f, OriginRule.FixOrigin);
+                    }else{
+                        finalSwh.body.setOriginFixedOrigin(finalSwh.body.getLeftBottomOriginX() - 256, finalSwh.body.getLeftBottomOriginY());
+                    }
                     finalSwh.body.rotateToFixTime(-355, 0.7f + 0.1f * finalI, Direction.ClockWise);
                     finalSwh.body.colorToFixTime(new Color(1,1,1,1), 0.5f + 0.2f * finalI);
-                    //finalSwh.body.originToFixTime(0,0,2, OriginRule.FixOrigin);
                     m.addTimer(new IntervalTimer(0.5f + 0.08f * finalI, new IntervalTimerListener() {
                         @Override
                         public void onStop(IntervalTimer sender) {
@@ -77,6 +83,7 @@ public class DemoPreLoadingStage extends LoadingStage {
                         }
                     });
                 }
+                first = false;
             }
 
             @Override
