@@ -17,18 +17,21 @@ public abstract class MyTextArea extends TextArea implements IZindex, InitableIn
 
     protected MyGame game;
 
-    public MyTextArea(String text, Skin skin) {
+    public MyTextArea(MyGame game, String text, Skin skin) {
         super(text, skin);
+        this.game = game;
         init();
     }
 
-    public MyTextArea(String text, Skin skin, String styleName) {
+    public MyTextArea(MyGame game, String text, Skin skin, String styleName) {
         super(text, skin, styleName);
+        this.game = game;
         init();
     }
 
-    public MyTextArea(String text, TextFieldStyle style) {
+    public MyTextArea(MyGame game, String text, TextFieldStyle style) {
         super(text, style);
+        this.game = game;
         init();
     }
 

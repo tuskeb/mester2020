@@ -40,7 +40,7 @@ public class ProgressActor extends MyGroup {
         percentFg = new OneSpriteStaticActor(game, zoldHash);
         percentFg.setSize(getWidth(), getHeight());
 
-        percentLabel = new  MyLabel("0%", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash), Color.WHITE)){
+        percentLabel = new  MyLabel(game, "0%", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash), Color.WHITE)){
             @Override
             public void init() {
 

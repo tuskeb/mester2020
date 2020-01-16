@@ -48,7 +48,7 @@ public class DemoLoadingStage extends LoadingStage {
         setCameraResetToLeftBottomOfScreen();
         bgActor.fitToViewportRealWorldSizeWithoutBlackBars();
 
-        filenameLabel = new  MyLabel("Loading...", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash), Color.valueOf("007515"))){
+        filenameLabel = new  MyLabel(game, "Loading...", new Label.LabelStyle(game.getMyAssetManager().getFont(fontHash), Color.valueOf("007515"))){
             @Override
             public void init() {
 

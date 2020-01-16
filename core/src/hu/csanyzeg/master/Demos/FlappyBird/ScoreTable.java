@@ -50,14 +50,14 @@ public class ScoreTable extends MyGroup {
     private void setLabels()
     {
         if(!labelsSetted) {
-            scoreLabel = new MyLabel(score + "", getLabelStyle()) {
+            scoreLabel = new MyLabel(game, score + "", getLabelStyle()) {
                 @Override
                 public void init() {
 
                 }
             };
 
-            highScoreLabel = new MyLabel(highscore + "", getLabelStyle()) {
+            highScoreLabel = new MyLabel(game, highscore + "", getLabelStyle()) {
                 @Override
                 public void init() {
 

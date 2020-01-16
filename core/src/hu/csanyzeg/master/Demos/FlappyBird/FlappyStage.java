@@ -112,7 +112,7 @@ public class FlappyStage extends MyStage {
         score = 0;
         addedBack = false;
 
-        scoreLabel = new MyLabel("0", getLabelStyle()) {
+        scoreLabel = new MyLabel(game, "0", getLabelStyle()) {
             @Override
             public void init() {
 

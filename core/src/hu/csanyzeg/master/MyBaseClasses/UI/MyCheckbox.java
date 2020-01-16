@@ -12,16 +12,19 @@ public abstract class MyCheckbox extends CheckBox implements IZindex, InitableIn
 
     protected MyGame game;
 
-    public MyCheckbox(String text, Skin skin) {
+    public MyCheckbox(MyGame game, String text, Skin skin) {
         super(text, skin);
+        this.game = game;
     }
 
-    public MyCheckbox(String text, Skin skin, String styleName) {
+    public MyCheckbox(MyGame game, String text, Skin skin, String styleName) {
         super(text, skin, styleName);
+        this.game = game;
     }
 
-    public MyCheckbox(String text, CheckBoxStyle style) {
+    public MyCheckbox(MyGame game, String text, CheckBoxStyle style) {
         super(text, style);
+        this.game = game;
     }
 
 

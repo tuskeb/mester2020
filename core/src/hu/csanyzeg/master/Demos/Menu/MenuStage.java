@@ -200,7 +200,7 @@ public class MenuStage extends MyStage {
 
     private void makeDesktop()
     {
-        clockLabel = new MyLabel("12:00",getLabelStyle()) {
+        clockLabel = new MyLabel(game, "12:00",getLabelStyle()) {
             @Override
             public void init() {
                 setColor(Color.WHITE);
@@ -320,7 +320,7 @@ public class MenuStage extends MyStage {
                 buttons.add(this);
             }
         };
-            linkActorLabel = new MyLabel("B2D Join Demo", getLabelStyle()) {
+            linkActorLabel = new MyLabel(game, "B2D Join Demo", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, linkActor.getY() - linkActor.getHeight()/2 + 8);
@@ -354,7 +354,7 @@ public class MenuStage extends MyStage {
             }
         };
 
-            fireworkActorLabel = new MyLabel("Firework Demo", getLabelStyle()) {
+            fireworkActorLabel = new MyLabel(game, "Firework Demo", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, fireworkActor.getY() + 8);
@@ -387,7 +387,7 @@ public class MenuStage extends MyStage {
             }
         };
 
-            boxActorLabel = new MyLabel("Box2D Helper", getLabelStyle()) {
+            boxActorLabel = new MyLabel(game, "Box2D Helper", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, boxActor.getY() + 10);
@@ -420,7 +420,7 @@ public class MenuStage extends MyStage {
             }
         };
 
-            flappyActorLabel = new MyLabel("Flappy Demo", getLabelStyle()) {
+            flappyActorLabel = new MyLabel(game, "Flappy Demo", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, flappyActor.getY()+1);
@@ -453,7 +453,7 @@ public class MenuStage extends MyStage {
             }
         };
 
-            simpleActorLabel = new MyLabel("Simple Clock", getLabelStyle()) {
+            simpleActorLabel = new MyLabel(game, "Simple Clock", getLabelStyle()) {
                 @Override
                 public void init() {
                     setPosition(55, simpleActor.getY() + 10);
