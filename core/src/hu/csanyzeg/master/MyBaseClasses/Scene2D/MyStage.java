@@ -37,7 +37,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     protected int ZIndexAutoInc = 1;
 
     protected boolean visible = true;
-
+    protected boolean processInput = true;
     protected boolean pause = false;
 
     public final Array<Timer> timers = new Array<>();
@@ -58,7 +58,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     protected ArrayList<VisibleChangeListener> visibleChangeListeners = new ArrayList<>();
 
     public interface VisibleChangeListener{
-        public void change(boolean visible);
+        public void change(boolean visible, MyStage sender);
     }
 
     public void addVisibleChangeListener(VisibleChangeListener listener){
@@ -73,7 +73,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     protected ArrayList<PauseChangeListener> pauseChangeListeners = new ArrayList<PauseChangeListener>();
 
     public interface PauseChangeListener{
-        public void change(boolean pause);
+        public void change(boolean pause, MyStage sender);
     }
 
     public void addPauseChangeListener(PauseChangeListener listener){
@@ -82,6 +82,22 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     public void removePauseChangeListener(PauseChangeListener listener){
         pauseChangeListeners.remove(listener);
+    }
+
+
+
+    protected ArrayList<ProcessInputChangeListener> processInputChangeListeners = new ArrayList<>();
+
+    public interface ProcessInputChangeListener{
+        public void change(boolean visible, MyStage sender);
+    }
+
+    public void addProcessInputChangeListener(ProcessInputChangeListener listener){
+        processInputChangeListeners.add(listener);
+    }
+
+    public void removeProcessInputChangeListener(ProcessInputChangeListener listener){
+        processInputChangeListeners.remove(listener);
     }
 
 
@@ -539,7 +555,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     public void setVisible(boolean visible) {
         this.visible = visible;
         for(VisibleChangeListener v : visibleChangeListeners){
-            v.change(visible);
+            v.change(visible, MyStage.this);
         }
     }
 
@@ -550,7 +566,19 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
     public void setPause(boolean pause) {
         this.pause = pause;
         for(PauseChangeListener v : pauseChangeListeners){
-            v.change(pause);
+            v.change(pause, MyStage.this);
+        }
+    }
+
+
+    public boolean isProcessInput() {
+        return processInput;
+    }
+
+    public void setProcessInput(boolean processInput) {
+        this.processInput = processInput;
+        for(ProcessInputChangeListener v : processInputChangeListeners){
+            v.change(processInput, MyStage.this);
         }
     }
 

@@ -195,8 +195,12 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
             @Override
             public void run() {
                 removeFromWorld();
-                actor.getStage().getActors().removeValue(actor, true);
-                actor.getParent().removeActor(actor);
+                if (actor.getStage()!= null) {
+                    actor.getStage().getActors().removeValue(actor, true);
+                }
+                if (actor.getParent()!=null) {
+                    actor.getParent().removeActor(actor);
+                }
             }
         });
     }

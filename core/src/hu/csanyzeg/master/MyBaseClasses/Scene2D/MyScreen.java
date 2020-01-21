@@ -7,15 +7,10 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetCollector;
-import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
@@ -46,9 +41,19 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         init();
     }
 
+    protected void updateInputMultiplexer() {
+        inputMultiplexer.clear();
+        for (int i = stages.size - 1; i >= 0; i--) {
+            if (stages.get(i).visible && !stages.get(i).pause && stages.get(i).processInput){
+                inputMultiplexer.addProcessor(stages.get(i));
+            }
+        }
+    }
+
     public void addStage(final MyStage stage, int zIndex, boolean processInput){
         stages.add(stage);
         stage.setScreen(this);
+        stage.processInput = processInput;
         stage.setZIndex(zIndex);
         if (processInput) {
             if (stage.visible && !stage.pause) {
@@ -56,29 +61,26 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
             }
             stage.addVisibleChangeListener(new MyStage.VisibleChangeListener() {
                 @Override
-                public void change(boolean visible) {
-                    if (visible){
-                        if (!inputMultiplexer.getProcessors().contains(stage,true)) {
-                            inputMultiplexer.addProcessor(stage);
-                        }
-                    }else{
-                        inputMultiplexer.removeProcessor(stage);
-                    }
+                public void change(boolean visible, MyStage sender) {
+                    updateInputMultiplexer();
                 }
             });
 
             stage.addPauseChangeListener(new MyStage.PauseChangeListener() {
                 @Override
-                public void change(boolean pause) {
-                    if (!pause){
-                        if (!inputMultiplexer.getProcessors().contains(stage,true)) {
-                            inputMultiplexer.addProcessor(stage);
-                        }
-                    }else{
-                        inputMultiplexer.removeProcessor(stage);
-                    }
+                public void change(boolean pause, MyStage sender) {
+                    updateInputMultiplexer();
                 }
             });
+
+
+            stage.addProcessInputChangeListener(new MyStage.ProcessInputChangeListener() {
+                @Override
+                public void change(boolean pause, MyStage sender) {
+                    updateInputMultiplexer();
+                }
+            });
+
         }
     }
 
@@ -96,7 +98,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
                     return actor.zIndex - t1.zIndex;
             }
         });
-
+        updateInputMultiplexer();
     }
 
 
@@ -184,6 +186,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
         this.b = b;
     }
 
+    @Deprecated
     public InputMultiplexer getInputMultiplexer() {
         return inputMultiplexer;
     }
