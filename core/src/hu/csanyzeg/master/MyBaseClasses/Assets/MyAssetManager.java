@@ -1,6 +1,7 @@
 package hu.csanyzeg.master.MyBaseClasses.Assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -13,7 +14,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import java.awt.Font;
 import java.util.Map;
 
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyScreen;
@@ -176,25 +179,49 @@ public class MyAssetManager implements Disposable {
     }
 
     public Texture getTexture(String hash){
-        Texture t = assetManager.get((MyAssetDescriptor<Texture>)(assetList.getAssetDescriptor(hash)));
-        t.setFilter(textureMinFilter, textureMagFilter);
-        return t;
+        try {
+            Texture t = assetManager.get((MyAssetDescriptor<Texture>) (assetList.getAssetDescriptor(hash)));
+            t.setFilter(textureMinFilter, textureMagFilter);
+            return t;
+        }catch (NullPointerException e){
+            setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
+            loadAsset(new MyAssetDescriptor(hash, Texture.class));
+            return getTexture(hash);
+        }
     }
 
     public TextureAtlas getTextureAtlas(String hash){
-        TextureAtlas t = assetManager.get((MyAssetDescriptor<TextureAtlas>)(assetList.getAssetDescriptor(hash)));
-        for(Texture texture : t.getTextures()){
-            texture.setFilter(textureMinFilter, textureMagFilter);
+        try {
+            TextureAtlas t = assetManager.get((MyAssetDescriptor<TextureAtlas>) (assetList.getAssetDescriptor(hash)));
+            for (Texture texture : t.getTextures()) {
+                texture.setFilter(textureMinFilter, textureMagFilter);
+            }
+            return t;
+        }catch (NullPointerException e){
+            setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
+            loadAsset(new MyAssetDescriptor(hash, TextureAtlas.class));
+            return getTextureAtlas(hash);
         }
-        return t;
     }
 
     public Sound getSound(String hash){
-        return assetManager.get((MyAssetDescriptor<Sound>)(assetList.getAssetDescriptor(hash)));
+        try {
+            return assetManager.get((MyAssetDescriptor<Sound>)(assetList.getAssetDescriptor(hash)));
+        }catch (Exception e){
+            setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
+            loadAsset(new MyAssetDescriptor(hash, Sound.class));
+            return assetManager.get((MyAssetDescriptor<Sound>)(assetList.getAssetDescriptor(hash)));
+        }
     }
 
     public BitmapFont getFont(String hash){
-        return assetManager.get((MyAssetDescriptor<BitmapFont>)(assetList.getAssetDescriptor(hash)));
+        try {
+            return assetManager.get((MyAssetDescriptor<BitmapFont>) (assetList.getAssetDescriptor(hash)));
+        }catch (Exception e){
+            setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
+            loadAsset((new AssetList()).addFont(hash));
+            return assetManager.get((MyAssetDescriptor<BitmapFont>) (assetList.getAssetDescriptor(hash)));
+        }
     }
 
     public String getDebug() {

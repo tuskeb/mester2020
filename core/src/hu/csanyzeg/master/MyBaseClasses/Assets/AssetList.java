@@ -96,6 +96,11 @@ public class AssetList {
         return descriptor;
     }
 
+
+    public MyAssetDescriptor<BitmapFont> addFont(String fileName) {
+        return addFont(fileName, fileName, 32, Color.WHITE);
+    }
+
     public MyAssetDescriptor<BitmapFont> addFont(String fileName, int size, Color color) {
         return addFont(fileName, fileName, size, color);
     }
