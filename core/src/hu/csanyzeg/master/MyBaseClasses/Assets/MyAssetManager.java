@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -211,6 +212,16 @@ public class MyAssetManager implements Disposable {
             setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
             loadAsset(new MyAssetDescriptor(hash, Sound.class));
             return assetManager.get((MyAssetDescriptor<Sound>)(assetList.getAssetDescriptor(hash)));
+        }
+    }
+
+    public Music getMusic(String hash){
+        try {
+            return assetManager.get((MyAssetDescriptor<Music>)(assetList.getAssetDescriptor(hash)));
+        }catch (Exception e){
+            setDebug("!!!! WARNING !!!! AZ ASSET NINCS ELORE BETOLTVE, A BETOLTESE KESLELTETI A JATEKMENETET: " + hash);
+            loadAsset(new MyAssetDescriptor(hash, Music.class));
+            return assetManager.get((MyAssetDescriptor<Music>)(assetList.getAssetDescriptor(hash)));
         }
     }
 
