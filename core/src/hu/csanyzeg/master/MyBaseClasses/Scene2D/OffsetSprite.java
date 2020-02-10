@@ -17,7 +17,7 @@ public class OffsetSprite extends Sprite {
 
     public boolean visible = true;
 
-    static protected float PI = (float) Math.PI;
+    static protected final float PI = (float) Math.PI;
 
     @Deprecated
     public OffsetSprite(Texture texture, float xOffset, float yOffset) {

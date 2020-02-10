@@ -200,7 +200,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
                 if (((int) ((elapsedTime) * 5)) % 2 == 0 && sprite.visible) {
                     Color c = new Color(Color.MAGENTA);
                     shapes.setColor(c);
-                    drawDebugLines(sprite.getCorners(), shapes);
+                    IActorComplexCollision.drawDebugLines(sprite.getCorners(), shapes);
                     shapes.circle(sprite.getOriginX() + sprite.getX(), sprite.getOriginY() + sprite.getY(), getWidth() / debugPointSize, 5);
                 }
             }

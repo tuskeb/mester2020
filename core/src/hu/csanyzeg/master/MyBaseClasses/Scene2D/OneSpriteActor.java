@@ -25,7 +25,7 @@ abstract public class OneSpriteActor extends MyActor implements InitableInterfac
     {
         setSize(sprite.getWidth(), sprite.getHeight());
         sprite.setOrigin(getOriginX(), getOriginY());
-        super.init();
+        setOrigintoCenter();
     }
 
     @Override

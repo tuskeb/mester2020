@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
@@ -17,7 +18,7 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-public abstract class MyButton extends TextButton implements InitableInterface, IZindex {
+public abstract class MyButton extends TextButton implements InitableInterface, IActorZindex {
 
     protected MyGame game;
 

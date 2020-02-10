@@ -25,7 +25,7 @@ import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
-import static hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor.overlaps;
+import static hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorComplexCollision.overlaps;
 
 public class FlappyStage extends MyStage {
     public static String vcrFont = "demoflappy/vcr_font.ttf";

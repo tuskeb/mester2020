@@ -9,11 +9,12 @@ import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorUtil;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 
-public abstract class MyLabel extends Label implements IZindex, InitableInterface {
+public abstract class MyLabel extends Label implements IZindex, InitableInterface, IActorUtil {
 
     protected MyGame game;
 

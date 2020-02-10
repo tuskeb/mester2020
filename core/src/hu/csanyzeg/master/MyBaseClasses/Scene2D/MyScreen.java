@@ -13,11 +13,12 @@ import java.util.Comparator;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetCollector;
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-abstract public class MyScreen implements Screen, InitableInterface, AssetCollector {
+abstract public class MyScreen implements Screen, InitableInterface, AssetCollector, ITimer, IGame {
 
 
 
@@ -25,11 +26,16 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
 
     private boolean assetsLoaded = false;
 
-    public final MyGame game;
+    public MyGame game;
 
     protected Array<MyStage> stages = new Array<MyStage>();
+    public final Array<Timer> timers = new Array<>();
+    public Array<Timer> getTimers() {
+        return timers;
+    }
 
     protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
 
     public MyScreen(MyGame game) {
         this.game = game;
@@ -123,6 +129,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
     public void render(float delta) {
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        actTimer(delta);
         if (!assetsLoaded) {
             if (!game.getMyAssetManager().isLoadingComplete()) {
                 if (game.getLoadingStage() != null) {
@@ -175,8 +182,14 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
 
     }
 
-    public Game getGame() {
+    @Override
+    public MyGame getGame() {
         return game;
+    }
+
+    @Override
+    public void setGame(MyGame game) {
+        this.game = game;
     }
 
     public void setBackGroundColor(float r, float g, float b)
