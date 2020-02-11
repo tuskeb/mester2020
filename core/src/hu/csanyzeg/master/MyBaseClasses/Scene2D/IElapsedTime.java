@@ -11,7 +11,7 @@ public interface IElapsedTime {
 
     public void setElapsedTime(float elapsedTime);
 
-    public default void actElapsedTime(float delta){
+    public default void act(float delta){
         setElapsedTime(getElapsedTime() + delta);
     }
 }

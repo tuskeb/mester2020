@@ -8,7 +8,7 @@ public interface WorldActor {
     public void setActorWorldHelper(WorldHelper<?, Actor> worldHelper);
     public WorldHelper<?, Actor> getActorWorldHelper();
 
-    public default void actWorldActor(float delta){
+    public default void act(float delta){
         WorldHelper actorWorldHelper = getActorWorldHelper();
         Actor actor = (Actor)this;
         if (actorWorldHelper != null){
@@ -89,7 +89,7 @@ public interface WorldActor {
     }
 
 
-    public default boolean removeWorldActor(){
+    public default boolean remove(){
         if(getActorWorldHelper()!=null){
             getActorWorldHelper().remove();
             return true;

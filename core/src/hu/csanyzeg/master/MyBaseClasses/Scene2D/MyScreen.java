@@ -1,7 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Scene2D;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -129,7 +128,7 @@ abstract public class MyScreen implements Screen, InitableInterface, AssetCollec
     public void render(float delta) {
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        actTimer(delta);
+        ITimer.super.act(delta);
         if (!assetsLoaded) {
             if (!game.getMyAssetManager().isLoadingComplete()) {
                 if (game.getLoadingStage() != null) {

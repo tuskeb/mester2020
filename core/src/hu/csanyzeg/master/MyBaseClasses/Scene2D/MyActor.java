@@ -18,8 +18,14 @@ import java.util.HashMap;
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-abstract public class MyActor extends Actor implements InitableInterface, IActorExtension {
+abstract public class MyActor extends Actor implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IActorComplexCollision, IElapsedTime, IActorOverlaps {
 
+
+    public MyActor(MyGame game) {
+        super();
+        setGame(game);
+        setDebug(game.debug);
+    }
 
 
     //region ITimer Code
@@ -51,7 +57,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IActor
     @Override
     public boolean setZIndex(int index) {
         this.zIndex = index;
-        return IActorExtension.super.setZIndex(index);
+        return IActorZindex.super.setZIndex(index);
     }
 
     @Override
@@ -97,18 +103,13 @@ abstract public class MyActor extends Actor implements InitableInterface, IActor
     //endregion
 
 
-    public MyActor(MyGame game) {
-        super();
-        setGame(game);
-        setDebug(game.debug);
-    }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        actElapsedTime(delta);
-        actTimer(delta);
-        actWorldActor(delta);
+        IElapsedTime.super.act(delta);
+        ITimer.super.act(delta);
+        WorldActor.super.act(delta);
     }
 
     @Override
@@ -129,6 +130,11 @@ abstract public class MyActor extends Actor implements InitableInterface, IActor
         super.rotationChanged();
         rotationchangedComplexCollision();
         rotationchangedWorldActor();
+    }
+
+    public void originChanged(){
+        originchangedComplexCollision();
+        originchangedWorldActor();
     }
 
 
@@ -164,11 +170,6 @@ abstract public class MyActor extends Actor implements InitableInterface, IActor
         originChanged();
     }
 
-    protected void originChanged(){
-        originchangedComplexCollision();
-        originchangedWorldActor();
-    }
-
     protected void colorChanged(){
         colorchangedWorldActor();
     }
@@ -193,7 +194,7 @@ abstract public class MyActor extends Actor implements InitableInterface, IActor
 
     @Override
     public boolean remove() {
-        if (!removeWorldActor()) {
+        if (!WorldActor.super.remove()) {
             return super.remove();
         }
         return true;

@@ -16,7 +16,7 @@ public interface ITimer {
     }
 
 
-    public default void actTimer(float delta){
+    public default void act(float delta){
         for(Timer t : getTimers()){
             t.act(delta);
         }

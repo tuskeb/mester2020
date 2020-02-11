@@ -109,7 +109,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
 
 
     @Override
-    protected void originChanged() {
+    public void originChanged() {
         super.originChanged();
         for (OffsetSprite sprite : spriteMap.values()) {
             sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);

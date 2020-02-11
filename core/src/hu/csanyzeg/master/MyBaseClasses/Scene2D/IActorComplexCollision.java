@@ -13,6 +13,7 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyCircle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyRectangle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyShape;
 
+@Deprecated
 public interface IActorComplexCollision {
 
     @Deprecated
@@ -193,75 +194,85 @@ public interface IActorComplexCollision {
 
     @Deprecated
     public default void drawComplexCollisionDebugBounds(ShapeRenderer shapes) {
-        Actor actor = (Actor)this;
         if (getCollisionShapeMap() != null) {
-            IElapsedTime iElapsedTime = (IElapsedTime)this;
+            Actor actor = (Actor) this;
+            if (getCollisionShapeMap() != null) {
+                IElapsedTime iElapsedTime = (IElapsedTime) this;
 
-            switch ((((int) ((iElapsedTime.getElapsedTime()) * 4)) % 4)) {
-                case 0:
-                    shapes.setColor(Color.WHITE);
-                    break;
-                case 1:
-                    shapes.setColor(Color.GRAY);
-                    break;
-                case 2:
-                    shapes.setColor(Color.DARK_GRAY);
-                    break;
-            }
+                switch ((((int) ((iElapsedTime.getElapsedTime()) * 4)) % 4)) {
+                    case 0:
+                        shapes.setColor(Color.WHITE);
+                        break;
+                    case 1:
+                        shapes.setColor(Color.GRAY);
+                        break;
+                    case 2:
+                        shapes.setColor(Color.DARK_GRAY);
+                        break;
+                }
 
-            if (((((int) ((iElapsedTime.getElapsedTime()) * 4)) % 4)) < 3) {
-                for (MyShape shape : getCollisionShapeMap().values()) {
-                    if (shape.active) {
-                        drawDebugLines(shape.getCorners(), shapes);
-                        //shapes.circle(shape.originX + shape.centerX + shape.offsetX, shape.originY + shape.centerY + shape.offsetY, getWidth() / debugPointSize, 7);
-                        //shapes.circle(shape.realCenterX, shape.realCenterY, getWidth() / debugPointSize, 3);
-                        shapes.circle(shape.getOriginX() + shape.getCenterX() + shape.getOffsetX(), shape.getOriginY() + shape.getCenterY() + shape.getOffsetY(), actor.getWidth() / debugPointSize, 7);
-                        shapes.circle(shape.getRealCenterX(), shape.getRealCenterY(), actor.getWidth() / debugPointSize, 3);
+                if (((((int) ((iElapsedTime.getElapsedTime()) * 4)) % 4)) < 3) {
+                    for (MyShape shape : getCollisionShapeMap().values()) {
+                        if (shape.active) {
+                            drawDebugLines(shape.getCorners(), shapes);
+                            //shapes.circle(shape.originX + shape.centerX + shape.offsetX, shape.originY + shape.centerY + shape.offsetY, getWidth() / debugPointSize, 7);
+                            //shapes.circle(shape.realCenterX, shape.realCenterY, getWidth() / debugPointSize, 3);
+                            shapes.circle(shape.getOriginX() + shape.getCenterX() + shape.getOffsetX(), shape.getOriginY() + shape.getCenterY() + shape.getOffsetY(), actor.getWidth() / debugPointSize, 7);
+                            shapes.circle(shape.getRealCenterX(), shape.getRealCenterY(), actor.getWidth() / debugPointSize, 3);
+                        }
                     }
                 }
             }
+
+
+            shapes.setColor(Color.GREEN);
+            shapes.circle(actor.getOriginX() + actor.getX(), actor.getOriginY() + actor.getY(), actor.getWidth() / debugPointSize, 3);
         }
-
-
-        shapes.setColor(Color.GREEN);
-        shapes.circle(actor.getOriginX() + actor.getX(), actor.getOriginY() + actor.getY(), actor.getWidth() / debugPointSize, 3);
     }
 
     @Deprecated
     public default void setsizeComplexCollision(float oldWidth, float oldHeight, float newWidth, float newHeight){
-        float w = newWidth / oldWidth;
-        float h = newHeight / oldHeight;
-        for (MyShape shape : getCollisionShapeMap().values()) {
-            shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
-            shape.setOffsetX(shape.getOffsetX()*w);
-            shape.setOffsetY(shape.getOffsetY()*h);
-            shape.setOriginX(shape.getOriginX()*w);
-            shape.setOriginY(shape.getOriginY()*h);
+        if (getCollisionShapeMap() != null) {
+            float w = newWidth / oldWidth;
+            float h = newHeight / oldHeight;
+            for (MyShape shape : getCollisionShapeMap().values()) {
+                shape.setSize(shape.getWidth() * w, shape.getHeight() * h);
+                shape.setOffsetX(shape.getOffsetX() * w);
+                shape.setOffsetY(shape.getOffsetY() * h);
+                shape.setOriginX(shape.getOriginX() * w);
+                shape.setOriginY(shape.getOriginY() * h);
+            }
         }
     }
 
     @Deprecated
     public default void positionchangedComplexCollision(){
-        Actor actor = (Actor)this;
-        for (MyShape shape:getCollisionShapeMap().values()) {
-            shape.setPosition(actor.getX(),actor.getY());
+        if (getCollisionShapeMap() != null) {
+            Actor actor = (Actor) this;
+            for (MyShape shape : getCollisionShapeMap().values()) {
+                shape.setPosition(actor.getX(), actor.getY());
+            }
         }
     }
 
     @Deprecated
     public default void rotationchangedComplexCollision(){
-        Actor actor = (Actor)this;
-        for (MyShape shape:getCollisionShapeMap().values()) {
-            shape.setRotation(actor.getRotation());
+        if (getCollisionShapeMap() != null) {
+            Actor actor = (Actor) this;
+            for (MyShape shape : getCollisionShapeMap().values()) {
+                shape.setRotation(actor.getRotation());
+            }
         }
     }
 
 
     @Deprecated
     public default void originchangedComplexCollision(){
-        Actor actor = (Actor)this;
-        for (MyShape shape:getCollisionShapeMap().values()) {
-            shape.setOrigin(actor.getOriginX(), actor.getOriginY());
+        if (getCollisionShapeMap() != null) {
+            Actor actor = (Actor) this;
+            for (MyShape shape : getCollisionShapeMap().values()) {
+                shape.setOrigin(actor.getOriginX(), actor.getOriginY());
+            }
         }
     }
 }

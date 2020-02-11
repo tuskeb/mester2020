@@ -62,7 +62,7 @@ abstract public class OneSpriteActor extends MyActor implements InitableInterfac
     }
 
     @Override
-    protected void originChanged() {
+    public void originChanged() {
         super.originChanged();
         sprite.setOrigin(getOriginX(), getOriginY());
     }
