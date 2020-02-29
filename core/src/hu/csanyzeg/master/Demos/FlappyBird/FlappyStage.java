@@ -19,6 +19,7 @@ import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.PrettyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ResponseViewport;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
@@ -27,7 +28,7 @@ import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
 import static hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorComplexCollision.overlaps;
 
-public class FlappyStage extends MyStage {
+public class FlappyStage extends PrettyStage {
     public static String vcrFont = "demoflappy/vcr_font.ttf";
     public static String flappyFont = "demoflappy/flappyfont.ttf";
     private static String wing = "demoflappy/sfx_wing.mp3";
@@ -76,13 +77,10 @@ public class FlappyStage extends MyStage {
     public FlappyStage(final MyGame game) {
         super(new FitViewport(320,490), game);
         addBackButtonScreenBackByStackPopListenerWithPreloadedAssets(new DemoPreLoadingStage(game));
-        assignment();
-        setSizesAndPositions();
-        addListeners();
-        addActors();
     }
 
-    private void assignment()
+    @Override
+    public void assignment()
     {
         flappySave = Gdx.app.getPreferences("flappySave");
         if(!flappySave.contains("highscore"))
@@ -120,6 +118,25 @@ public class FlappyStage extends MyStage {
         };
     }
 
+    @Override
+    public void setSizes() {
+        fade.setSize(getViewport().getWorldWidth(),getViewport().getWorldHeight());
+        white.setSize(getViewport().getWorldWidth(),getViewport().getWorldHeight());
+    }
+
+    @Override
+    public void setPositions() {
+        felcso.setX(600);
+        lecso.setX(600);
+        lecso.setY((float) (Math.random() * 100 + 300));
+        felcso.setY(lecso.getY()-felcso.getHeight()-180);
+        felcso.setRotation(180);
+        birdActor.setPosition(30,getViewport().getWorldHeight()*0.7f);
+        white.setAlpha(0);
+        scoreLabel.setAlignment(0);
+        scoreLabel.setPosition(getViewport().getWorldWidth()/2-scoreLabel.getWidth()/2,getViewport().getWorldHeight()*0.9f);
+    }
+
     private Label.LabelStyle getLabelStyle()
     {
         Label.LabelStyle style;
@@ -129,22 +146,8 @@ public class FlappyStage extends MyStage {
         return style;
     }
 
-    private void setSizesAndPositions()
-    {
-        felcso.setX(600);
-        lecso.setX(600);
-        lecso.setY((float) (Math.random() * 100 + 300));
-        felcso.setY(lecso.getY()-felcso.getHeight()-180);
-        felcso.setRotation(180);
-        birdActor.setPosition(30,getViewport().getWorldHeight()*0.7f);
-        fade.setSize(getViewport().getWorldWidth(),getViewport().getWorldHeight());
-        white.setSize(getViewport().getWorldWidth(),getViewport().getWorldHeight());
-        white.setAlpha(0);
-        scoreLabel.setAlignment(0);
-        scoreLabel.setPosition(getViewport().getWorldWidth()/2-scoreLabel.getWidth()/2,getViewport().getWorldHeight()*0.9f);
-    }
-
-    private void addActors()
+    @Override
+    public void addActors()
     {
         addActor(cityActor);
         addActor(felcso);
@@ -156,7 +159,8 @@ public class FlappyStage extends MyStage {
         addActor(scoreLabel);
     }
 
-    private void addListeners()
+    @Override
+    public void addListeners()
     {
         cityActor.addListener(new ClickListener()
         {
@@ -170,6 +174,11 @@ public class FlappyStage extends MyStage {
                 }
             }
         });
+    }
+
+    @Override
+    public void setZIndexes() {
+
     }
 
     @Override
