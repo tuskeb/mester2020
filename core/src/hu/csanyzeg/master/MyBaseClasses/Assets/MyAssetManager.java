@@ -83,14 +83,15 @@ public class MyAssetManager implements Disposable {
 
         Array<String> remove = new Array<>();
 
-
-        for (Map.Entry<String, MyAssetDescriptor> e : assetList.getMap().entrySet()) {
-            if (!to.getMap().containsKey(e.getKey())){
-                if (e.getValue().protect){
-                    setDebug("Protect: " + e.getKey());
-                }else {
-                    remove.add(e.getKey());
-                    setDebug("Unused: " + e.getKey());
+        if (to!=null) {
+            for (Map.Entry<String, MyAssetDescriptor> e : assetList.getMap().entrySet()) {
+                if (!to.getMap().containsKey(e.getKey())) {
+                    if (e.getValue().protect) {
+                        setDebug("Protect: " + e.getKey());
+                    } else {
+                        remove.add(e.getKey());
+                        setDebug("Unused: " + e.getKey());
+                    }
                 }
             }
         }
@@ -109,11 +110,13 @@ public class MyAssetManager implements Disposable {
         }
 
 
-        for (Map.Entry<String, MyAssetDescriptor> e : to.getMap().entrySet()) {
-            if (!assetList.getMap().containsKey(e.getKey())) {
-                assetManager.load(e.getValue());
-                assetList.getMap().put(e.getKey(), e.getValue());
-                setDebug("Queue: " + e.getKey());
+        if (to != null) {
+            for (Map.Entry<String, MyAssetDescriptor> e : to.getMap().entrySet()) {
+                if (!assetList.getMap().containsKey(e.getKey())) {
+                    assetManager.load(e.getValue());
+                    assetList.getMap().put(e.getKey(), e.getValue());
+                    setDebug("Queue: " + e.getKey());
+                }
             }
         }
 
