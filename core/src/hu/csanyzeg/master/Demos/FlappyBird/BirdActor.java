@@ -20,7 +20,6 @@ public class BirdActor extends OneSpriteAnimatedActor {
         setAct(true);
         setSize(getWidth()/4,getHeight()/4);
         setTouchable(null);
-        addBaseCollisionCircleShape();
         setFps(15);
         setSize(getWidth()*5,getHeight()*5);
     }

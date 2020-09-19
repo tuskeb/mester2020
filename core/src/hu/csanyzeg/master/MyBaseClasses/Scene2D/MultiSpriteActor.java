@@ -42,18 +42,6 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
     }
 
 
-    /*  OffsetSprite... olyam mint egy tömb de simán fel lehet sorolni a paramétereket. Nincs fix hossza.
-            https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs */
-    public MultiSpriteActor(MyGame game, float width, float height, ShapeType shapeType, OffsetSprite... offsetSprites) {
-        super(game);
-        super.setWidth(width);
-        super.setHeight(height);
-        for (OffsetSprite spite : offsetSprites) {
-            addSprite(spite, shapeType);
-        }
-        init();
-    }
-
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -131,28 +119,11 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
         sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
     }
 
-    public void addSprite(OffsetSprite sprite, ShapeType shapeType) {
-        addSprite(sprite, "Sprite" + spriteMap.size(), shapeType);
-    }
-
 
     public void addSprite(OffsetSprite sprite, String key) {
         spriteMap.put(key, sprite);
         sprite.setPosition(getX() + sprite.getOffsetVector().x, getY() + sprite.getOffsetVector().y);
         sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
-    }
-
-
-    public void addSprite(OffsetSprite sprite, String key, ShapeType shapeType) {
-        spriteMap.put(key, sprite);
-        sprite.setPosition(getX() + sprite.getOffsetVector().x, getY() + sprite.getOffsetVector().y);
-        sprite.setOrigin(getOriginX() - sprite.getOffsetVector().x, getOriginY() - sprite.getOffsetVector().y);
-        if (shapeType == ShapeType.Rectangle) {
-            addCollisionShape(key, new MyRectangle(sprite.getWidth(), sprite.getHeight(), sprite.getOffsetVector().x, sprite.getOffsetVector().y, getOriginX(), getOriginY(), getRotation(), sprite.getRotation(), getX(), getY(), true));
-        }
-        if (shapeType == ShapeType.Circle) {
-            addCollisionShape(key, new MyCircle((float) Math.sqrt(sprite.getWidth() * sprite.getHeight()) / 2.0f, sprite.getOffsetVector().x, sprite.getOffsetVector().y, getOriginX(), getOriginY(), getX(), getY(), true));
-        }
     }
 
 
@@ -200,8 +171,7 @@ public abstract class MultiSpriteActor extends MyActor implements InitableInterf
                 if (((int) ((elapsedTime) * 5)) % 2 == 0 && sprite.visible) {
                     Color c = new Color(Color.MAGENTA);
                     shapes.setColor(c);
-                    IActorComplexCollision.drawDebugLines(sprite.getCorners(), shapes);
-                    shapes.circle(sprite.getOriginX() + sprite.getX(), sprite.getOriginY() + sprite.getY(), getWidth() / debugPointSize, 5);
+                    shapes.circle(sprite.getOriginX() + sprite.getX(), sprite.getOriginY() + sprite.getY(), getWidth() , 5);
                 }
             }
         }

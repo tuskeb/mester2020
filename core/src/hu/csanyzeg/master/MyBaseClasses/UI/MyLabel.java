@@ -3,7 +3,6 @@ package hu.csanyzeg.master.MyBaseClasses.UI;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.InitableInterface;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorComplexCollision;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorOverlaps;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorUtil;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorZindex;
@@ -21,15 +19,12 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.IElapsedTime;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.IOriginChanged;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ITimer;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindex;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.IZindexCode;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldActor;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyShape;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import hu.csanyzeg.master.MyBaseClasses.WorldHelper.WorldHelper;
 
-public abstract class MyLabel extends Label implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IActorComplexCollision, IElapsedTime, IActorOverlaps {
+public abstract class MyLabel extends Label implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IElapsedTime, IActorOverlaps {
 
     public MyLabel(MyGame game, CharSequence text, Skin skin) {
         super(text, skin);
@@ -165,26 +160,22 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
     @Override
     protected void positionChanged() {
         super.positionChanged();
-        positionchangedComplexCollision();
         positionchangedWorldActor();
     }
 
     @Override
     protected void rotationChanged() {
         super.rotationChanged();
-        rotationchangedComplexCollision();
         rotationchangedWorldActor();
     }
 
     public void originChanged(){
-        originchangedComplexCollision();
         originchangedWorldActor();
     }
 
 
     @Override
     public void setSize(float width, float height) {
-        setsizeComplexCollision(getWidth(), getHeight(), width, height);
         setOrigin(getOriginX() * width / getWidth(), getOriginY() * height / getHeight());
         super.setSize(width, height);
     }
@@ -247,7 +238,6 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
     @Override
     protected void drawDebugBounds(ShapeRenderer shapes) {
         super.drawDebugBounds(shapes);
-        drawComplexCollisionDebugBounds(shapes);
     }
 
     @Override

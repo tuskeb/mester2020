@@ -21,12 +21,12 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.PrettyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.ResponseViewport;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleOverlapsUtil;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
-import static hu.csanyzeg.master.MyBaseClasses.Scene2D.IActorComplexCollision.overlaps;
 
 public class FlappyStage extends PrettyStage {
     public static String vcrFont = "demoflappy/vcr_font.ttf";
@@ -323,7 +323,7 @@ public class FlappyStage extends PrettyStage {
 
     private void gameOver()
     {
-        if((overlaps(birdActor,lecso) || overlaps(birdActor,felcso) || overlaps(birdActor,groundActor)) && !isGameOver)
+        if((SimpleOverlapsUtil.overlaps(birdActor,lecso) || SimpleOverlapsUtil.overlaps(birdActor,felcso) || SimpleOverlapsUtil.overlaps(birdActor,groundActor)) && !isGameOver)
         {//Hogyha ütközik valamelyik csővel vagy talajjal, akkor veszít a játékos
             isGameOver = true;
             felcso.setAct(false);
@@ -332,5 +332,6 @@ public class FlappyStage extends PrettyStage {
             game.getMyAssetManager().getSound(hit).play();
             game.getMyAssetManager().getSound(die).play();
         }
+
     }
 }

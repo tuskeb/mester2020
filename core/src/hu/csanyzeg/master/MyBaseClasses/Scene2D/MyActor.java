@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * Created by tuskeb on 2016. 09. 30..
  */
-abstract public class MyActor extends Actor implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IActorComplexCollision, IElapsedTime, IActorOverlaps {
+abstract public class MyActor extends Actor implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IElapsedTime, IActorOverlaps {
 
 
     public MyActor(MyGame game) {
@@ -121,26 +121,22 @@ abstract public class MyActor extends Actor implements IOriginChanged, InitableI
     @Override
     protected void positionChanged() {
         super.positionChanged();
-        positionchangedComplexCollision();
         positionchangedWorldActor();
     }
 
     @Override
     protected void rotationChanged() {
         super.rotationChanged();
-        rotationchangedComplexCollision();
         rotationchangedWorldActor();
     }
 
     public void originChanged(){
-        originchangedComplexCollision();
         originchangedWorldActor();
     }
 
 
     @Override
     public void setSize(float width, float height) {
-        setsizeComplexCollision(getWidth(), getHeight(), width, height);
         setOrigin(getOriginX() * width / getWidth(), getOriginY() * height / getHeight());
         super.setSize(width, height);
     }
@@ -203,7 +199,6 @@ abstract public class MyActor extends Actor implements IOriginChanged, InitableI
     @Override
     protected void drawDebugBounds(ShapeRenderer shapes) {
         super.drawDebugBounds(shapes);
-        drawComplexCollisionDebugBounds(shapes);
     }
 
     @Override

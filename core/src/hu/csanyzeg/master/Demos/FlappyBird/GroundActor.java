@@ -15,6 +15,5 @@ public class GroundActor extends OneSpriteStaticActor {
     public GroundActor(MyGame game) {
         super(game, groundTexture);
         setTouchable(null);
-        addBaseCollisionRectangleShape();
     }
 }
