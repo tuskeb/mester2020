@@ -19,28 +19,28 @@ public class SimpleOverlapsUtil {
         }
     }
 
-    public static boolean overlaps(MyActor A, ShapeType AShape, MyActor B, ShapeType BShape){
+    public static boolean overlaps(Actor A, ShapeType AShape, Actor B, ShapeType BShape){
         if (AShape == ShapeType.Rectangle && BShape == ShapeType.Rectangle){
             MyRectangle ar = new MyRectangle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
-            MyRectangle br = new MyRectangle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
+            MyRectangle br = new MyRectangle(B.getWidth(), B.getHeight(), 0,0, B.getOriginX(), B.getOriginY(), B.getRotation(), 0, B.getX(), B.getY(), true);
             return ar.overlaps(br);
         }
 
         if (AShape == ShapeType.Rectangle && BShape == ShapeType.Circle){
             MyRectangle ar = new MyRectangle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
-            MyCircle br = new MyCircle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
+            MyCircle br = new MyCircle(B.getWidth(), B.getHeight(), 0,0, B.getOriginX(), B.getOriginY(), B.getRotation(), 0, B.getX(), B.getY(), true);
             return ar.overlaps(br);
         }
 
         if (AShape == ShapeType.Circle && BShape == ShapeType.Rectangle){
             MyCircle ar = new MyCircle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
-            MyRectangle br = new MyRectangle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
+            MyRectangle br = new MyRectangle(B.getWidth(), B.getHeight(), 0,0, B.getOriginX(), B.getOriginY(), B.getRotation(), 0, B.getX(), B.getY(), true);
             return ar.overlaps(br);
         }
 
         if (AShape == ShapeType.Circle && BShape == ShapeType.Circle){
             MyCircle ar = new MyCircle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
-            MyCircle br = new MyCircle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
+            MyCircle br = new MyCircle(B.getWidth(), B.getHeight(), 0,0, B.getOriginX(), B.getOriginY(), B.getRotation(), 0, B.getX(), B.getY(), true);
             return ar.overlaps(br);
         }
         return false;
