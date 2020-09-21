@@ -18,4 +18,5 @@ public class FirstStage extends MyStage {
         addActor(new BadlogiActor(game));
     }
 
+
 }

@@ -101,16 +101,6 @@ public abstract class MyCheckbox extends CheckBox implements IOriginChanged, Ini
 
     //endregion
 
-    //region IActorComplexCollision code
-    @Deprecated
-    protected final HashMap<String, MyShape> shapeMap = new HashMap<String, MyShape>();
-
-    @Deprecated
-    public HashMap<String, MyShape> getCollisionShapeMap(){
-        return shapeMap;
-    }
-    //endregion
-
     //region ElapsedTime code
     protected float elapsedTime = 0;
 

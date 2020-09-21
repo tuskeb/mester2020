@@ -12,7 +12,7 @@ public class Kepernyo extends MyScreen {
 
     @Override
     protected void afterAssetsLoaded() {
-        addStage(new FirstStage(game), 0, true);
+        addStage(new SecondStage(game), 0, true);
     }
 
     @Override
