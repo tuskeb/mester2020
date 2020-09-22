@@ -112,4 +112,11 @@ public class OneSpriteAnimatedActor extends OneSpriteActor {
         return textureAtlas;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 }
