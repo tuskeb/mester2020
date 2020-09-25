@@ -324,7 +324,7 @@ public interface IActorUtil {
         actor.setSize(width, actor.getHeight()*(width/actor.getWidth()));
     }
 
-    public default void seHeightWhithAspectRatio(float height){
+    public default void setHeightWhithAspectRatio(float height){
         Actor actor = (Actor)this;
         actor.setSize(actor.getWidth()*(height/actor.getHeight()), height);
     }
@@ -350,7 +350,7 @@ public interface IActorUtil {
         setSizeByOrigin(width, actor.getHeight()*(width/actor.getWidth()));
     }
 
-    public default void seHeightWhithAspectRatioByOrigin(float height){
+    public default void setHeightWhithAspectRatioByOrigin(float height){
         Actor actor = (Actor)this;
         setSizeByOrigin(actor.getWidth()*(height/actor.getHeight()), height);
     }
@@ -382,4 +382,24 @@ public interface IActorUtil {
                 ", originX = " + actor.getOriginX() +
                 ", originY = " + actor.getOriginY();
     }
+
+
+    public default void copyFrom(Actor other){
+        Actor actor = (Actor)this;
+        actor.setColor(other.getColor());
+        actor.setOrigin(other.getOriginX(), other.getOriginY());
+        actor.setPosition(other.getX(), other.getY());
+        actor.setSize(other.getWidth(),other.getHeight());
+        actor.setRotation(other.getRotation());
+        actor.setVisible(other.isVisible());
+        actor.setTouchable(other.getTouchable());
+        actor.setName(other.getName());
+        actor.setZIndex(other.getZIndex());
+        if (this instanceof IZindex && other instanceof IZindex){
+            IZindex zindex = (IZindex)this;
+            IZindex ozindex = (IZindex)other;
+            zindex.setZIndex(ozindex.getZIndex());
+        }
+    }
+
 }
