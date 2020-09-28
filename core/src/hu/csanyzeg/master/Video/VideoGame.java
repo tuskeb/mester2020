@@ -10,8 +10,8 @@ public class VideoGame extends MyGame {
     public void create() {
         super.create();
         Gdx.app.log("Create", "Message");
-        this.debug = true;
-        //this.setScreen(new VideoScreen(this));
-        this.setScreen(new SpaceScreen(this));
+       // this.debug = true;
+        this.setScreen(new VideoScreen(this));
+        //this.setScreen(new SpaceScreen(this));
     }
 }

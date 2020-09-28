@@ -9,9 +9,9 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 public class SimpleOverlapsUtil {
 
     /*Ha létre lett hozva neki SimpleBody, akkor azon keresztül nézi az átfedést, ha nem, akkor pedig egyszerű téglalapként kezeli.*/
-    public static boolean overlaps(MyActor A, MyActor B){
-        if (A.getActorWorldHelper() != null && B.getActorWorldHelper() != null && A.getActorWorldHelper().getBody() instanceof SimpleBody && B.getActorWorldHelper().getBody() instanceof SimpleBody){
-            return ((SimpleBody) A.getActorWorldHelper().getBody()).overlaps((SimpleBody) B.getActorWorldHelper().getBody());
+    public static boolean overlaps(Actor A, Actor B){
+        if (A instanceof MyActor && B instanceof MyActor && ((MyActor)A).getActorWorldHelper() != null && ((MyActor)B).getActorWorldHelper() != null && ((MyActor)A).getActorWorldHelper().getBody() instanceof SimpleBody && ((MyActor)B).getActorWorldHelper().getBody() instanceof SimpleBody){
+            return ((SimpleBody) ((MyActor)A).getActorWorldHelper().getBody()).overlaps((SimpleBody) ((MyActor)B).getActorWorldHelper().getBody());
         }else{
             MyRectangle ar = new MyRectangle(A.getWidth(), A.getHeight(), 0,0, A.getOriginX(), A.getOriginY(), A.getRotation(), 0, A.getX(), A.getY(), true);
             MyRectangle br = new MyRectangle(B.getWidth(), B.getHeight(), 0,0, B.getOriginX(), B.getOriginY(), B.getRotation(), 0, B.getX(), B.getY(), true);

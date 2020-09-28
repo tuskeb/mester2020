@@ -29,6 +29,15 @@ public class VideoStage extends MyStage {
         addActor(videoActor = new VideoActor(game));
         videoActor.setX(5);
         videoActor.setRotation(40);
+
+        //legoActor.setPositionCenterOfActorToCenterOfViewport();
+        for(int i = 0; i<10; i++){
+
+            LegoActor legoActor;
+            legoActor = new LegoActor(game);
+            addActor(legoActor);
+            legoActor.setPositionCenter(i * 0.234375f);
+        }
     }
 
     @Override
