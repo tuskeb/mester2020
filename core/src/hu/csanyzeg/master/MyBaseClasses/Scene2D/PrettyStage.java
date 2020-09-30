@@ -25,6 +25,18 @@ public abstract class PrettyStage extends MyStage implements IPrettyStage {
         afterInit();
     }
 
+    public PrettyStage(MyGame game) {
+        super(new ResponseViewport(900), game);
+        beforeInit();
+        assignment();
+        setSizes();
+        setPositions();
+        addListeners();
+        setZIndexes();
+        addActors();
+        afterInit();
+    }
+
     /**
      * Az értékek beállítása előtt végrehajtandó utasítások
      * Pl. debuggoláshoz, vagy írhatsz egy programot ide ami minden sikeres lefutásnál lefőz egy kávét
