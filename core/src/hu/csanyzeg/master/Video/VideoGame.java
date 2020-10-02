@@ -11,7 +11,7 @@ public class VideoGame extends MyGame {
         super.create();
         Gdx.app.log("Create", "Message");
        // this.debug = true;
-        this.setScreen(new VideoScreen(this));
-        //this.setScreen(new SpaceScreen(this));
+       // this.setScreen(new VideoScreen(this));
+        this.setScreen(new SpaceScreen(this));
     }
 }
