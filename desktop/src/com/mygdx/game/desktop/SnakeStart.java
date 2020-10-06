@@ -11,7 +11,7 @@ public class SnakeStart {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         new LwjglApplication(new Snake(), config);
 
-        config.width = 640;
+        config.width = 1028;
         config.height = 640;
     }
 }

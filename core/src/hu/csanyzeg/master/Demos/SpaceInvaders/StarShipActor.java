@@ -9,12 +9,15 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyBehaviorListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorld;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 
 public class StarShipActor extends OneSpriteStaticActor {
     public static String asset =  "spaceinvaders/starship.png";
+    private SimpleWorld world;
 
     public static AssetList assetList = new AssetList();
     static {
@@ -30,12 +33,21 @@ public class StarShipActor extends OneSpriteStaticActor {
         setWidthWhithAspectRatio(12);
 
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
-
+        this.world = world;
+/*
         addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                getStage().addActor(new StarshipBulletActor(game, world, getX()+6, getY()));
+                fire();
+            }
+        });
+*/
+        ((SimpleWorldHelper)getActorWorldHelper()).getBody().setSimpleBodyBehaviorListener(new SimpleBodyBehaviorListener(){
+            @Override
+            public void onStop(SimpleBody sender) {
+                super.onStop(sender);
+                fire();
             }
         });
     }
@@ -43,4 +55,9 @@ public class StarShipActor extends OneSpriteStaticActor {
     public void moveTo(float x){
         ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(x - getWidth() / 2, getY(), 100, PositionRule.LeftBottom);
     }
+
+    public void fire(){
+        getStage().addActor(new StarshipBulletActor(game, world, getX()+6, getY()));
+    }
+
 }

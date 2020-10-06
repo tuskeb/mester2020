@@ -3,15 +3,9 @@ package hu.csanyzeg.master.Demos.SpaceInvaders;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleContact;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorld;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldContactListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
 
 public class SpaceStage extends SimpleWorldStage {

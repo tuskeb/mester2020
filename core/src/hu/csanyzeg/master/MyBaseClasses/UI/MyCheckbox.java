@@ -31,6 +31,7 @@ public abstract class MyCheckbox extends CheckBox implements IOriginChanged, Ini
         super(text, skin);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         this.game = game;
     }
 
@@ -38,6 +39,7 @@ public abstract class MyCheckbox extends CheckBox implements IOriginChanged, Ini
         super(text, skin, styleName);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         this.game = game;
     }
 
@@ -45,6 +47,7 @@ public abstract class MyCheckbox extends CheckBox implements IOriginChanged, Ini
         super(text, style);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         this.game = game;
     }
 

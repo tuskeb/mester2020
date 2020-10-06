@@ -24,7 +24,7 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.MyShape;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import hu.csanyzeg.master.MyBaseClasses.WorldHelper.WorldHelper;
 
-public abstract class MyLabel extends Label implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IElapsedTime, IActorOverlaps {
+public class MyLabel extends Label implements IOriginChanged, InitableInterface, ITimer, IGame, IActorZindex, WorldActor, IActorUtil, IElapsedTime, IActorOverlaps {
 
     public MyLabel(MyGame game, CharSequence text, Skin skin) {
         super(text, skin);
@@ -37,6 +37,7 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
         super(text, skin, styleName);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 
@@ -44,6 +45,7 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
         super(text, skin, fontName, color);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 
@@ -51,6 +53,7 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
         super(text, skin, fontName, colorName);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 
@@ -58,6 +61,7 @@ public abstract class MyLabel extends Label implements IOriginChanged, InitableI
         super(text, style);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 

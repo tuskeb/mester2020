@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.RandomXS128;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
@@ -86,5 +88,9 @@ public class EnemyActor extends OneSpriteStaticActor {
                 ((SimpleWorldHelper)getActorWorldHelper()).remove();
             }
         }));
+        SimpleLabel simpleLabel;
+        simpleLabel = new SimpleLabel(game,world,"+100", "demoflappy/flappyfont.ttf", 1,1,1,1,10, new SimpleLabelAction1());
+        simpleLabel.setPosition(getX(),getY());
+        getStage().addActor(simpleLabel);
     }
 }

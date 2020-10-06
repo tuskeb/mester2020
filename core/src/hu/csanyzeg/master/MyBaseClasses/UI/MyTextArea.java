@@ -31,6 +31,7 @@ public abstract class MyTextArea extends TextArea implements IOriginChanged, Ini
         super(text, skin);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 
@@ -38,6 +39,7 @@ public abstract class MyTextArea extends TextArea implements IOriginChanged, Ini
         super(text, skin, styleName);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 
@@ -45,6 +47,7 @@ public abstract class MyTextArea extends TextArea implements IOriginChanged, Ini
         super(text, style);
         setGame(game);
         setDebug(game.debug);
+        setOrigintoCenter();
         init();
     }
 

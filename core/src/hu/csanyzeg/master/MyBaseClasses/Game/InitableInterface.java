@@ -5,5 +5,7 @@ package hu.csanyzeg.master.MyBaseClasses.Game;
  */
 
 public interface InitableInterface {
-    public void init();
+    public default void init(){
+
+    }
 }

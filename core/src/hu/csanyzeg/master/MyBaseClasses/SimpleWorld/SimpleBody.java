@@ -453,6 +453,17 @@ public class SimpleBody extends MyRectangle {
         }
     }
 
+    public void colorToFixTime(float sec, float r, float g, float b, float a){
+        Color color = new Color();
+        color.a= a;
+        color.b = b;
+        color.g = g;
+        color.r = r;
+        targetColor = color;
+        colorToFixTime(color, sec);
+    }
+
+
 
     public void colorTo(float sec, float r, float g, float b, float a) {
         targetColor = color;
@@ -656,6 +667,14 @@ public class SimpleBody extends MyRectangle {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public void setColor(float r, float g, float b, float a) {
+        this.color.a = a;
+        this.color.r = r;
+        this.color.g = g;
+        this.color.b = b;
+    }
+
 
     public void addBaseCollisionRectangleShape(){
         addCollisionShape(BASERECTANGLE,new MyRectangle(width, height,offsetX,offsetY, originX, originY, rotation, offsetRotation, centerX, centerY,false));

@@ -373,7 +373,14 @@ public interface IActorUtil {
 
     public default String toStr() {
         Actor actor = (Actor)this;
-        return actor.toString() +  " {" +
+        String name = actor.getName();
+        if (name == null) {
+            name = getClass().getName();
+            int dotIndex = name.lastIndexOf('.');
+            if (dotIndex != -1) name = name.substring(dotIndex + 1);
+        }
+
+        return name +  " {" +
                 " X = " + actor.getX() +
                 " Y = " + actor.getX() +
                 ", width = " + actor.getWidth() +

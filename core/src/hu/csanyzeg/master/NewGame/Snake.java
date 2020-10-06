@@ -1,5 +1,6 @@
 package hu.csanyzeg.master.NewGame;
 
+import hu.csanyzeg.master.Demos.SpaceInvaders.SpaceScreen;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 
 public class Snake extends MyGame {
@@ -10,6 +11,7 @@ public class Snake extends MyGame {
     @Override
     public void create() {
         super.create();
-        setScreen(new SnakeScreen(this));
+        debug = true;
+        setScreen(new SpaceScreen(this));
     }
 }
