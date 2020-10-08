@@ -126,7 +126,7 @@ public class SimpleLabel extends MyGroup {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
-        if (getActorWorldHelper() != null && simpleUIListener != null){
+        if (getActorWorldHelper() != null && simpleUIListener != null && isVisible()){
             simpleUIListener.onShow(this, simpleWorldHelpers);
         }
 

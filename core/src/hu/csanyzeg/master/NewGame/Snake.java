@@ -11,7 +11,6 @@ public class Snake extends MyGame {
     @Override
     public void create() {
         super.create();
-        debug = true;
         setScreen(new SpaceScreen(this));
     }
 }

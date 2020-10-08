@@ -20,7 +20,7 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
     public void onShow(SimpleLabel sender, Array<SimpleWorldHelper> bodyArray) {
         SimpleLabel s = sender;
         sender.setColorMode(SimpleLabel.ColorMode.byChar);
-        sender.addTimer(new TickTimer(5, false, new TickTimerListener(){
+        sender.addTimer(new TickTimer(6, false, new TickTimerListener(){
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
@@ -35,12 +35,11 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
     }
 
 
-    float time = 1f;
 
     @Override
     public void onCharAdd(SimpleLabel sender, SimpleBody body, MyGroup group, MyLabel label, int index) {
 
-        time += 0.01f;
+        float time = 1f + 0.01f * (index + 1);
         float position = body.getX();
         body.setX(0);
         body.moveToFixTime(position, 0, 1, PositionRule.LeftBottom);

@@ -9,7 +9,7 @@ import hu.csanyzeg.master.Kerulgetosjatek.NewGame;
 public class KerulgetosJatek {
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        new LwjglApplication(new NewGame(true), config);
+        new LwjglApplication(new NewGame(false), config);
 
         config.width = 512;
         config.height = 800;
