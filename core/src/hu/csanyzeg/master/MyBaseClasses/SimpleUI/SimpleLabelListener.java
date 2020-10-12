@@ -9,9 +9,9 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
 public interface SimpleLabelListener {
-    public void onShow(SimpleLabel sender, Array<SimpleWorldHelper> bodyArray);
-    public void onHide(SimpleLabel sender, Array<SimpleWorldHelper> bodyArray);
-    public void onCharAdd(SimpleLabel sender, SimpleBody body, MyGroup group, MyLabel label, int index);
+    public void onShow(SimpleLabel sender, Array<SimpleChar> charArray);
+    public void onHide(SimpleLabel sender, Array<SimpleChar> charArray);
+    public void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index);
 
     //public void onCharChange(SimpleLabel sender, SimpleBody body, MyGroup group, MyLabel label, int index);
 }

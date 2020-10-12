@@ -30,19 +30,11 @@ public class StarShipActor extends OneSpriteStaticActor {
 
         setPosition(x, y);
 
-        setWidthWhithAspectRatio(12);
+        setWidthWhithAspectRatio(120);
 
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
         this.world = world;
-/*
-        addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                fire();
-            }
-        });
-*/
+
         ((SimpleWorldHelper)getActorWorldHelper()).getBody().setSimpleBodyBehaviorListener(new SimpleBodyBehaviorListener(){
             @Override
             public void onStop(SimpleBody sender) {
@@ -53,11 +45,12 @@ public class StarShipActor extends OneSpriteStaticActor {
     }
 
     public void moveTo(float x){
-        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(x - getWidth() / 2, getY(), 100, PositionRule.LeftBottom);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(x - getWidth() / 2, getY(), 1000, PositionRule.LeftBottom);
     }
 
     public void fire(){
-        getStage().addActor(new StarshipBulletActor(game, world, getX()+6, getY()));
+        getStage().addActor(new StarshipBulletActor(game, world, getX()+60, getY()));
+        game.getMyAssetManager().getSound("spaceinvaders/shoot.mp3").play();
     }
 
 }

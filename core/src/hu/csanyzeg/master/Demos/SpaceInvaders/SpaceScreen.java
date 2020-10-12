@@ -1,5 +1,7 @@
 package hu.csanyzeg.master.Demos.SpaceInvaders;
 
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -11,6 +13,8 @@ import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
 
 public class SpaceScreen  extends MyScreen {
+
+
     public SpaceScreen(MyGame game) {
         super(game);
     }
@@ -18,19 +22,22 @@ public class SpaceScreen  extends MyScreen {
     @Override
     protected void afterAssetsLoaded() {
         addStage(new SpaceStage(game), 0, true);
-        addStage(new SpaceControlStage(game), 1, false);
     }
 
     @Override
     public AssetList getAssetList() {
         AssetList assetList = new AssetList();
-        AssetList.collectAssetDescriptor(SpaceScreen.class, assetList);
-        AssetList.collectAssetDescriptor(SpaceControlStage.class, assetList);
+        AssetList.collectAssetDescriptor(SpaceStage.class, assetList);
         return assetList;
     }
 
     @Override
     public void init() {
 
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }

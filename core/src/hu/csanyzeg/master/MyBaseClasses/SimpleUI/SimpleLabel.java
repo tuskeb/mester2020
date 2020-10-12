@@ -1,10 +1,10 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleUI;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -21,101 +21,57 @@ public class SimpleLabel extends MyGroup {
         byGroup, byChar
     }
 
-    private Array<SimpleWorldHelper> simpleWorldHelpers = new Array<SimpleWorldHelper>();
-    private SimpleLabelListener simpleUIListener = null;
-    private ColorMode colorMode = ColorMode.byGroup;
+    public enum FontWidthMode{
+        monospace, variable
+    }
 
-    public SimpleLabel(MyGame game, SimpleWorld world, CharSequence text, String fontHash, float r, float g, float b, float a, float fontSize, SimpleLabelListener simpleUIListener) {
+    private SimpleLabelStyle simpleLabelStyle;
+
+    public SimpleLabel(MyGame game, SimpleWorld world, CharSequence text, SimpleLabelStyle simpleLabelStyle) {
         super(game);
+        this.simpleLabelStyle = simpleLabelStyle;
         Label.LabelStyle style;
         style = new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle();
-        style.font = game.getMyAssetManager().getFont(fontHash);
-        Color color = new Color();
-
-        color.a = a;
-        color.r = r;
-        color.g = g;
-        color.b = b;
-
+        style.font = game.getMyAssetManager().getFont(simpleLabelStyle.fontHash);
+        Color color = simpleLabelStyle.fontColor;
         style.fontColor = color;
-
-        create(world, text, style, fontSize, simpleUIListener);
+        create(world, text, simpleLabelStyle);
     }
 
-    public SimpleLabel(MyGame game, SimpleWorld world, CharSequence text, Label.LabelStyle style, float fontSize) {
-        super(game);
-        create(world, text, style, fontSize, null);
-    }
-
-    public SimpleLabel(MyGame game, SimpleWorld world, CharSequence text, Label.LabelStyle style, float fontSize, SimpleLabelListener simpleUIListener) {
-        super(game);
-        create(world, text, style, fontSize, simpleUIListener);
-    }
-
-    private void create(SimpleWorld world, CharSequence text, Label.LabelStyle style, float fontSize, SimpleLabelListener simpleUIListener){
+    private void create(SimpleWorld world, CharSequence text, SimpleLabelStyle simpleLabelStyle){
         SimpleWorldHelper mainHelper = null;
+
         if (world != null){
             setActorWorldHelper(mainHelper = new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Ghost));
         }
 
-
-        float position = 0f;
-
-        this.simpleUIListener = simpleUIListener;
-        int i = 0;
-
-        for (char c : text.toString().toCharArray()) {
-            MyLabel myLabel = new MyLabel(game, c + "", style);
-            float scale = fontSize / myLabel.getPrefHeight();
+        if (simpleLabelStyle.fontWidthMode == FontWidthMode.monospace && simpleLabelStyle.maxFontWidth == -1){
+            SimpleChar myLabel = new SimpleChar(game,null, simpleLabelStyle, 'W');
+            float scale = simpleLabelStyle.fontSize / myLabel.getPrefHeight();
             myLabel.setFontScale(scale);
             myLabel.setWidthWhithAspectRatio(myLabel.getWidth() * scale);
+            simpleLabelStyle.maxFontWidth = myLabel.getPrefWidth();
+        }
 
-
-            MyGroup myGroup = new MyGroup(game){
-                private MyLabel label;
-
-                @Override
-                public void setColor(Color color) {
-                    super.setColor(color);
-                    label.setColor(color);
-                }
-
-                @Override
-                public void setColor(float r, float g, float b, float a) {
-                    super.setColor(r, g, b, a);
-                    label.setColor(r,g,b,a);
-                }
-
-                @Override
-                public void addActor(Actor actor) {
-                    super.addActor(actor);
-                    label = (MyLabel)actor;
-                }
-            };
-            myGroup.addActor(myLabel);
-            myGroup.setWidth(myLabel.getWidth());
-            myGroup.setHeight(myLabel.getHeight());
-            myGroup.setX(position);
-            SimpleBody simpleBody = null;
-            if (world != null) {
-                SimpleWorldHelper simpleWorldHelper = new SimpleWorldHelper(world, myGroup, ShapeType.Null, SimpleBodyType.Ghost);
-                myGroup.setActorWorldHelper(simpleWorldHelper);
-                simpleBody = ((SimpleWorldHelper) myGroup.getActorWorldHelper()).getBody();
-                simpleBody.setUserData(myLabel);
-                simpleWorldHelpers.add(simpleWorldHelper);
+        float position = 0f;
+        int i = 0;
+        for (char c : text.toString().toCharArray()) {
+            SimpleChar simpleChar = new SimpleChar(game, world, simpleLabelStyle, c);
+            simpleChar.setX(position);
+            addActor(simpleChar);
+            if (simpleLabelStyle.fontWidthMode == FontWidthMode.monospace){
+                position += simpleLabelStyle.maxFontWidth + simpleLabelStyle.fontSpacing;
+            }else {
+                position += simpleChar.getPrefWidth() + simpleLabelStyle.fontSpacing;
             }
-
-            addActor(myGroup);
-
-            position += myLabel.getPrefWidth() * 1.2f;
-
-            if (world != null && simpleUIListener != null) {
-                simpleUIListener.onCharAdd(this, simpleBody, myGroup, myLabel, i);
+            if (world != null && simpleLabelStyle.simpleUIListener != null) {
+                simpleLabelStyle.simpleUIListener.onCharAdd(this, simpleChar, i);
             }
             i++;
         }
+
         setWidth(position);
-        setHeight(fontSize);
+        setHeight(simpleLabelStyle.fontSize);
         if (mainHelper != null) {
             mainHelper.getBody().setPosition(getX(), getY());
             mainHelper.getBody().setSize(getWidth(), getHeight());
@@ -126,30 +82,40 @@ public class SimpleLabel extends MyGroup {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
-        if (getActorWorldHelper() != null && simpleUIListener != null && isVisible()){
-            simpleUIListener.onShow(this, simpleWorldHelpers);
+        if (getActorWorldHelper() != null && simpleLabelStyle != null && isVisible()){
+            simpleLabelStyle.simpleUIListener.onShow(this, getSimpleChars());
         }
 
     }
 
+    public Array<SimpleChar> getSimpleChars(){
+        Array<SimpleChar> simpleChars = new Array<>(getChildren().size);
+        for(Actor actor : getChildren()){
+            if (actor instanceof SimpleChar){
+                simpleChars.add((SimpleChar)actor);
+            }
+        }
+        return simpleChars;
+    }
+
     public SimpleLabelListener getSimpleUIListener() {
-        return simpleUIListener;
+        return simpleLabelStyle.simpleUIListener;
     }
 
     public void setSimpleUIListener(SimpleLabelListener simpleUIListener) {
-        this.simpleUIListener = simpleUIListener;
+        this.simpleLabelStyle.simpleUIListener = simpleUIListener;
     }
 
     public void removeSimpleUIListener() {
-        this.simpleUIListener = null;
+        this.simpleLabelStyle.simpleUIListener = null;
     }
 
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-        if (colorMode == ColorMode.byGroup) {
-            for (SimpleWorldHelper helper : simpleWorldHelpers) {
-                ((MyLabel) helper.getBody().getUserData()).setColor(color);
+        if (simpleLabelStyle.colorMode == ColorMode.byGroup) {
+            for (SimpleChar helper : getSimpleChars()) {
+                helper.setColor(color);
             }
         }
     }
@@ -157,22 +123,22 @@ public class SimpleLabel extends MyGroup {
     @Override
     public void setColor(float r, float g, float b, float a) {
         super.setColor(r, g, b, a);
-        for(SimpleWorldHelper helper : simpleWorldHelpers){
-            ((MyLabel)helper.getBody().getUserData()).setColor(r, g, b, a);
+        for(SimpleChar helper : getSimpleChars()){
+            helper.setColor(r, g, b, a);
         }
     }
 
     public ColorMode getColorMode() {
-        return colorMode;
+        return simpleLabelStyle.colorMode;
     }
 
     public void setColorMode(ColorMode colorMode) {
-        this.colorMode = colorMode;
+        this.simpleLabelStyle.colorMode = colorMode;
     }
 
     @Override
     public boolean remove() {
-        for(SimpleWorldHelper helper : simpleWorldHelpers){
+        for(SimpleChar helper : getSimpleChars()){
             helper.remove();
         }
         return super.remove();
@@ -181,20 +147,26 @@ public class SimpleLabel extends MyGroup {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (simpleUIListener!=null) {
+        if (simpleLabelStyle.simpleUIListener!=null) {
             if (visible) {
-                simpleUIListener.onShow(this, simpleWorldHelpers);
+                simpleLabelStyle.simpleUIListener.onShow(this, getSimpleChars());
             } else {
-                simpleUIListener.onHide(this, simpleWorldHelpers);
+                simpleLabelStyle.simpleUIListener.onHide(this, getSimpleChars());
             }
         }
     }
 
     public void hide(){
-        if (simpleUIListener!=null) {
+        if (simpleLabelStyle.simpleUIListener!=null) {
             if (!isVisible()) {
-                simpleUIListener.onHide(this, simpleWorldHelpers);
+                simpleLabelStyle.simpleUIListener.onHide(this, getSimpleChars());
             }
         }
     }
+
+
+    public FontWidthMode getFontWidthMode() {
+        return simpleLabelStyle.fontWidthMode;
+    }
+
 }

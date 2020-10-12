@@ -17,27 +17,29 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
 
 
     @Override
-    public void onShow(SimpleLabel sender, Array<SimpleWorldHelper> bodyArray) {
-        SimpleLabel s = sender;
-        sender.setColorMode(SimpleLabel.ColorMode.byChar);
-        sender.addTimer(new TickTimer(6, false, new TickTimerListener(){
+    public void onShow(SimpleLabel sender2, Array<SimpleChar> charArray) {
+        sender2.setColorMode(SimpleLabel.ColorMode.byChar);
+        sender2.addTimer(new TickTimer(6, false, new TickTimerListener(){
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
-                s.remove();
+                sender2.removeTimer(sender);
+                sender2.remove();
             }
         }));
     }
 
     @Override
-    public void onHide(SimpleLabel sender, Array<SimpleWorldHelper> bodyArray) {
+    public void onHide(SimpleLabel sender, Array<SimpleChar> charArray) {
 
     }
 
 
 
     @Override
-    public void onCharAdd(SimpleLabel sender, SimpleBody body, MyGroup group, MyLabel label, int index) {
+    public void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index) {
+
+        SimpleBody body = simpleChar.getBody();
 
         float time = 1f + 0.01f * (index + 1);
         float position = body.getX();
@@ -50,31 +52,34 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
         body.setRotation(-180);
         body.rotateToFixTime(0, 1, Direction.ClockWise);
 
-        group.addTimer(new TickTimer(0.15f + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new TickTimer(0.15f + time * 2, false, new TickTimerListener() {
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
                 //((SimpleBody)myGroup.getActorWorldHelper().getBody()).colorToFixTime(1,1,1,1,0.5f);
                 body.moveToFixTime(body.getX(), 20, 0.2f, PositionRule.LeftBottom);
+                simpleChar.removeTimer(sender);
             }
         }));
 
-        group.addTimer(new TickTimer(0.3f + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new TickTimer(0.3f + time * 2, false, new TickTimerListener() {
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
                 body.colorToFixTime(1, 0, 1, 0, 0.8f);
                 body.moveToFixTime(body.getX(), 0, 0.1f, PositionRule.LeftBottom);
+                simpleChar.removeTimer(sender);
             }
         }));
 
-        group.addTimer(new TickTimer(2 + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new TickTimer(2 + time * 2, false, new TickTimerListener() {
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
                 body.colorToFixTime(1, 1, 1, 1, 0);
                 body.moveToFixTime(0, 0, 1, PositionRule.LeftBottom);
                 body.rotateToFixTime(270, 1, Direction.ClockWise);
+                simpleChar.removeTimer(sender);
             }
         }));
 

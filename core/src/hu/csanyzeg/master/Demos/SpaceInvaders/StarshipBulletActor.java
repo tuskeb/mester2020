@@ -32,7 +32,7 @@ public class StarshipBulletActor extends OneSpriteStaticActor {
 
         setPosition(x, y);
 
-        setWidthWhithAspectRatio(1);
+        setWidthWhithAspectRatio(10);
 
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
 
@@ -42,7 +42,7 @@ public class StarshipBulletActor extends OneSpriteStaticActor {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
-        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(getX(), getStage().getHeight(), 80, PositionRule.LeftBottom);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(getX(), getStage().getHeight(), 800, PositionRule.LeftBottom);
 
         ((SimpleWorldHelper)getActorWorldHelper()).body.setSimpleBodyBehaviorListener(new SimpleBodyBehaviorListener(){
             @Override

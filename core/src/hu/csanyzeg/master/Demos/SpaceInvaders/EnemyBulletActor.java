@@ -29,11 +29,11 @@ public class EnemyBulletActor extends OneSpriteStaticActor {
 
         setPosition(x, y);
 
-        setWidthWhithAspectRatio(3);
+        setWidthWhithAspectRatio(30);
 
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
 
-        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(getX(), 0 - getHeight(), 80, PositionRule.LeftBottom);
+        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixSpeed(getX(), 0 - getHeight(), 800, PositionRule.LeftBottom);
 
         ((SimpleWorldHelper)getActorWorldHelper()).body.setSimpleBodyBehaviorListener(new SimpleBodyBehaviorListener(){
             @Override
