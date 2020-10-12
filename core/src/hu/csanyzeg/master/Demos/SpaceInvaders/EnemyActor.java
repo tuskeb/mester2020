@@ -2,13 +2,18 @@ package hu.csanyzeg.master.Demos.SpaceInvaders;
 
 import com.badlogic.gdx.math.RandomXS128;
 
+import java.util.logging.Level;
+
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorld;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
@@ -36,9 +41,12 @@ public class EnemyActor extends OneSpriteStaticActor {
 
         setPosition(x,y);
 
-        setWidthWhithAspectRatio(12);
+        setWidthWhithAspectRatio(120);
 
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
+
+        setColor(1,1,1,0);
+        ((SimpleBody)getActorWorldHelper().getBody()).colorToFixTime(randomXS128.nextFloat()*1f+1f,1,1,1,1);
 
         addTimer(new TickTimer(1, true, new TickTimerListener(){
             @Override
@@ -47,20 +55,21 @@ public class EnemyActor extends OneSpriteStaticActor {
 
                 if (randomXS128.nextInt(50) == 0){
                     getStage().addActor(new EnemyBulletActor(game, world, getX() + 5, getY() - 3));
+                    game.getMyAssetManager().getSound("spaceinvaders/enemyshoot.mp3").play();
                 }
 
                 switch (movingPattern.charAt(movingState)){
                     case 'R':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() + 6, getY(), 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() + 60, getY(), 0.7f, PositionRule.LeftBottom);
                         break;
                     case 'D':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX(), getY() - 6, 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX(), getY() - 60, 0.7f, PositionRule.LeftBottom);
                         break;
                     case 'L':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() - 6, getY(), 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() - 60, getY(), 0.7f, PositionRule.LeftBottom);
                         break;
                     case 'U':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() , getY() + 6, 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() , getY() + 60, 0.7f, PositionRule.LeftBottom);
                         break;
                 }
                 movingState++;
@@ -89,8 +98,9 @@ public class EnemyActor extends OneSpriteStaticActor {
             }
         }));
         SimpleLabel simpleLabel;
-        simpleLabel = new SimpleLabel(game,world,"+100", "demoflappy/flappyfont.ttf", 1,1,1,1,10, new SimpleLabelAction1());
+        simpleLabel = new SimpleLabel(game,world,"+100", new PointLabelStyle());
         simpleLabel.setPosition(getX(),getY());
         getStage().addActor(simpleLabel);
+        game.getMyAssetManager().getSound("spaceinvaders/enemydestroy.mp3").play();
     }
 }

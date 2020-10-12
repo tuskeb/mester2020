@@ -6,6 +6,7 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 public class Snake extends MyGame {
 
     public Snake() {
+        debug = true;
     }
 
     @Override
