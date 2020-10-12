@@ -34,7 +34,6 @@ public class ExplosionActor extends OneSpriteAnimatedActor {
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
         ((SimpleWorldHelper)getActorWorldHelper()).body.sizeToFixSpeed(getWidth()*5,getHeight()*5,8, PositionRule.Center);
         ((SimpleWorldHelper)getActorWorldHelper()).body.setAngularVelocity(randomXS128.nextInt(500)-250);
-        game.getMyAssetManager().getSound("spaceinvaders/shoot.mp3").play();
     }
 
     @Override

@@ -58,7 +58,6 @@ public class SimpleLabelAction2 implements SimpleLabelListener {
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
-                System.out.println("tick");
                 body.colorToFixTime( playTime / 2f, color.r, color.g, color.b, 0);
                 body.sizeToFixTime(w*1.5f,h*1.5f,1f, PositionRule.Center);
                 simpleChar.removeTimer(sender);

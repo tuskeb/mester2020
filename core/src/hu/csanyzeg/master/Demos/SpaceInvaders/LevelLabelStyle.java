@@ -6,8 +6,9 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 
 public class LevelLabelStyle extends SimpleLabelStyle {
     public LevelLabelStyle() {
-        fontSize = 260;
+        fontSize = 220;
         fontHash = "spaceinvaders/littleboxes2.ttf";
+        fontSpacing = 50;
         simpleUIListener = new SimpleLabelAction2(1.5f);
     }
 }

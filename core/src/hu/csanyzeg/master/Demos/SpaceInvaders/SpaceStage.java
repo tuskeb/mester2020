@@ -1,6 +1,7 @@
 package hu.csanyzeg.master.Demos.SpaceInvaders;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -21,7 +22,7 @@ import static hu.csanyzeg.master.Demos.FlappyBird.FlappyStage.flappyFont;
 
 public class SpaceStage extends SimpleWorldStage {
     Music music;
-
+    int level = 1;
 
     public static AssetList assetList = new AssetList();
     static {
@@ -35,7 +36,7 @@ public class SpaceStage extends SimpleWorldStage {
 
     private void newLevel(){
         SimpleLabel simpleLabel;
-        simpleLabel = new SimpleLabel(game, world, "Level 1", new LevelLabelStyle());
+        simpleLabel = new SimpleLabel(game, world, "Level "  + level, new LevelLabelStyle());
         addActor(simpleLabel);
         simpleLabel.setPositionCenter(600);
 
@@ -43,12 +44,45 @@ public class SpaceStage extends SimpleWorldStage {
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
-                for (int k = 0; k < 3; k++) {
+                for (int k = 0; k < 1 + level; k++) {
                     for (int i = 0; i < 8; i++) {
-                        addActor(new EnemyActor(game, world, i * 160, k * 100 + 640));
+                        addActor(new EnemyActor(game, world, i * 160, 800 - k * 100 ));
                     }
                 }
                 removeTimer(sender);
+
+                addTimer(new TickTimer(1, true, new TickTimerListener(){
+                    @Override
+                    public void onTick(Timer sender, float correction) {
+                        super.onTick(sender, correction);
+                        int count = 0;
+                        for(Actor actor : getActors()){
+                            if (actor instanceof EnemyActor){
+                                count++;
+                            }
+                        }
+                        if (count == 0) {
+                            removeTimer(sender);
+                            music.stop();
+                            SimpleLabel s;
+                            addActor(s = new SimpleLabel(game, world, "Complete", new LevelLabelStyle()));
+                            s.setPositionCenter(600);
+                            game.getMyAssetManager().getSound("spaceinvaders/levelcomplete.mp3").play();
+                            addTimer(new TickTimer(5, true, new TickTimerListener(){
+                                @Override
+                                public void onTick(Timer sender, float correction) {
+                                    super.onTick(sender, correction);
+                                    removeTimer(sender);
+                                    music.setPosition(0);
+                                    music.play();
+                                    level++;
+                                    newLevel();
+                                }
+                            }));
+
+                        }
+                    }
+                }));
             }
         }));
 
@@ -84,6 +118,7 @@ public class SpaceStage extends SimpleWorldStage {
         music = game.getMyAssetManager().getMusic("spaceinvaders/tetris.mp3");
         music.setLooping(true);
         music.play();
+
 
 
     }

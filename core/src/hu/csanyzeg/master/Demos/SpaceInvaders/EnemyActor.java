@@ -46,7 +46,7 @@ public class EnemyActor extends OneSpriteStaticActor {
         setActorWorldHelper(new SimpleWorldHelper(world, this, ShapeType.Rectangle, SimpleBodyType.Sensor));
 
         setColor(1,1,1,0);
-        ((SimpleBody)getActorWorldHelper().getBody()).colorToFixTime(randomXS128.nextFloat()+0.2f,1,1,1,1);
+        ((SimpleBody)getActorWorldHelper().getBody()).colorToFixTime(randomXS128.nextFloat()*1f+1f,1,1,1,1);
 
         addTimer(new TickTimer(1, true, new TickTimerListener(){
             @Override
@@ -55,6 +55,7 @@ public class EnemyActor extends OneSpriteStaticActor {
 
                 if (randomXS128.nextInt(50) == 0){
                     getStage().addActor(new EnemyBulletActor(game, world, getX() + 5, getY() - 3));
+                    game.getMyAssetManager().getSound("spaceinvaders/enemyshoot.mp3").play();
                 }
 
                 switch (movingPattern.charAt(movingState)){
@@ -100,5 +101,6 @@ public class EnemyActor extends OneSpriteStaticActor {
         simpleLabel = new SimpleLabel(game,world,"+100", new PointLabelStyle());
         simpleLabel.setPosition(getX(),getY());
         getStage().addActor(simpleLabel);
+        game.getMyAssetManager().getSound("spaceinvaders/enemydestroy.mp3").play();
     }
 }
