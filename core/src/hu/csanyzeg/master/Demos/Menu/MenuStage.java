@@ -17,6 +17,7 @@ import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.Demos.LoadingStage.DemoLoadingStage;
 import hu.csanyzeg.master.Demos.LoadingStage.DemoPreLoadingStage;
 import hu.csanyzeg.master.Demos.SimpleClock.SWScreen;
+import hu.csanyzeg.master.Demos.SpaceInvaders.SpaceScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingListener;
 import hu.csanyzeg.master.MyBaseClasses.Assets.LoadingStage;
@@ -39,6 +40,7 @@ import static hu.csanyzeg.master.Demos.FlappyBird.BirdActor.birdTexture;
  * Created by tuskeb on 2016. 09. 30..
  * Windows XP Theme by hdani1337 on 2019 Christmas
  */
+//TODO KÓDOT TAKARÍTANI ÉS NORMÁLISAN MEGCSINÁLNI MERT EZ UNDORÍTÓ
 public class MenuStage extends MyStage {
     public static String blissTexture = "demomenu/bliss.jpg";
     public static String kekTexture = "demomenu/kek.jpg";
@@ -52,6 +54,7 @@ public class MenuStage extends MyStage {
     public static String shutdownSound = "demomenu/shutdown.mp3";
     public static String shutdownWallpaperTexture = "demomenu/shutdownWallpaper.jpg";
     public static String simpleClockTexture = "demomenu/simpleClock.png";
+    public static String invadersTexture = "spaceinvaders/enemy1.png";
 
     public static AssetList assetList = new AssetList();
     static {
@@ -70,6 +73,7 @@ public class MenuStage extends MyStage {
         assetList.addSound(shutdownSound);
         assetList.addTexture(shutdownWallpaperTexture);
         assetList.addTexture(simpleClockTexture);
+        assetList.addTexture(invadersTexture);
         assetList.addFont(trebuchet,trebuchet, 16, Color.WHITE);
     }
 
@@ -89,11 +93,13 @@ public class MenuStage extends MyStage {
     OneSpriteAnimatedActor flappyActor;//Flappy Demo ikonja
     OneSpriteStaticActor powerOff;//Kikapcsológomb
     OneSpriteStaticActor simpleActor;//SimpleWorld ikonja
+    OneSpriteStaticActor invaderActor;//SpaceInvaders ikonja
     MyLabel linkActorLabel;//Box2D Join szövege
     MyLabel fireworkActorLabel;//Firework Demo szövege
     MyLabel boxActorLabel;//Box2D Helper szövege
     MyLabel flappyActorLabel;//Flappy Demo szövege
     MyLabel simpleActorLabel;//SimpleWorld szövege
+    MyLabel invaderActorLabel;//SpaceInvaders szövege
     OneSpriteStaticActor shutdown;//A Windows leállítása...
     OneSpriteStaticActor shutdownWall;//A kikapcsolóképernyő háttere
     //-----START MENÜ IKONOK ÉS SZÖVEGEK VÉGE-----
@@ -298,6 +304,7 @@ public class MenuStage extends MyStage {
     ClickListener boxListener;//Box2D Helper listener
     ClickListener flappyListener;//Flappy Demo listener
     ClickListener clockListener;//SimpleWorld listener
+    ClickListener invaderListener;//SpaceInvader listener
 
     private void makeButtons()
     {
@@ -463,6 +470,39 @@ public class MenuStage extends MyStage {
                     labels.add(this);
                 }
             };
+        //----------
+
+
+        //-----SPACE INVADERS-----
+        invaderListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new SpaceScreen(game));
+            }
+        };
+
+        invaderActor = new OneSpriteStaticActor(game, invadersTexture){
+            @Override
+            public void init() {
+                super.init();
+                setPosition(linkActor.getX(),simpleActor.getY() + simpleActor.getHeight() + 15);
+                setSize(32*1.3f,(32/getWidth()*getHeight())*1.3f);
+                addListener(invaderListener);
+                buttons.add(this);
+            }
+        };
+
+        invaderActorLabel = new MyLabel(game, "Space Invaders", getLabelStyle()) {
+            @Override
+            public void init() {
+                setPosition(55, invaderActor.getY() + 10);
+                setColor(Color.BLACK);
+                setFontScale(1.5f);
+                addListener(invaderListener);
+                labels.add(this);
+            }
+        };
         //----------
 
 
