@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import java.text.DecimalFormat;
+
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
@@ -14,6 +16,7 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
+import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
@@ -21,6 +24,7 @@ import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import static hu.csanyzeg.master.Demos.FlappyBird.FlappyStage.flappyFont;
 
 public class SpaceStage extends SimpleWorldStage {
+    SimpleLabel pointSimpleLabel;
     Music music;
     int level = 1;
 
@@ -39,6 +43,8 @@ public class SpaceStage extends SimpleWorldStage {
         simpleLabel = new SimpleLabel(game, world, "Level "  + level, new LevelLabelStyle());
         addActor(simpleLabel);
         simpleLabel.setPositionCenter(600);
+        setPoint(point);
+
 
         addTimer(new TickTimer(3, false, new TickTimerListener(){
             @Override
@@ -68,6 +74,19 @@ public class SpaceStage extends SimpleWorldStage {
                             addActor(s = new SimpleLabel(game, world, "Complete", new LevelLabelStyle()));
                             s.setPositionCenter(600);
                             game.getMyAssetManager().getSound("spaceinvaders/levelcomplete.mp3").play();
+                            addTimer(new TickTimer(0.4f / level, true, new TickTimerListener(){
+                                int count = 0;
+                                @Override
+                                public void onRepeat(TickTimer sender) {
+                                    super.onRepeat(sender);
+                                    addPoint(10);
+                                    if (count < 5 * level){
+                                        count++;
+                                    }else{
+                                        sender.stop();
+                                    }
+                                }
+                            }));
                             addTimer(new TickTimer(5, true, new TickTimerListener(){
                                 @Override
                                 public void onTick(Timer sender, float correction) {
@@ -119,13 +138,45 @@ public class SpaceStage extends SimpleWorldStage {
         music.setLooping(true);
         music.play();
 
+        addActor(pointSimpleLabel = new SimpleLabel(game, world, "------", new PointLabelStyle()));
+        pointSimpleLabel.setPosition(0,getViewport().getWorldHeight()-pointSimpleLabel.getHeight());
+/*
+        addTimer(new TickTimer(1f, true, new TickTimerListener(){
+            @Override
+            public void onTick(Timer sender, float correction) {
+                super.onTick(sender, correction);
+                pointSimpleLabel.setText((int)getElapsedTime() + "");
+                System.out.println(getElapsedTime());
+            }
+        }));
+*/
+        setCameraResetToLeftBottomOfScreen();
 
 
+    }
+
+    protected int point = 10;
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int p){
+        pointSimpleLabel.setText(String.format("%6s", new DecimalFormat("000000").format(p)));
+        point = p;
+    }
+
+    public void addPoint(int p){
+        setPoint(point + p);
     }
 
     @Override
     public void dispose() {
         super.dispose();
         music.stop();
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

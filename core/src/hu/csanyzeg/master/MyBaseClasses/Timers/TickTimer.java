@@ -5,6 +5,7 @@ public class TickTimer extends Timer<TickTimerListener> {
 
     protected boolean repeat;
     protected float interval;
+    protected float startDelaySec = 0;
     public float elapsedTime = 0;
 
 
@@ -32,6 +33,15 @@ public class TickTimer extends Timer<TickTimerListener> {
         this.interval = interval;
         start();
     }
+/*
+    public TickTimer(float interval, boolean repeat, TickTimerListener timerListener, float startDelaySec) {
+        this.timerListener = timerListener;
+        this.repeat = repeat;
+        this.interval = interval;
+        this.startDelaySec = startDelaySec;
+        start();
+    }
+*/
 
     public void act(float delta){
         if (!enabled) return;

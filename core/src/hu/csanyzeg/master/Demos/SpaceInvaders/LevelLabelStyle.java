@@ -8,7 +8,7 @@ public class LevelLabelStyle extends SimpleLabelStyle {
     public LevelLabelStyle() {
         fontSize = 220;
         fontHash = "spaceinvaders/littleboxes2.ttf";
-        fontSpacing = 50;
-        simpleUIListener = new SimpleLabelAction2(1.5f);
+        fontSpacing = 60;
+        simpleUIListener = new SimpleLabelAction2(2.5f);
     }
 }

@@ -15,6 +15,8 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
 public class SimpleChar extends MyGroup {
+    public int index = -1;
+
     public SimpleChar(MyGame game, SimpleWorld world, SimpleLabelStyle simpleLabelStyle, char c) {
         super(game);
 
@@ -104,5 +106,20 @@ public class SimpleChar extends MyGroup {
         label.setFontScaleY(fontScale);
     }
 
+    public char getChar(){
+        return label.getText().charAt(0);
+    }
 
+
+    public void setChar(char c){
+        label.setText(c + "");
+    }
+
+    @Override
+    public void copyFrom(Actor other) {
+        super.copyFrom(other);
+        if (other instanceof SimpleChar){
+            index = ((SimpleChar) other).index;
+        }
+    }
 }

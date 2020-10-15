@@ -9,9 +9,32 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
 public interface SimpleLabelListener {
-    public void onShow(SimpleLabel sender, Array<SimpleChar> charArray);
-    public void onHide(SimpleLabel sender, Array<SimpleChar> charArray);
-    public void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index);
+    /*Akkor hajtódik végre, amikor a teljes label megjelenik.*/
+    default void onShow(SimpleLabel sender, Array<SimpleChar> simpleCharArray){
 
-    //public void onCharChange(SimpleLabel sender, SimpleBody body, MyGroup group, MyLabel label, int index);
+    };
+
+    /*Akkor hajtódik végre, amikor a teljes label eltűnik.*/
+    default void onHide(SimpleLabel sender, Array<SimpleChar> simpleCharArray){
+
+    };
+
+    default void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index){
+
+    };
+
+    /*A visszatérési értéke true, akkor az osztály leszedi, ha false, akkor a metódusban kell leszedni. Akkor hajtódik végre, amikor egy karakter törlésre kerül. Ez lehet szöveg módosítása és teljes szöveg leszedése is.*/
+    default boolean onCharRemove(SimpleLabel sender, SimpleChar simpleChar, int index){
+        return true;
+    };
+
+    /*A visszatérési értéke true, akkor az osztály leszedi, ha false, akkor a metódusban kell leszedni, vagy ott marad.*/
+    default boolean onCharChange(SimpleLabel sender, SimpleChar oldSimpleChar, SimpleChar newSimpleChar){
+        return true;
+    };
+
+    /*Amikor a változó hosszúságú betűk miatt át kell rendezni a címkét. Ha false a visszatérés, akkor itt kell kezelni, ha true, akkor automatikusan kezeli*/
+    default boolean onCharPositonChange(SimpleLabel sender, SimpleChar simpleChar, int index){
+        return true;
+    }
 }

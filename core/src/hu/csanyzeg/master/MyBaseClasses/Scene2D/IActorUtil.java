@@ -382,7 +382,7 @@ public interface IActorUtil {
 
         return name +  " {" +
                 " X = " + actor.getX() +
-                " Y = " + actor.getX() +
+                " Y = " + actor.getY() +
                 ", width = " + actor.getWidth() +
                 ", height = " + actor.getHeight() +
                 ", rotation = " + actor.getRotation() +

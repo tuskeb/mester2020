@@ -82,6 +82,7 @@ public class EnemyActor extends OneSpriteStaticActor {
 
     public void death(){
         getStage().addActor(new ExplosionActor(game, world, this));
+        ((SpaceStage)getStage()).addPoint(5);
         getActorWorldHelper().invoke(new Runnable() {
             @Override
             public void run() {
@@ -97,10 +98,10 @@ public class EnemyActor extends OneSpriteStaticActor {
                 ((SimpleWorldHelper)getActorWorldHelper()).remove();
             }
         }));
-        SimpleLabel simpleLabel;
-        simpleLabel = new SimpleLabel(game,world,"+100", new PointLabelStyle());
-        simpleLabel.setPosition(getX(),getY());
-        getStage().addActor(simpleLabel);
+        //SimpleLabel simpleLabel;
+        //simpleLabel = new SimpleLabel(game,world,"+100", new PointLabelStyle());
+        //simpleLabel.setPosition(getX(),getY());
+        //getStage().addActor(simpleLabel);
         game.getMyAssetManager().getSound("spaceinvaders/enemydestroy.mp3").play();
     }
 }

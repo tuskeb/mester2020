@@ -15,6 +15,7 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBodyType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorld;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SimpleLabel extends MyGroup {
     public enum ColorMode{
@@ -25,7 +26,9 @@ public class SimpleLabel extends MyGroup {
         monospace, variable
     }
 
-    private SimpleLabelStyle simpleLabelStyle;
+    protected SimpleWorld world;
+
+    protected SimpleLabelStyle simpleLabelStyle;
 
     public SimpleLabel(MyGame game, SimpleWorld world, CharSequence text, SimpleLabelStyle simpleLabelStyle) {
         super(game);
@@ -35,6 +38,7 @@ public class SimpleLabel extends MyGroup {
         style.font = game.getMyAssetManager().getFont(simpleLabelStyle.fontHash);
         Color color = simpleLabelStyle.fontColor;
         style.fontColor = color;
+        this.world = world;
         create(world, text, simpleLabelStyle);
     }
 
@@ -47,9 +51,6 @@ public class SimpleLabel extends MyGroup {
 
         if (simpleLabelStyle.fontWidthMode == FontWidthMode.monospace && simpleLabelStyle.maxFontWidth == -1){
             SimpleChar myLabel = new SimpleChar(game,null, simpleLabelStyle, 'W');
-            float scale = simpleLabelStyle.fontSize / myLabel.getPrefHeight();
-            myLabel.setFontScale(scale);
-            myLabel.setWidthWhithAspectRatio(myLabel.getWidth() * scale);
             simpleLabelStyle.maxFontWidth = myLabel.getPrefWidth();
         }
 
@@ -57,6 +58,7 @@ public class SimpleLabel extends MyGroup {
         int i = 0;
         for (char c : text.toString().toCharArray()) {
             SimpleChar simpleChar = new SimpleChar(game, world, simpleLabelStyle, c);
+            simpleChar.index = i;
             simpleChar.setX(position);
             addActor(simpleChar);
             if (simpleLabelStyle.fontWidthMode == FontWidthMode.monospace){
@@ -91,7 +93,7 @@ public class SimpleLabel extends MyGroup {
     public Array<SimpleChar> getSimpleChars(){
         Array<SimpleChar> simpleChars = new Array<>(getChildren().size);
         for(Actor actor : getChildren()){
-            if (actor instanceof SimpleChar){
+            if (actor instanceof SimpleChar && ((SimpleChar)actor).index>=0){
                 simpleChars.add((SimpleChar)actor);
             }
         }
@@ -164,9 +166,63 @@ public class SimpleLabel extends MyGroup {
         }
     }
 
+    private void calculatePositions(){
+
+    }
 
     public FontWidthMode getFontWidthMode() {
         return simpleLabelStyle.fontWidthMode;
     }
 
+
+    public void setText(String text){
+        int i = 0;
+        for(char c : text.toCharArray()){
+            setCharAt(i, c);
+            i++;
+        }
+    }
+
+    public char getCharAt(int index){
+        return getSimpleCharAt(index).getChar();
+    }
+
+
+    public SimpleChar getSimpleCharAt(int index){
+        for(SimpleChar simpleChar : getSimpleChars()){
+            if (simpleChar.index == index){
+                return simpleChar;
+            }
+        }
+        return null;
+    }
+
+    public void setCharAt(int index, char c){
+        setCharAt(index,c,true, true);
+    }
+
+    public void setCharAt(int index, char c, boolean doListener, boolean replaceIfChanged){
+        SimpleChar old = getSimpleCharAt(index);
+        if (old.getChar() != c) {
+            SimpleChar nww = new SimpleChar(game, world, simpleLabelStyle, c);
+            SimpleChar before = getSimpleCharAt(index - 1);
+            nww.index = old.index;
+            if (before == null) {
+                nww.setX(0);
+            } else {
+                nww.setX(before.getX() + before.getWidth() + simpleLabelStyle.fontSpacing);
+            }
+            addActor(nww);
+            old.index = -1;
+
+            if (!doListener || getSimpleUIListener() == null || getSimpleUIListener().onCharChange(this, old, nww)) {
+                old.remove();
+            }
+        }
+
+    }
+
+    public SimpleWorld getWorld() {
+        return world;
+    }
 }

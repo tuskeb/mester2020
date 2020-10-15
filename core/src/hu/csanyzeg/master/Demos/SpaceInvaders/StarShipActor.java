@@ -50,7 +50,11 @@ public class StarShipActor extends OneSpriteStaticActor {
 
     public void fire(){
         getStage().addActor(new StarshipBulletActor(game, world, getX()+60, getY()));
-        game.getMyAssetManager().getSound("spaceinvaders/shoot.mp3").play();
+        SpaceStage spaceStage = (SpaceStage)getStage();
+        if (spaceStage.getPoint() >=  spaceStage.getLevel()) {
+            game.getMyAssetManager().getSound("spaceinvaders/shoot.mp3").play();
+            spaceStage.addPoint(-spaceStage.getLevel());
+        }
     }
 
 }
