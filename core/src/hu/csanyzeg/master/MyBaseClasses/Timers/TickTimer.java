@@ -1,12 +1,11 @@
 package hu.csanyzeg.master.MyBaseClasses.Timers;
 
-public class TickTimer extends Timer<TickTimerListener> {
+public class TickTimer extends ETTimer<TickTimerListener> {
 
 
     protected boolean repeat;
     protected float interval;
     protected float startDelaySec = 0;
-    public float elapsedTime = 0;
 
 
     public boolean isRepeat() {
@@ -33,19 +32,10 @@ public class TickTimer extends Timer<TickTimerListener> {
         this.interval = interval;
         start();
     }
-/*
-    public TickTimer(float interval, boolean repeat, TickTimerListener timerListener, float startDelaySec) {
-        this.timerListener = timerListener;
-        this.repeat = repeat;
-        this.interval = interval;
-        this.startDelaySec = startDelaySec;
-        start();
-    }
-*/
 
     public void act(float delta){
+        super.act(delta);
         if (!enabled) return;
-        elapsedTime += delta;
         if (elapsedTime >= interval){
             if (timerListener !=null){
                 float correction = elapsedTime-interval;
@@ -60,13 +50,4 @@ public class TickTimer extends Timer<TickTimerListener> {
         }
     }
 
-    public void start(){
-        super.start();
-        elapsedTime = 0;
-    }
-
-    public void stop(){
-        super.stop();
-        elapsedTime = 0;
-    }
 }

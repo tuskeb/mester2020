@@ -8,6 +8,8 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.Direction;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
@@ -19,11 +21,10 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
     @Override
     public void onShow(SimpleLabel sender2, Array<SimpleChar> charArray) {
         sender2.setColorMode(SimpleLabel.ColorMode.byChar);
-        sender2.addTimer(new TickTimer(6, false, new TickTimerListener(){
+        sender2.addTimer(new OneTickTimer(6,  new OneTickTimerListener(){
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
-                sender2.removeTimer(sender);
                 sender2.remove();
             }
         }));
@@ -52,34 +53,31 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
         body.setRotation(-180);
         body.rotateToFixTime(0, 1, Direction.ClockWise);
 
-        simpleChar.addTimer(new TickTimer(0.15f + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new OneTickTimer(0.15f + time * 2, new OneTickTimerListener() {
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
                 //((SimpleBody)myGroup.getActorWorldHelper().getBody()).colorToFixTime(1,1,1,1,0.5f);
                 body.moveToFixTime(body.getX(), 20, 0.2f, PositionRule.LeftBottom);
-                simpleChar.removeTimer(sender);
             }
         }));
 
-        simpleChar.addTimer(new TickTimer(0.3f + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new OneTickTimer(0.3f + time * 2, new OneTickTimerListener() {
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
                 body.colorToFixTime(1, 0, 1, 0, 0.8f);
                 body.moveToFixTime(body.getX(), 0, 0.1f, PositionRule.LeftBottom);
-                simpleChar.removeTimer(sender);
             }
         }));
 
-        simpleChar.addTimer(new TickTimer(2 + time * 2, false, new TickTimerListener() {
+        simpleChar.addTimer(new OneTickTimer(2 + time * 2, new OneTickTimerListener() {
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
                 body.colorToFixTime(1, 1, 1, 1, 0);
                 body.moveToFixTime(0, 0, 1, PositionRule.LeftBottom);
                 body.rotateToFixTime(270, 1, Direction.ClockWise);
-                simpleChar.removeTimer(sender);
             }
         }));
 

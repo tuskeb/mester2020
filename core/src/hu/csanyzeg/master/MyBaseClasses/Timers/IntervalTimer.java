@@ -1,7 +1,6 @@
 package hu.csanyzeg.master.MyBaseClasses.Timers;
 
-public class IntervalTimer extends Timer<IntervalTimerListener> {
-    protected float elapsedTime = 0;
+public class IntervalTimer extends ETTimer<IntervalTimerListener> {
 
     protected float startTime;
     protected float stopTime;
@@ -100,9 +99,4 @@ public class IntervalTimer extends Timer<IntervalTimerListener> {
         elapsedTime = 0;
     }
 
-    @Override
-    public void start() {
-        super.start();
-        elapsedTime = 0f;
-    }
 }

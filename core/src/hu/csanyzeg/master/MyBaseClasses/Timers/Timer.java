@@ -1,8 +1,11 @@
 package hu.csanyzeg.master.MyBaseClasses.Timers;
 
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.ITimer;
+
 public abstract class Timer<Listener> {
 
     protected Listener timerListener;
+    protected ITimer parent = null;
 
     public Listener getTimerListener() {
         return timerListener;
@@ -24,5 +27,19 @@ public abstract class Timer<Listener> {
     public void stop(){
         enabled = false;
         ((TimerListener)timerListener).onStop(this);
+    }
+
+    public ITimer getParent() {
+        return parent;
+    }
+
+    public void setParent(ITimer parent) {
+        this.parent = parent;
+    }
+
+    public void remove(){
+        if (parent!=null){
+            parent.removeTimer(this);
+        }
     }
 }

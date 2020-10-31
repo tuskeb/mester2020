@@ -51,7 +51,7 @@ public class UfoActor extends OneSpriteStaticActor {
 
                     @Override
                     public void onStop(IntervalTimer sender) {
-                        removeTimer(sender);
+                        sender.remove();
                         remove();
                     }
 

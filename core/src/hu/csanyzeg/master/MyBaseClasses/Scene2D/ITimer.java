@@ -9,6 +9,7 @@ public interface ITimer {
 
     public default void addTimer(Timer timer){
         getTimers().add(timer);
+        timer.setParent(this);
     }
 
     public default void removeTimer(Timer timer){

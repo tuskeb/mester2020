@@ -8,6 +8,8 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
@@ -24,11 +26,10 @@ public class SimpleLabelAction2 implements SimpleLabelListener {
     public void onShow(SimpleLabel sender2, Array<SimpleChar> charArray) {
         sender2.setColorMode(SimpleLabel.ColorMode.byChar);
 
-        sender2.addTimer(new TickTimer(playTime,false, new TickTimerListener(){
+        sender2.addTimer(new OneTickTimer(playTime, new OneTickTimerListener(){
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
-                sender2.removeTimer(sender);
                 sender2.remove();
             }
         }));
@@ -54,13 +55,12 @@ public class SimpleLabelAction2 implements SimpleLabelListener {
 
         body.colorToFixTime( playTime / 2, color.r, color.g, color.b, 1);
         body.sizeToFixTime(w,h,playTime / 2, PositionRule.Center);
-        simpleChar.addTimer(new TickTimer(playTime / 2,false,new TickTimerListener(){
+        simpleChar.addTimer(new OneTickTimer(playTime / 2,new OneTickTimerListener(){
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
                 body.colorToFixTime( playTime / 2f, color.r, color.g, color.b, 0);
                 body.sizeToFixTime(w*1.5f,h*1.5f,1f, PositionRule.Center);
-                simpleChar.removeTimer(sender);
             }
         }));
     }

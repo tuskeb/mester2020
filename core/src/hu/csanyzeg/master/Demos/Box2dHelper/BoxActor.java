@@ -51,7 +51,7 @@ public class BoxActor extends OneSpriteStaticActor {
             @Override
             public void onStop(IntervalTimer sender) {
                 setAlpha(1f);
-                removeTimer(sender);
+                sender.remove();
             }
 
             @Override
@@ -93,7 +93,7 @@ public class BoxActor extends OneSpriteStaticActor {
             @Override
             public void onStop(IntervalTimer sender) {
                 setColor(1,1,1,1);
-                removeTimer(sender);
+                sender.remove();
                 protect = false;
             }
 

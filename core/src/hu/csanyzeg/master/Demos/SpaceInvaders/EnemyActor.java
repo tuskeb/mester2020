@@ -29,12 +29,15 @@ public class EnemyActor extends OneSpriteStaticActor {
     public static AssetList assetList = new AssetList();
     static {
         assetList.addTexture(asset);
+        assetList.addSound("spaceinvaders/enemydestroy.mp3");
+        assetList.addSound("spaceinvaders/shoot.mp3");
+        assetList.addSound("spaceinvaders/enemyshoot.mp3");
     }
 
     private String movingPattern = "RRRRRDLLLLLD";
     private int movingState = 0;
 
-    public EnemyActor(MyGame game, SimpleWorld world, float x, float y) {
+    public EnemyActor(MyGame game, SimpleWorld world, float x, float y, int fireFreq, float movingIntervalSec) {
         super(game, asset);
 
         this.world = world;
@@ -48,28 +51,28 @@ public class EnemyActor extends OneSpriteStaticActor {
         setColor(1,1,1,0);
         ((SimpleBody)getActorWorldHelper().getBody()).colorToFixTime(randomXS128.nextFloat()*1f+1f,1,1,1,1);
 
-        addTimer(new TickTimer(1, true, new TickTimerListener(){
+        addTimer(new TickTimer(movingIntervalSec, true, new TickTimerListener(){
             @Override
             public void onTick(Timer sender, float correction) {
                 super.onTick(sender, correction);
 
-                if (randomXS128.nextInt(50) == 0){
+                if (randomXS128.nextInt(fireFreq) == 0){
                     getStage().addActor(new EnemyBulletActor(game, world, getX() + 5, getY() - 3));
                     game.getMyAssetManager().getSound("spaceinvaders/enemyshoot.mp3").play();
                 }
 
                 switch (movingPattern.charAt(movingState)){
                     case 'R':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() + 60, getY(), 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() + 60, getY(), movingIntervalSec / 2f, PositionRule.LeftBottom);
                         break;
                     case 'D':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX(), getY() - 60, 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX(), getY() - 60, movingIntervalSec / 2f, PositionRule.LeftBottom);
                         break;
                     case 'L':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() - 60, getY(), 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() - 60, getY(), movingIntervalSec / 2f, PositionRule.LeftBottom);
                         break;
                     case 'U':
-                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() , getY() + 60, 0.7f, PositionRule.LeftBottom);
+                        ((SimpleWorldHelper)getActorWorldHelper()).body.moveToFixTime(getX() , getY() + 60, movingIntervalSec / 2f, PositionRule.LeftBottom);
                         break;
                 }
                 movingState++;
@@ -98,10 +101,6 @@ public class EnemyActor extends OneSpriteStaticActor {
                 ((SimpleWorldHelper)getActorWorldHelper()).remove();
             }
         }));
-        //SimpleLabel simpleLabel;
-        //simpleLabel = new SimpleLabel(game,world,"+100", new PointLabelStyle());
-        //simpleLabel.setPosition(getX(),getY());
-        //getStage().addActor(simpleLabel);
         game.getMyAssetManager().getSound("spaceinvaders/enemydestroy.mp3").play();
     }
 }

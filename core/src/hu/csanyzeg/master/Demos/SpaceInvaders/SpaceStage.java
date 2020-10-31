@@ -11,22 +11,28 @@ import java.text.DecimalFormat;
 import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleChar;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
 import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.MultiTickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.MultiTickTimerListener;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.VariableTimer;
+import hu.csanyzeg.master.MyBaseClasses.Timers.VariableTimerListener;
 
 import static hu.csanyzeg.master.Demos.FlappyBird.FlappyStage.flappyFont;
 
 public class SpaceStage extends SimpleWorldStage {
-    SimpleLabel pointSimpleLabel;
-    Music music;
-    int level = 1;
+
 
     public static AssetList assetList = new AssetList();
     static {
@@ -34,7 +40,64 @@ public class SpaceStage extends SimpleWorldStage {
         AssetList.collectAssetDescriptor(EnemyBulletActor.class, assetList);
         AssetList.collectAssetDescriptor(StarshipBulletActor.class, assetList);
         AssetList.collectAssetDescriptor(ExplosionActor.class, assetList);
+        AssetList.collectAssetDescriptor(StarShipActor.class, assetList);
+        AssetList.collectAssetDescriptor(LevelLabelStyle.class, assetList);
+        AssetList.collectAssetDescriptor(PointLabelStyle.class, assetList);
         assetList.addMusic("spaceinvaders/tetris.mp3");
+        assetList.addSound("spaceinvaders/levelcomplete.mp3");
+
+    }
+
+
+    SimpleLabel pointSimpleLabel;
+    SimpleLabel lifeSimpleLabel;
+    StarShipActor starShipActor;
+
+    Music music;
+
+    int level = 1;
+    int life = 3;
+    protected int point = 10;
+
+
+    public SpaceStage(MyGame game) {
+        super(new ExtendViewport(1600, 960), game);
+
+        SimpleLabel simpleLabel;
+
+        addStarshipActor();
+
+        simpleLabel = new SimpleLabel(game, world, "Space Invaders", new SmallLabelStyle());
+        addActor(simpleLabel);
+        simpleLabel.setPositionCenter(300);
+
+        addTimer(new TickTimer(2, false, new TickTimerListener(){
+            @Override
+            public void onTick(Timer sender, float correction) {
+                super.onTick(sender, correction);
+                newLevel();
+                sender.remove();
+            }
+        }));
+
+        music = game.getMyAssetManager().getMusic("spaceinvaders/tetris.mp3");
+        music.setLooping(true);
+        music.play();
+
+        addActor(pointSimpleLabel = new SimpleLabel(game, world, "------", new PointLabelStyle()));
+        pointSimpleLabel.setPosition(0,getViewport().getWorldHeight()-pointSimpleLabel.getHeight());
+
+        lifeSimpleLabel = new SimpleLabel(game, world, "--", new PointLabelStyle());
+        addActor(lifeSimpleLabel);
+        lifeSimpleLabel.setPosition(getViewport().getWorldWidth() - lifeSimpleLabel.getWidth(), getViewport().getWorldHeight() - lifeSimpleLabel.getHeight());
+
+        OneSpriteStaticActor lifeShipOneSpriteStaticActor = new OneSpriteStaticActor(game, StarShipActor.asset);
+        addActor(lifeShipOneSpriteStaticActor);
+        lifeShipOneSpriteStaticActor.setHeightWhithAspectRatio(lifeSimpleLabel.getHeight() / 2);
+        lifeShipOneSpriteStaticActor.setPosition(lifeSimpleLabel.getX() - lifeShipOneSpriteStaticActor.getWidth(), lifeSimpleLabel.getY() + lifeSimpleLabel.getHeight() / 4);
+
+        setCameraResetToLeftBottomOfScreen();
+
     }
 
 
@@ -43,19 +106,20 @@ public class SpaceStage extends SimpleWorldStage {
         simpleLabel = new SimpleLabel(game, world, "Level "  + level, new LevelLabelStyle());
         addActor(simpleLabel);
         simpleLabel.setPositionCenter(600);
+
         setPoint(point);
 
+        setLife(life);
 
-        addTimer(new TickTimer(3, false, new TickTimerListener(){
+        addTimer(new OneTickTimer(3, new OneTickTimerListener(){
             @Override
-            public void onTick(Timer sender, float correction) {
+            public void onTick(OneTickTimer sender, float correction) {
                 super.onTick(sender, correction);
                 for (int k = 0; k < 1 + level; k++) {
                     for (int i = 0; i < 8; i++) {
-                        addActor(new EnemyActor(game, world, i * 160, 800 - k * 100 ));
+                        addActor(new EnemyActor(game, world, i * 160, 800 - k * 100, 100 / level, 1f/level + 0.5f ));
                     }
                 }
-                removeTimer(sender);
 
                 addTimer(new TickTimer(1, true, new TickTimerListener(){
                     @Override
@@ -68,30 +132,24 @@ public class SpaceStage extends SimpleWorldStage {
                             }
                         }
                         if (count == 0) {
-                            removeTimer(sender);
+                            sender.remove();
                             music.stop();
                             SimpleLabel s;
                             addActor(s = new SimpleLabel(game, world, "Complete", new LevelLabelStyle()));
                             s.setPositionCenter(600);
                             game.getMyAssetManager().getSound("spaceinvaders/levelcomplete.mp3").play();
-                            addTimer(new TickTimer(0.4f / level, true, new TickTimerListener(){
-                                int count = 0;
+                            addTimer(new MultiTickTimer(0.5f / level, level * 2, new MultiTickTimerListener(){
                                 @Override
-                                public void onRepeat(TickTimer sender) {
-                                    super.onRepeat(sender);
+                                public void onTick(MultiTickTimer sender, float correction, int count) {
+                                    super.onTick(sender, correction, count);
                                     addPoint(10);
-                                    if (count < 5 * level){
-                                        count++;
-                                    }else{
-                                        sender.stop();
-                                    }
                                 }
                             }));
-                            addTimer(new TickTimer(5, true, new TickTimerListener(){
+
+                            addTimer(new OneTickTimer(5,  new OneTickTimerListener(){
                                 @Override
-                                public void onTick(Timer sender, float correction) {
+                                public void onTick(OneTickTimer sender, float correction) {
                                     super.onTick(sender, correction);
-                                    removeTimer(sender);
                                     music.setPosition(0);
                                     music.play();
                                     level++;
@@ -107,10 +165,8 @@ public class SpaceStage extends SimpleWorldStage {
 
     }
 
-
-    public SpaceStage(MyGame game) {
-        super(new ExtendViewport(1600, 960), game);
-        StarShipActor starShipActor = new StarShipActor(game, world, 800,1);
+    protected void addStarshipActor(){
+        starShipActor = new StarShipActor(game, world, 800,1);
         addActor(starShipActor);
         addListener(new ClickListener(){
             @Override
@@ -119,43 +175,30 @@ public class SpaceStage extends SimpleWorldStage {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-
-        SimpleLabel simpleLabel;
-        simpleLabel = new SimpleLabel(game, world, "Space Invaders", new SmallLabelStyle());
-        addActor(simpleLabel);
-        simpleLabel.setPositionCenter(300);
-
-        addTimer(new TickTimer(2, false, new TickTimerListener(){
-            @Override
-            public void onTick(Timer sender, float correction) {
-                super.onTick(sender, correction);
-                newLevel();
-                removeTimer(sender);
-            }
-        }));
-
-        music = game.getMyAssetManager().getMusic("spaceinvaders/tetris.mp3");
-        music.setLooping(true);
-        music.play();
-
-        addActor(pointSimpleLabel = new SimpleLabel(game, world, "------", new PointLabelStyle()));
-        pointSimpleLabel.setPosition(0,getViewport().getWorldHeight()-pointSimpleLabel.getHeight());
-/*
-        addTimer(new TickTimer(1f, true, new TickTimerListener(){
-            @Override
-            public void onTick(Timer sender, float correction) {
-                super.onTick(sender, correction);
-                pointSimpleLabel.setText((int)getElapsedTime() + "");
-                System.out.println(getElapsedTime());
-            }
-        }));
-*/
-        setCameraResetToLeftBottomOfScreen();
-
-
     }
 
-    protected int point = 10;
+    protected void gameOver(){
+        SimpleLabel simpleLabel;
+        simpleLabel = new SimpleLabel(game, world, "Game", new LevelLabelStyle());
+        addActor(simpleLabel);
+        simpleLabel.setPositionCenter(600);
+        simpleLabel = new SimpleLabel(game, world, "Over", new LevelLabelStyle());
+        addActor(simpleLabel);
+        simpleLabel.setPositionCenter(300);
+        music.stop();
+        game.getMyAssetManager().getSound("spaceinvaders/levelcomplete.mp3").play();
+    }
+
+
+
+    public void starshipDeath(){
+        setLife(life-1);
+        if (life > 0) {
+            addStarshipActor();
+        }else{
+            gameOver();
+        }
+    }
 
     public int getPoint() {
         return point;
@@ -168,6 +211,15 @@ public class SpaceStage extends SimpleWorldStage {
 
     public void addPoint(int p){
         setPoint(point + p);
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        lifeSimpleLabel.setText("x" + (life % 10));
+        this.life = life;
     }
 
     @Override

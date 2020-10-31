@@ -166,9 +166,6 @@ public class SimpleLabel extends MyGroup {
         }
     }
 
-    private void calculatePositions(){
-
-    }
 
     public FontWidthMode getFontWidthMode() {
         return simpleLabelStyle.fontWidthMode;
@@ -198,12 +195,12 @@ public class SimpleLabel extends MyGroup {
     }
 
     public void setCharAt(int index, char c){
-        setCharAt(index,c,true, true);
+        setCharAt(index,c,true);
     }
 
-    public void setCharAt(int index, char c, boolean doListener, boolean replaceIfChanged){
+    public void setCharAt(int index, char c, boolean doListener){
         SimpleChar old = getSimpleCharAt(index);
-        if (old.getChar() != c) {
+        //if (old.getChar() != c || simpleLabelStyle.fontWidthMode != FontWidthMode.monospace) {
             SimpleChar nww = new SimpleChar(game, world, simpleLabelStyle, c);
             SimpleChar before = getSimpleCharAt(index - 1);
             nww.index = old.index;
@@ -218,11 +215,15 @@ public class SimpleLabel extends MyGroup {
             if (!doListener || getSimpleUIListener() == null || getSimpleUIListener().onCharChange(this, old, nww)) {
                 old.remove();
             }
-        }
+        //}
 
     }
 
     public SimpleWorld getWorld() {
         return world;
+    }
+
+    public SimpleLabelStyle getSimpleLabelStyle() {
+        return simpleLabelStyle;
     }
 }

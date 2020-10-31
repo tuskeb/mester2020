@@ -34,31 +34,43 @@ public class SimpleLabelAction3 implements SimpleLabelListener {
     @Override
     public void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index) {
         Color c = simpleChar.getBody().getColor();
-        simpleChar.getBody().setColor(c.r,c.g,c.b,0f);
-        simpleChar.getBody().colorToFixTime(appearingTime + index * appearDiffTime,c.r,c.g,c.b,1f);
+        simpleChar.getBody().setColor(c.r, c.g, c.b, 0f);
+        simpleChar.getBody().colorToFixTime(appearingTime + index * appearDiffTime, c.r, c.g, c.b, 1f);
     }
 
 
     @Override
     public boolean onCharChange(SimpleLabel sender, SimpleChar oldSimpleChar, SimpleChar newSimpleChar) {
-        SimpleBody bodyOld = oldSimpleChar.getBody();
-        SimpleBody bodyNew = newSimpleChar.getBody();
+        if (sender.getSimpleLabelStyle().fontWidthMode == SimpleLabel.FontWidthMode.variable || oldSimpleChar.getChar() != newSimpleChar.getChar() ||
+                sender.getSimpleLabelStyle().fontWidthMode == SimpleLabel.FontWidthMode.variable) {
+            SimpleBody bodyOld = oldSimpleChar.getBody();
+            SimpleBody bodyNew = newSimpleChar.getBody();
 
-        bodyOld.moveToFixTime(bodyOld.getX(), bodyOld.getY() + bodyOld.getHeight(), changeingTime, PositionRule.LeftBottom);
-        bodyOld.colorToFixTime(changeingTime, bodyOld.getColor().r, bodyOld.getColor().g, bodyOld.getColor().b, 0f);
+            if (oldSimpleChar.getChar() != newSimpleChar.getChar()) {
+                bodyOld.moveToFixTime(bodyOld.getX(), bodyOld.getY() + bodyOld.getHeight(), changeingTime, PositionRule.LeftBottom);
+                bodyOld.colorToFixTime(changeingTime, bodyOld.getColor().r, bodyOld.getColor().g, bodyOld.getColor().b, 0f);
 
-        bodyNew.setPosition(bodyNew.getX(), bodyNew.getY() - bodyNew.getHeight());
-        bodyNew.setColor(bodyNew.getColor().r, bodyNew.getColor().g, bodyNew.getColor().b, 0f);
-        bodyNew.moveToFixTime(bodyNew.getX(), bodyNew.getY() + bodyNew.getHeight(), changeingTime, PositionRule.LeftBottom);
-        bodyNew.colorToFixTime(changeingTime, bodyNew.getColor().r, bodyNew.getColor().g, bodyNew.getColor().b, 1f);
+                bodyNew.setPosition(bodyNew.getX(), bodyNew.getY() - bodyNew.getHeight());
+                bodyNew.setColor(bodyNew.getColor().r, bodyNew.getColor().g, bodyNew.getColor().b, 0f);
+                bodyNew.moveToFixTime(bodyNew.getX(), bodyNew.getY() + bodyNew.getHeight(), changeingTime, PositionRule.LeftBottom);
+                bodyNew.colorToFixTime(changeingTime, bodyNew.getColor().r, bodyNew.getColor().g, bodyNew.getColor().b, 1f);
 
-        oldSimpleChar.addTimer(new TickTimer(changeingTime, false, new TickTimerListener() {
-            @Override
-            public void onTick(Timer send, float correction) {
-                super.onTick(send, correction);
+                oldSimpleChar.addTimer(new TickTimer(changeingTime, false, new TickTimerListener() {
+                    @Override
+                    public void onTick(Timer send, float correction) {
+                        super.onTick(send, correction);
+                        oldSimpleChar.remove();
+                    }
+                }));
+            } else {
+                float x = bodyNew.getX();
+                float y = bodyNew.getY();
+                bodyNew.setPosition(bodyOld.getX(),bodyOld.getY());
+                bodyNew.moveToFixTime(x, y , changeingTime, PositionRule.LeftBottom);
                 oldSimpleChar.remove();
             }
-        }));
-        return false;
+            return false;
+        }
+        return true;
     }
 }
