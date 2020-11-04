@@ -1,13 +1,12 @@
 package hu.csanyzeg.master.Demos.SpaceInvaders;
 
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.Demos.DemoSimpleLabelListener1;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabelStyle;
 
-public class SmallLabelStyle extends SimpleLabelStyle {
+public class SmallLabelStyle extends WorldLabelStyle {
     public SmallLabelStyle() {
-        fontSize = 100;
+        super("spaceinvaders/littleboxes2.ttf", 100);
         fontSpacing = 10;
-        fontHash = "spaceinvaders/littleboxes2.ttf";
-        simpleUIListener = new SimpleLabelAction1();
+        simpleLabelListener = new DemoSimpleLabelListener1();
     }
 }

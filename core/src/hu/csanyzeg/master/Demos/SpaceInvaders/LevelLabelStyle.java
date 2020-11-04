@@ -1,11 +1,10 @@
 package hu.csanyzeg.master.Demos.SpaceInvaders;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.Demos.DemoSimpleLabelListener2;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabelStyle;
 
-public class LevelLabelStyle extends SimpleLabelStyle {
+public class LevelLabelStyle extends WorldLabelStyle {
 
     public static AssetList assetList = new AssetList();
     static {
@@ -14,9 +13,8 @@ public class LevelLabelStyle extends SimpleLabelStyle {
 
 
     public LevelLabelStyle() {
-        fontSize = 220;
-        fontHash = "spaceinvaders/littleboxes2.ttf";
+        super("spaceinvaders/littleboxes2.ttf", 220);
         fontSpacing = 60;
-        simpleUIListener = new SimpleLabelAction2(2.5f);
+        simpleLabelListener = new DemoSimpleLabelListener2(2.5f);
     }
 }

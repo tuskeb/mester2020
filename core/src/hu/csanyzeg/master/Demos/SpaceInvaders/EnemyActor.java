@@ -2,15 +2,9 @@ package hu.csanyzeg.master.Demos.SpaceInvaders;
 
 import com.badlogic.gdx.math.RandomXS128;
 
-import java.util.logging.Level;
-
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.ShapeType;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;

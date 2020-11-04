@@ -1,26 +1,23 @@
-package hu.csanyzeg.master.MyBaseClasses.SimpleUI;
+package hu.csanyzeg.master.MyBaseClasses.SimpleUI.Demos;
 
 import com.badlogic.gdx.utils.Array;
 
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyGroup;
+import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldChar;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabel;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabelListener;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.Direction;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.PositionRule;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimerListener;
-import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
-import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
-import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
-import hu.csanyzeg.master.MyBaseClasses.UI.MyLabel;
 
-public class SimpleLabelAction1 implements SimpleLabelListener {
+public class DemoSimpleLabelListener1 implements WorldLabelListener {
 
 
     @Override
-    public void onShow(SimpleLabel sender2, Array<SimpleChar> charArray) {
-        sender2.setColorMode(SimpleLabel.ColorMode.byChar);
+    public void onShow(WorldLabel sender2, Array<WorldChar> charArray) {
+        sender2.setColorMode(WorldLabel.ColorMode.byChar);
         sender2.addTimer(new OneTickTimer(6,  new OneTickTimerListener(){
             @Override
             public void onTick(OneTickTimer sender, float correction) {
@@ -31,16 +28,16 @@ public class SimpleLabelAction1 implements SimpleLabelListener {
     }
 
     @Override
-    public void onHide(SimpleLabel sender, Array<SimpleChar> charArray) {
+    public void onHide(WorldLabel sender, Array<WorldChar> charArray) {
 
     }
 
 
 
     @Override
-    public void onCharAdd(SimpleLabel sender, SimpleChar simpleChar, int index) {
+    public void onCharAdd(WorldLabel sender, WorldChar simpleChar, int index) {
 
-        SimpleBody body = simpleChar.getBody();
+        SimpleBody body = SimpleWorldStage.getBody(simpleChar);
 
         float time = 1f + 0.01f * (index + 1);
         float position = body.getX();

@@ -1,12 +1,11 @@
 package hu.csanyzeg.master.Demos.SpaceInvaders;
 
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction3;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabel;
+import hu.csanyzeg.master.MyBaseClasses.SimpleUI.Demos.DemoSimpleLabelListener3;
+import hu.csanyzeg.master.MyBaseClasses.WorldUI.WorldLabelStyle;
 
-public class PointLabelStyle  extends SimpleLabelStyle {
+public class PointLabelStyle  extends WorldLabelStyle {
 
     public static AssetList assetList = new AssetList();
     static {
@@ -15,10 +14,9 @@ public class PointLabelStyle  extends SimpleLabelStyle {
 
 
     public PointLabelStyle() {
-        fontSize = 80;
-        fontHash = "demoflappy/flappyfont.ttf";
-        simpleUIListener = new SimpleLabelAction3();
+        super("demoflappy/flappyfont.ttf", 80);
+        simpleLabelListener = new DemoSimpleLabelListener3();
         fontSpacing = 5;
-        fontWidthMode = SimpleLabel.FontWidthMode.monospace;
+        fontWidthMode = WorldLabel.FontWidthMode.monospace;
     }
 }

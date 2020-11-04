@@ -8,17 +8,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.text.DecimalFormat;
 
-import hu.csanyzeg.master.Demos.FlappyBird.FlappyScreen;
 import hu.csanyzeg.master.MyBaseClasses.Assets.AssetList;
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleChar;
 import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabel;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction1;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelAction2;
-import hu.csanyzeg.master.MyBaseClasses.SimpleUI.SimpleLabelStyle;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldStage;
-import hu.csanyzeg.master.MyBaseClasses.Timers.IntervalTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.MultiTickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.MultiTickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimer;
@@ -26,10 +20,6 @@ import hu.csanyzeg.master.MyBaseClasses.Timers.OneTickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
 import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
-import hu.csanyzeg.master.MyBaseClasses.Timers.VariableTimer;
-import hu.csanyzeg.master.MyBaseClasses.Timers.VariableTimerListener;
-
-import static hu.csanyzeg.master.Demos.FlappyBird.FlappyStage.flappyFont;
 
 public class SpaceStage extends SimpleWorldStage {
 

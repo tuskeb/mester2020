@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.IGame;
 
 
 public class SimpleBody extends MyRectangle {
@@ -453,6 +454,12 @@ public class SimpleBody extends MyRectangle {
         }
     }
 
+
+    public void alphaToFixTIme(float sec, float a) {
+        colorToFixTime(sec, color.r, color.g, color.b, a);
+    }
+
+
     public void colorToFixTime(float sec, float r, float g, float b, float a){
         Color color = new Color();
         color.a= a;
@@ -464,6 +471,9 @@ public class SimpleBody extends MyRectangle {
     }
 
 
+    public void alphaTo(float sec, float a) {
+        colorTo(sec, color.r, color.g, color.b, a);
+    }
 
     public void colorTo(float sec, float r, float g, float b, float a) {
         targetColor = color;
@@ -549,7 +559,6 @@ public class SimpleBody extends MyRectangle {
 
         if (linearTimer >= 0f){
             linearTimer -= deltaTime;
-
             if (linearTimer <= 0f){
                 linearTimer = INVALIDTIMER;
                 linearVelocity.set(0f,0f);
@@ -673,6 +682,11 @@ public class SimpleBody extends MyRectangle {
         this.color.r = r;
         this.color.g = g;
         this.color.b = b;
+    }
+
+
+    public void setAlpha(float a) {
+        this.color.a = a;
     }
 
 

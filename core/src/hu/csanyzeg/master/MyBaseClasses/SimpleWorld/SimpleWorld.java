@@ -148,4 +148,8 @@ public class SimpleWorld {
         moveBodies.clear();
         bodies.clear();
     }
+
+    public int getBodyCount(){
+        return bodies.size;
+    }
 }
