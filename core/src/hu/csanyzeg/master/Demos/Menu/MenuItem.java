@@ -69,6 +69,7 @@ public class MenuItem extends MyGroup {
         icon.setX(7);
         icon.setSize(32*1.3f,(32/icon.getWidth()*icon.getHeight())*1.3f);
         icon.setY(0);
+        setSize(icon.getWidth(),icon.getHeight());
 
         text = new MyLabel(game, getText(), getLabelStyle()) {
             @Override
@@ -170,8 +171,4 @@ public class MenuItem extends MyGroup {
         return super.getY();
     }
 
-    @Override
-    public float getHeight() {
-        return icon.getHeight();
-    }
 }

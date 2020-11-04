@@ -22,6 +22,7 @@ public class MyGroup extends Group implements  IOriginChanged, InitableInterface
         super();
         setGame(game);
         setDebug(game.debug);
+
         setWidth(1024);
         setHeight(1024);
         setOrigintoCenter();
