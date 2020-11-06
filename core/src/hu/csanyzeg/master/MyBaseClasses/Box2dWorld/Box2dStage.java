@@ -2,6 +2,7 @@ package hu.csanyzeg.master.MyBaseClasses.Box2dWorld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
@@ -169,5 +171,9 @@ public abstract class Box2dStage extends HelperStage<World, Box2DWorldHelper> {
     public void draw() {
         super.draw();
         if(game.debug) box2DDebugRenderer.render(world, getCamera().combined);
+    }
+
+    public static Body getBody(MyActor actor){
+        return ((Body)actor.getActorWorldHelper().getBody());
     }
 }

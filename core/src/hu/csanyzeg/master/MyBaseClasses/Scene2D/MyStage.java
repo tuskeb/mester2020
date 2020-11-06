@@ -107,6 +107,10 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
                 }
             }));
         }
+        OrthographicCamera c = (OrthographicCamera) getCamera();
+        cameraTargetX = c.position.x;
+        cameraTargetY = c.position.y;
+        cameraTargetZoom = c.zoom;
     }
 
     public interface BackButtonListener {
@@ -184,9 +188,9 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
 
     private float cameraTargetX = 0;
     private float cameraTargetY = 0;
-    private float cameraTargetZoom = 0;
-    private float cameraMoveSpeed = 0;
-    private float cameraZoomSpeed = 0;
+    private float cameraTargetZoom = 1f;
+    private float cameraMoveSpeed = 20f;
+    private float cameraZoomSpeed = 0.2f;
 
     public float getCameraMoveToX() {
         return cameraTargetX;
@@ -272,6 +276,8 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
             c.translate((v.getWorldWidth() - v.getMinWorldWidth() / 2) < 0 ? 0 : -((v.getWorldWidth() - v.getMinWorldWidth()) / 2),
                     ((v.getWorldHeight() - v.getMinWorldHeight()) / 2) < 0 ? 0 : -((v.getWorldHeight() - v.getMinWorldHeight()) / 2));
             c.update();
+            cameraTargetX = c.position.x;
+            cameraTargetY = c.position.y;
         }
     }
     public void setCameraResetToLeftBottomOfScreen(){
@@ -279,6 +285,8 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         Viewport v = getViewport();
         setCameraZoomXY(v.getWorldWidth()/2, v.getWorldHeight()/2,1);
         c.update();
+        cameraTargetX = c.position.x;
+        cameraTargetY = c.position.y;
 
     }
 
@@ -304,7 +312,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
         OrthographicCamera c = (OrthographicCamera)getCamera();
         if (cameraTargetX!=c.position.x || cameraTargetY!=c.position.y || cameraTargetZoom!=c.zoom){
             if (Math.abs(c.position.x-cameraTargetX)<cameraMoveSpeed*delta) {
-                c.position.x = (c.position.x + cameraTargetX) / 2;
+                c.position.x = (c.position.x + cameraTargetX) / 2f;
             } else {
                 if (c.position.x<cameraTargetX){
                     c.position.x += cameraMoveSpeed*delta;
@@ -313,7 +321,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
                 }
             }
             if (Math.abs(c.position.y-cameraTargetY)<cameraMoveSpeed*delta) {
-                c.position.y = (c.position.y + cameraTargetY) / 2;
+                c.position.y = (c.position.y + cameraTargetY) / 2f;
             } else {
                 if (c.position.y<cameraTargetY){
                     c.position.y += cameraMoveSpeed*delta;
@@ -322,7 +330,7 @@ abstract public class MyStage extends Stage implements InitableInterface, IZinde
                 }
             }
             if (Math.abs(c.zoom-cameraTargetZoom)<cameraZoomSpeed*delta) {
-                c.zoom = (c.zoom + cameraTargetZoom) / 2;
+                c.zoom = (c.zoom + cameraTargetZoom) / 2f;
             } else {
                 if (c.zoom<cameraTargetZoom){
                     c.zoom += cameraZoomSpeed*delta;

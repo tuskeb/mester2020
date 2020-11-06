@@ -1,0 +1,45 @@
+package hu.csanyzeg.master.B2DVideo;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2DWorldHelper;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.Box2dStage;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.MyFixtureDef;
+import hu.csanyzeg.master.MyBaseClasses.Box2dWorld.ShapeType;
+import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.OneSpriteStaticActor;
+import hu.csanyzeg.master.MyBaseClasses.Scene2D.ResponseViewport;
+
+public class BStage extends Box2dStage {
+    public BStage(MyGame game) {
+        super(new ResponseViewport(160), game);
+
+
+
+        OneSpriteStaticActor actor = new OneSpriteStaticActor(game, "badlogic.jpg");
+        actor.setSize(10,10);
+        actor.setPosition(75, 80);
+        actor.setActorWorldHelper(new Box2DWorldHelper(world, actor, ShapeType.Rectangle, new MyFixtureDef(0.2f, 0f, 5, false), BodyDef.BodyType.KinematicBody));
+        addActor(actor);
+
+        getBody(actor).setAngularVelocity(10);
+        getBody(actor).setLinearVelocity(new Vector2(10,2));
+
+
+        OneSpriteStaticActor actor2 = new OneSpriteStaticActor(game, "badlogic.jpg");
+        actor2.setSize(10,10);
+        actor2.setPosition(83, 100);
+        actor2.setActorWorldHelper(new Box2DWorldHelper(world, actor2, ShapeType.Rectangle, new MyFixtureDef(3.2f, 0f, 5, false), BodyDef.BodyType.DynamicBody));
+        addActor(actor2);
+
+        OneSpriteStaticActor floor = new OneSpriteStaticActor(game, "badlogic.jpg");
+        floor.setSize(160,5);
+        floor.setActorWorldHelper(new Box2DWorldHelper(world, floor, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.StaticBody));
+        addActor(floor);
+
+    }
+}

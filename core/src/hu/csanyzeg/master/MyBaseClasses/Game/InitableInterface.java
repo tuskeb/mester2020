@@ -5,6 +5,7 @@ package hu.csanyzeg.master.MyBaseClasses.Game;
  */
 
 public interface InitableInterface {
+    @Deprecated
     public default void init(){
 
     }
