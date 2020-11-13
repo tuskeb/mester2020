@@ -19,23 +19,24 @@ public class BStage extends Box2dStage {
         super(new ResponseViewport(160), game);
 
 
+        world.setGravity(new Vector2(0, 9.81f));
 
         OneSpriteStaticActor actor = new OneSpriteStaticActor(game, "badlogic.jpg");
         actor.setSize(10,10);
         actor.setPosition(75, 80);
-        actor.setActorWorldHelper(new Box2DWorldHelper(world, actor, ShapeType.Rectangle, new MyFixtureDef(0.2f, 0f, 5, false), BodyDef.BodyType.KinematicBody));
+        actor.setActorWorldHelper(new Box2DWorldHelper(world, actor, ShapeType.Circle, new MyFixtureDef(0.2f, 0.5f, 5, false), BodyDef.BodyType.DynamicBody));
         addActor(actor);
 
-        getBody(actor).setAngularVelocity(10);
-        getBody(actor).setLinearVelocity(new Vector2(10,2));
+        //getBody(actor).setAngularVelocity(10);
+        //getBody(actor).setLinearVelocity(new Vector2(10,2));
 
-
+/*
         OneSpriteStaticActor actor2 = new OneSpriteStaticActor(game, "badlogic.jpg");
         actor2.setSize(10,10);
         actor2.setPosition(83, 100);
-        actor2.setActorWorldHelper(new Box2DWorldHelper(world, actor2, ShapeType.Rectangle, new MyFixtureDef(3.2f, 0f, 5, false), BodyDef.BodyType.DynamicBody));
+        actor2.setActorWorldHelper(new Box2DWorldHelper(world, actor2, ShapeType.Circle, new MyFixtureDef(3.2f, 1f, 5, false), BodyDef.BodyType.DynamicBody));
         addActor(actor2);
-
+*/
         OneSpriteStaticActor floor = new OneSpriteStaticActor(game, "badlogic.jpg");
         floor.setSize(160,5);
         floor.setActorWorldHelper(new Box2DWorldHelper(world, floor, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.StaticBody));
