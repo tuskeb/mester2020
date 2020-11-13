@@ -22,7 +22,9 @@ public class Box2dLabel extends WorldLabel<Box2DWorldHelper, World> {
 
     @Override
     public Box2DWorldHelper createHelper(World world, Actor actor) {
-        return new Box2DWorldHelper(world, actor, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.KinematicBody);
+        MyFixtureDef fd = new MyFixtureDef();
+        fd.isSensor = true;
+        return new Box2DWorldHelper(world, actor, ShapeType.Rectangle, fd, BodyDef.BodyType.StaticBody);
     }
 
     @Override

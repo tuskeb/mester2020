@@ -24,7 +24,9 @@ public class Box2dMultiLineText extends WorldMultiLineText<Box2DWorldHelper, Wor
 
     @Override
     public Box2DWorldHelper createHelper(World world, Actor actor) {
-        return new Box2DWorldHelper(world, actor, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.KinematicBody);
+        MyFixtureDef fd = new MyFixtureDef();
+        fd.isSensor = true;
+        return new Box2DWorldHelper(world, actor, ShapeType.Rectangle, fd, BodyDef.BodyType.DynamicBody);
     }
 
     @Override

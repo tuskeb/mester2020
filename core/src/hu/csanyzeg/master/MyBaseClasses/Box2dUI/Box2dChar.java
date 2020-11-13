@@ -21,6 +21,6 @@ public class Box2dChar extends WorldChar<Box2DWorldHelper, World> {
 
     @Override
     public Box2DWorldHelper createHelper(World world) {
-        return new Box2DWorldHelper(world, this, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.KinematicBody);
+        return new Box2DWorldHelper(world, this, ShapeType.Rectangle, new MyFixtureDef(), BodyDef.BodyType.DynamicBody);
     }
 }
