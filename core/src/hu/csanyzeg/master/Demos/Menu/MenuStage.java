@@ -83,6 +83,7 @@ public class MenuStage extends MyStage {
     private boolean show = true;//Szerepeljen e a Start menü és a parancsikonok a képernyőn
 
     public MenuStage(final MyGame game) {
+        //super(new ResponseViewport(720), game);
         super(new ResponseViewport(720), game);
         addBackButtonListener(new BackButtonListener() {
             @Override
@@ -110,7 +111,6 @@ public class MenuStage extends MyStage {
                 }
             }
         });
-
     }
 
     private void shutdown()
@@ -267,10 +267,6 @@ public class MenuStage extends MyStage {
         //-----KÖZÉPRE HELYEZÉS VÉGE-----
     }
 
-    @Override
-    protected void resized() {
-
-    }
 
     @Override
     public void dispose() {

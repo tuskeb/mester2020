@@ -90,11 +90,7 @@ public abstract class Box2dStage extends HelperStage<World, Box2DWorldHelper> {
                 }
             }
         });
-    }
 
-    @Override
-    public void init() {
-        super.init();
         if (game.debug){
             addTimer(new TickTimer(1.017f, true, new TickTimerListener() {
                 @Override

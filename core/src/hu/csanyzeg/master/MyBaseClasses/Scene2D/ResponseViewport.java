@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class ResponseViewport extends Viewport {
+public class ResponseViewport extends ExtendViewport {
     /**
      * Ez a Viewport a ScalingViewport alapján jött létre
      * A ResponseViewport alkalmazkodik a telefon kijelzőjéhez
@@ -22,15 +23,17 @@ public class ResponseViewport extends Viewport {
      *
      * Új viewportot csinál egy új {@link OrthographicCamera} típusú kamera létrehozásával.
      * */
+    /*
     public ResponseViewport(float missingValue) {
         this(missingValue, new OrthographicCamera());
-    }
+    }*/
 
     /**
      * @param missingValue A stage magassága vagy szélessége
      * @param camera A használandó kamera a stagehez
      * */
-    public ResponseViewport(float missingValue, Camera camera) {
+    public ResponseViewport(float missingValue) {
+        super(missingValue, missingValue);
         if(Gdx.graphics.getWidth() > Gdx.graphics.getHeight())
             setWorldSize(widthLandscape(missingValue), missingValue);
             /**Ha fekvő módban van, akkor a stage szélessége a kiszámított szélesség lesz, a magassága pedig a megadott érték**/
@@ -38,7 +41,7 @@ public class ResponseViewport extends Viewport {
             setWorldSize(missingValue, widthPortrait(missingValue));
             /**Különben portré módban van, akkor a stage szélessége a megadott érték lesz, a magassága pedig a kiszámított magasság**/
 
-        setCamera(camera);/**A Kamera beállítása**/
+        //setCamera(camera);/**A Kamera beállítása**/
     }
 
     /**

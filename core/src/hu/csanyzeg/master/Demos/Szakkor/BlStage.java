@@ -13,8 +13,4 @@ public class BlStage extends MyStage {
         addBackButtonScreenBackByStackPopListener();
     }
 
-    @Override
-    public void init() {
-
-    }
 }

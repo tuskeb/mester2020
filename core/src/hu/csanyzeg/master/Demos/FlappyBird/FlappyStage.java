@@ -181,10 +181,6 @@ public class FlappyStage extends PrettyStage {
 
     }
 
-    @Override
-    public void init() {
-
-    }
 
     private Random random;
 

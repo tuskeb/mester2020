@@ -38,11 +38,6 @@ public class SimpleWorldStage extends HelperStage<SimpleWorld, SimpleWorldHelper
 
     public SimpleWorldStage(Viewport viewport, MyGame game) {
         super(viewport, game);
-    }
-
-    @Override
-    public void init() {
-        super.init();
         world  = new SimpleWorld();
         simpleWorldDebugRenderer = new SimpleWorldDebugRenderer();
         if (game.debug){
