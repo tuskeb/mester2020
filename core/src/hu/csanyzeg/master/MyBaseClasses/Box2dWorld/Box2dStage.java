@@ -157,10 +157,20 @@ public abstract class Box2dStage extends HelperStage<World, Box2DWorldHelper> {
             }
         }
         iterations = 1 + (int)(delta2*iterationPerSec);
-        world.step(delta2, iterations, iterations);
+        world.step(delta2 * timeMultiply, iterations, iterations);
         realElapsedTime += delta;
         lastDelta = delta;
         super.act(delta2);
+    }
+
+    float timeMultiply = 1;
+
+    public float getTimeMultiply() {
+        return timeMultiply;
+    }
+
+    public void setTimeMultiply(float timeMultiply) {
+        this.timeMultiply = timeMultiply;
     }
 
     @Override
