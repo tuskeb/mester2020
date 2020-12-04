@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -38,7 +39,7 @@ public class MyJoint {
 
 
 
-    public static void createWeldJoint(MyActor a, MyActor b){
+    public static MyJoint createWeldJoint(MyActor a, MyActor b){
         WeldJointDef jointDef = new WeldJointDef();
         Body bodyA = (Body) a.getActorWorldHelper().getBody();
         Body bodyB = (Body) b.getActorWorldHelper().getBody();
@@ -47,11 +48,11 @@ public class MyJoint {
         anchor.add(bodyB.getPosition());
         anchor.scl(0.5f);
         jointDef.initialize(bodyA, bodyB, anchor);
-        createJoint(a,b,jointDef);
+        return createJoint(a,b,jointDef);
     }
 
 
-    public static void createPrismaticJoint(MyActor a, MyActor b){
+    public static MyJoint createPrismaticJoint(MyActor a, MyActor b){
         PrismaticJointDef jointDef = new PrismaticJointDef();
         jointDef.bodyA = (Body) a.getActorWorldHelper().getBody();
         jointDef.bodyB = (Body) b.getActorWorldHelper().getBody();
@@ -62,11 +63,11 @@ public class MyJoint {
         jointDef.enableMotor = true;
         jointDef.motorSpeed = -1f;
         jointDef.localAxisA.set(jointDef.bodyA.getLocalVector(new Vector2(0,1)));
-        createJoint(a,b,jointDef);
+        return createJoint(a,b,jointDef);
     }
 
 
-    public static void createRevoluteJoint(MyActor a, MyActor b){
+    public static MyJoint createRevoluteJoint(MyActor a, MyActor b){
         RevoluteJointDef jointDef = new RevoluteJointDef();
         Body bodyA = (Body) a.getActorWorldHelper().getBody();
         Body bodyB = (Body) b.getActorWorldHelper().getBody();
@@ -75,21 +76,21 @@ public class MyJoint {
         anchor.add(bodyB.getPosition());
         anchor.scl(0.5f);
         jointDef.initialize(bodyA, bodyB, anchor);
-        createJoint(a,b,jointDef);
+        return createJoint(a,b,jointDef);
     }
 
 
-    public static void createDistanceJoint(MyActor a, MyActor b){
+    public static MyJoint createDistanceJoint(MyActor a, MyActor b){
         DistanceJointDef jointDef = new DistanceJointDef();
         Body bodyA = (Body) a.getActorWorldHelper().getBody();
         Body bodyB = (Body) b.getActorWorldHelper().getBody();
         jointDef.initialize(bodyA, bodyB, bodyA.getPosition().add(bodyA.getMassData().center), bodyB.getPosition().add(bodyB.getMassData().center));
-        createJoint(a,b,jointDef);
+        return createJoint(a,b,jointDef);
     }
 
 
 
-    public static void createMouseJoint(MyActor ground, MyActor target, float maxForce) {
+    public static MyJoint createMouseJoint(MyActor ground, MyActor target, float maxForce) {
         MouseJointDef jointDef = new MouseJointDef();
         jointDef.bodyA = (Body) ground.getActorWorldHelper().getBody(); //Ground body
         jointDef.bodyB = (Body) target.getActorWorldHelper().getBody(); //Target body
@@ -100,11 +101,11 @@ public class MyJoint {
         }
         jointDef.maxForce = maxForce;
         jointDef.target.set(jointDef.bodyA.getPosition());
-        createJoint(ground,target,jointDef);
+        return createJoint(ground,target,jointDef);
     }
 
-    public static void createMouseJoint(MyActor ground, MyActor target){
-        createMouseJoint(ground, target, 10000.0f * ((Body) target.getActorWorldHelper().getBody()).getMass());
+    public static MyJoint createMouseJoint(MyActor ground, MyActor target){
+        return createMouseJoint(ground, target, 10000.0f * ((Body) target.getActorWorldHelper().getBody()).getMass());
     }
 
     public static void removeJoint(final MyJoint joint) {
@@ -123,27 +124,28 @@ public class MyJoint {
         );
     }
 
-    public static void createRopeJoint(MyActor a, MyActor b) {
+    public static MyJoint createRopeJoint(MyActor a, MyActor b) {
         Body bodyA = (Body) a.getActorWorldHelper().getBody();
         Body bodyB = (Body) b.getActorWorldHelper().getBody();
-        createRopeJoint(a, b, (new Vector2(bodyA.getPosition()).add(bodyA.getMassData().center).sub(bodyB.getPosition()).sub(bodyB.getMassData().center)).len());
+        return createRopeJoint(a, b, (new Vector2(bodyA.getPosition()).add(bodyA.getMassData().center).sub(bodyB.getPosition()).sub(bodyB.getMassData().center)).len());
     }
 
-    public static void createRopeJoint(MyActor a, MyActor b, float maxLength) {
+    public static MyJoint createRopeJoint(MyActor a, MyActor b, float maxLength) {
         RopeJointDef jointDef = new RopeJointDef();
         jointDef.bodyA = (Body)a.getActorWorldHelper().getBody();
         jointDef.bodyB = (Body)b.getActorWorldHelper().getBody();
         jointDef.localAnchorA.set(jointDef.bodyA.getMassData().center);
         jointDef.localAnchorB.set(jointDef.bodyB.getMassData().center);
         jointDef.collideConnected = true;
-        createJoint(a,b,jointDef);
+        return createJoint(a,b,jointDef);
     }
 
-    public static void createJoint(MyActor a, MyActor b, JointDef jointDef){
+    public static MyJoint createJoint(MyActor a, MyActor b, JointDef jointDef){
         Joint w = ((Box2DWorldHelper)a.getActorWorldHelper()).world.createJoint(jointDef);
         MyJoint myJoint = new MyJoint(a,b,w);
         ((Box2DWorldHelper)(a.getActorWorldHelper())).addJoint(myJoint);
         ((Box2DWorldHelper)(b.getActorWorldHelper())).addJoint(myJoint);
+        return myJoint;
     }
 
 
