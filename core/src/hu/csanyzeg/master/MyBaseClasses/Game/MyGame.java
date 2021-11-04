@@ -38,7 +38,10 @@ abstract public class MyGame extends Game {
         myAssetManager = new MyAssetManager();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
+        onCreate();
     }
+
+    public abstract void onCreate();
 
 
     public final Stack<Class> backButtonStack = new Stack();
