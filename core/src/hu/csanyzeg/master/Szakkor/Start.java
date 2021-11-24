@@ -14,4 +14,9 @@ public class Start extends MyGame {
         Kepernyo kepernyo = new Kepernyo(this);
         setScreen(kepernyo);
     }
+
+    @Override
+    public void onCreate() {
+
+    }
 }

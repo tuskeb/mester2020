@@ -16,4 +16,9 @@ public class Snake extends MyGame {
         //setScreen(new SpaceScreen(this));
         setScreen(new SimpleUIScreen(this));
     }
+
+    @Override
+    public void onCreate() {
+
+    }
 }

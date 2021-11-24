@@ -14,4 +14,8 @@ public class TimerTest extends MyGame {
         setScreen(new TimerScreen(this));
     }
 
+    @Override
+    public void onCreate() {
+
+    }
 }

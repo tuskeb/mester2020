@@ -14,4 +14,9 @@ public class VideoGame extends MyGame {
        // this.setScreen(new VideoScreen(this));
         this.setScreen(new SpaceScreen(this));
     }
+
+    @Override
+    public void onCreate() {
+
+    }
 }

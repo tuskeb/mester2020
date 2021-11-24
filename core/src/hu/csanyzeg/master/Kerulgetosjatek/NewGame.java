@@ -16,4 +16,9 @@ public class NewGame extends MyGame {
         super.create();
         setScreen(new NewScreen(this));
     }
+
+    @Override
+    public void onCreate() {
+
+    }
 }

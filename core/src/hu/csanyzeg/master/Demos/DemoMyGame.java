@@ -29,4 +29,8 @@ public class DemoMyGame extends MyGame {
 		//setScreen(new FlappyScreen(this));
 	}
 
+	@Override
+	public void onCreate() {
+
+	}
 }

@@ -8,6 +8,11 @@ public class BGame extends MyGame {
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void create() {
         super.create();
         setScreen(new BScreen(this));
