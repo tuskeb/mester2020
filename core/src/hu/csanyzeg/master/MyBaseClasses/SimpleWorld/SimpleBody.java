@@ -487,12 +487,16 @@ public class SimpleBody extends MyRectangle {
 
 
     protected boolean stopped = true;
+    protected boolean stoppedMove = true;
     public boolean isStopped(){
         stopped =  originVelocity.len() == 0f && linearVelocity.len() == 0f && angularVelocity == 0f && sizeVelocity.len() == 0f && colorVelocityA == 0f && colorVelocityR == 0f && colorVelocityG == 0f && colorVelocityB == 0f;
         return stopped;
     }
 
-
+    public boolean isStoppedMove() {
+        stoppedMove = linearVelocity.len() == 0f;
+        return stoppedMove;
+    }
 
     public void step(float deltaTime){
         changedByWorld = true;
@@ -510,6 +514,7 @@ public class SimpleBody extends MyRectangle {
                 simpleBodyBehaviorListener.onOriginVelocityChanged(this);
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
+                    simpleBodyBehaviorListener.onStopOrigin(this);
                 }
             }
         }
@@ -548,6 +553,7 @@ public class SimpleBody extends MyRectangle {
                 simpleBodyBehaviorListener.onAngularVelocityChanged(this);
                 if (!stopped && isStopped()){
                     simpleBodyBehaviorListener.onStop(this);
+                    simpleBodyBehaviorListener.onStopAngular(this);
                 }
             }
         }
@@ -564,6 +570,10 @@ public class SimpleBody extends MyRectangle {
                 linearVelocity.set(0f,0f);
                 if (positionCorrection) setPosition(targetPosition.x, targetPosition.y);
                 simpleBodyBehaviorListener.onLinearVelocityChanged(this);
+                if (!stoppedMove && isStoppedMove()) {
+                    simpleBodyBehaviorListener.onStopMove(this);
+                    System.out.println("********************");
+                }
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
                 }
@@ -609,6 +619,7 @@ public class SimpleBody extends MyRectangle {
                 simpleBodyBehaviorListener.onSizeVelocityChanged(this);
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
+                    simpleBodyBehaviorListener.onStopSize(this);
                 }
             }
         }
@@ -642,6 +653,7 @@ public class SimpleBody extends MyRectangle {
                 setColorVelocity(0f,0f,0f,0f);
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
+                    simpleBodyBehaviorListener.onStopColor(this);
                 }
             }
         }
