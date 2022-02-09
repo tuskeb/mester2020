@@ -17,6 +17,11 @@ public class SimpleBodyBehaviorListener {
      * @param sender
      */
     public void onStart(SimpleBody sender){}
+    public void onStartMove(SimpleBody sender){}
+    public void onStartAngular(SimpleBody sender){}
+    public void onStartColor(SimpleBody sender){}
+    public void onStartOrigin(SimpleBody sender){}
+    public void onStartSize(SimpleBody sender){}
 
 
     public void onLinearVelocityChanged(SimpleBody sender){}

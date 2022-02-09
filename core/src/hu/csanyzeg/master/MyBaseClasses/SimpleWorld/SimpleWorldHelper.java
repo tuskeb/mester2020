@@ -38,7 +38,7 @@ public class SimpleWorldHelper extends WorldHelper<SimpleBody, Actor> {
                 body.addBaseCollisionRectangleShape();
                 break;
         }
-        body.setUserData(this);
+        body.setWorldData(this);
         this.world = world;
         resetChangeFlags();
     }

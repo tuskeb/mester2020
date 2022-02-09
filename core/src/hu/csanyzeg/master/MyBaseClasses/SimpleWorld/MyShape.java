@@ -85,12 +85,15 @@ public abstract class MyShape {
     public boolean active = true;
 
 
-
-
     /**
      * Az alakzathoz hozzácsatolható objektum, például egy Actor
      */
     public Object userData = null;
+
+    /**
+     * A világ által használható csatolt objektum
+     */
+    protected Object worldData = null;
 
     abstract public Vector2[] getCorners();
     abstract public boolean overlaps(MyShape other);
@@ -496,22 +499,22 @@ public abstract class MyShape {
                 ", originY=" + originY;
     }
 
-    public Object getUserData() {
-        return userData;
+    public Object getWorldData() {
+        return worldData;
     }
 
-    public void setUserData(Object extraData) {
-        this.userData = extraData;
+    public void setWorldData(Object extraData) {
+        this.worldData = extraData;
     }
 
     @Deprecated
     public void setExtraData(Object userData) {
-        this.userData = userData;
+        this.worldData = userData;
     }
 
     @Deprecated
     public Object getExtraData() {
-        return userData;
+        return worldData;
     }
 
     public boolean isActive() {
@@ -528,5 +531,12 @@ public abstract class MyShape {
     protected void rotationChanged(float newR, float oldR) {}
 
 
+    public Object getUserData() {
+        return userData;
+    }
+
+    public void setUserData(Object userData) {
+        this.userData = userData;
+    }
 
 }

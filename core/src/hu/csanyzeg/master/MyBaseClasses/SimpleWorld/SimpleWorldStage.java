@@ -1,22 +1,14 @@
 package hu.csanyzeg.master.MyBaseClasses.SimpleWorld;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-import java.util.ArrayList;
-
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyActor;
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldActor;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimer;
 import hu.csanyzeg.master.MyBaseClasses.Timers.TickTimerListener;
-import hu.csanyzeg.master.MyBaseClasses.Timers.Timer;
 import hu.csanyzeg.master.MyBaseClasses.WorldHelper.HelperStage;
 
 public class SimpleWorldStage extends HelperStage<SimpleWorld, SimpleWorldHelper> {
@@ -52,9 +44,9 @@ public class SimpleWorldStage extends HelperStage<SimpleWorld, SimpleWorldHelper
         world.setContactListener(new SimpleWorldContactListener() {
             @Override
             public void beginContact(SimpleWorld world, SimpleContact contact) {
-                if (contact.bodyA.userData instanceof SimpleWorldHelper && contact.bodyB.userData instanceof SimpleWorldHelper) {
-                    SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.userData);
-                    SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.userData);
+                if (contact.bodyA.worldData instanceof SimpleWorldHelper && contact.bodyB.worldData instanceof SimpleWorldHelper) {
+                    SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.worldData);
+                    SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.worldData);
                     for(SimpleBodyContactListener myContactListener : helperA.contactListeners){
                         myContactListener.beginContact(contact, helperA, helperB);
                     }
@@ -66,9 +58,9 @@ public class SimpleWorldStage extends HelperStage<SimpleWorld, SimpleWorldHelper
 
             @Override
             public void endContact(SimpleWorld world, SimpleContact contact) {
-                if (contact.bodyA.userData instanceof SimpleWorldHelper && contact.bodyB.userData instanceof SimpleWorldHelper) {
-                    SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.userData);
-                    SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.userData);
+                if (contact.bodyA.worldData instanceof SimpleWorldHelper && contact.bodyB.worldData instanceof SimpleWorldHelper) {
+                    SimpleWorldHelper helperA = ((SimpleWorldHelper) contact.bodyA.worldData);
+                    SimpleWorldHelper helperB = ((SimpleWorldHelper) contact.bodyB.worldData);
                     for(SimpleBodyContactListener myContactListener : helperA.contactListeners){
                         myContactListener.endContact(contact, helperA, helperB);
                     }

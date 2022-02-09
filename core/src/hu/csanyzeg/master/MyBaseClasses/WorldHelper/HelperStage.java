@@ -8,8 +8,6 @@ import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyStage;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.WorldActor;
 import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleBody;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorld;
-import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 
 public abstract class HelperStage<TWorld, THelper> extends MyStage {
 
@@ -26,7 +24,7 @@ public abstract class HelperStage<TWorld, THelper> extends MyStage {
     }
 
     public THelper getHelper(SimpleBody body){
-        return (THelper) (body.getUserData());
+        return (THelper) (body.getWorldData());
     }
 
     public Array<THelper> getHelpers(){

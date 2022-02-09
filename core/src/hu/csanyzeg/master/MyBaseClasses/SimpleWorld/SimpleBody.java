@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import hu.csanyzeg.master.MyBaseClasses.Scene2D.IGame;
-
 
 public class SimpleBody extends MyRectangle {
     protected final HashMap<String, MyShape> shapeMap = new HashMap<>();
@@ -87,6 +85,13 @@ public class SimpleBody extends MyRectangle {
     protected static float debugPointSize = 30f;
     protected boolean changedByWorld = false;
 
+    protected boolean stopped = true;
+    protected boolean stoppedMove = true;
+    protected boolean stoppedAngular = true;
+    protected boolean stoppedSize = true;
+    protected boolean stoppedColor = true;
+    protected boolean stoppedOrigin = true;
+
 
     public HashMap<String, MyShape> getCollisionShapeMap(){
         return shapeMap;
@@ -106,6 +111,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
+        }
     }
 
     public void setLinearVelocity(float x, float y) {
@@ -113,6 +121,9 @@ public class SimpleBody extends MyRectangle {
         this.linearVelocity.set(x,y);
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
         }
     }
 
@@ -125,6 +136,9 @@ public class SimpleBody extends MyRectangle {
         this.angularVelocity = angularVelocity;
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedAngular && !isStoppedAngular()){
+            simpleBodyBehaviorListener.onStartAngular(this);
         }
     }
 
@@ -139,6 +153,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedSize && !isStoppedSize()){
+            simpleBodyBehaviorListener.onStartSize(this);
+        }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
 
@@ -148,6 +165,9 @@ public class SimpleBody extends MyRectangle {
         this.sizeVelocity.set(w,h);
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedSize && !isStoppedSize()){
+            simpleBodyBehaviorListener.onStartSize(this);
         }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
@@ -163,6 +183,9 @@ public class SimpleBody extends MyRectangle {
         originTimer = INVALIDTIMER;
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedOrigin && !isStoppedOrigin()){
+            simpleBodyBehaviorListener.onStartOrigin(this);
         }
         simpleBodyBehaviorListener.onOriginVelocityChanged(this);
     }
@@ -190,6 +213,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedOrigin && !isStoppedOrigin()){
+            simpleBodyBehaviorListener.onStartOrigin(this);
+        }
         simpleBodyBehaviorListener.onOriginVelocityChanged(this);
     }
 
@@ -211,6 +237,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedOrigin && !isStoppedOrigin()){
+            simpleBodyBehaviorListener.onStartOrigin(this);
+        }
         simpleBodyBehaviorListener.onOriginVelocityChanged(this);
     }
 
@@ -221,6 +250,9 @@ public class SimpleBody extends MyRectangle {
         targetOrigin.set(velocityX * sec + getLeftBottomOriginX(), velocityY * sec + getLeftBottomOriginY());
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedOrigin && !isStoppedOrigin()){
+            simpleBodyBehaviorListener.onStartOrigin(this);
         }
         simpleBodyBehaviorListener.onOriginVelocityChanged(this);
     }
@@ -253,6 +285,10 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
+        }
+
         simpleBodyBehaviorListener.onLinearVelocityChanged(this);
     }
 
@@ -263,6 +299,10 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()) {
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
+        }
+
         simpleBodyBehaviorListener.onLinearVelocityChanged(this);
     }
 
@@ -286,6 +326,10 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()) {
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
+        }
+
         simpleBodyBehaviorListener.onLinearVelocityChanged(this);
     }
 
@@ -330,6 +374,10 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedMove && !isStoppedMove()){
+            simpleBodyBehaviorListener.onStartMove(this);
+        }
+
         simpleBodyBehaviorListener.onAngularVelocityChanged(this);
     }
 
@@ -363,6 +411,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedAngular && !isStoppedAngular()){
+            simpleBodyBehaviorListener.onStartAngular(this);
+        }
         simpleBodyBehaviorListener.onAngularVelocityChanged(this);
     }
 
@@ -374,6 +425,9 @@ public class SimpleBody extends MyRectangle {
         targetRotation = velocity * sec + realRotation;
         if (stopped && !isStopped()) {
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedAngular && !isStoppedAngular()){
+            simpleBodyBehaviorListener.onStartAngular(this);
         }
         simpleBodyBehaviorListener.onAngularVelocityChanged(this);
     }
@@ -398,6 +452,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedSize && !isStoppedSize()){
+            simpleBodyBehaviorListener.onStartSize(this);
+        }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
         /*if (linearVelocity.len() > 0 && linearTimer > 0){
             targetPosition.sub((width - this.width) / 2f, (height - this.height) / 2f);
@@ -412,6 +469,9 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedSize && !isStoppedSize()){
+            simpleBodyBehaviorListener.onStartSize(this);
+        }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
 
@@ -423,6 +483,9 @@ public class SimpleBody extends MyRectangle {
         sizeTimer = sec;
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedSize && !isStoppedSize()){
+            simpleBodyBehaviorListener.onStartSize(this);
         }
         simpleBodyBehaviorListener.onSizeVelocityChanged(this);
     }
@@ -451,6 +514,9 @@ public class SimpleBody extends MyRectangle {
         colorTimer = sec;
         if (stopped && !isStopped()){
             simpleBodyBehaviorListener.onStart(this);
+        }
+        if (stoppedColor && !isStoppedColor()){
+            simpleBodyBehaviorListener.onStartColor(this);
         }
     }
 
@@ -482,12 +548,13 @@ public class SimpleBody extends MyRectangle {
         if (stopped && !isStopped()) {
             simpleBodyBehaviorListener.onStart(this);
         }
+        if (stoppedColor && !isStoppedColor()){
+            simpleBodyBehaviorListener.onStartColor(this);
+        }
     }
 
 
 
-    protected boolean stopped = true;
-    protected boolean stoppedMove = true;
     public boolean isStopped(){
         stopped =  originVelocity.len() == 0f && linearVelocity.len() == 0f && angularVelocity == 0f && sizeVelocity.len() == 0f && colorVelocityA == 0f && colorVelocityR == 0f && colorVelocityG == 0f && colorVelocityB == 0f;
         return stopped;
@@ -497,6 +564,27 @@ public class SimpleBody extends MyRectangle {
         stoppedMove = linearVelocity.len() == 0f;
         return stoppedMove;
     }
+
+    public boolean isStoppedAngular(){
+        stoppedAngular =  angularVelocity == 0f;
+        return stopped;
+    }
+
+    public boolean isStoppedSize(){
+        stoppedSize =  sizeVelocity.len() == 0f;
+        return stopped;
+    }
+
+    public boolean isStoppedOrigin(){
+        stoppedOrigin =  originVelocity.len() == 0f;
+        return stopped;
+    }
+
+    public boolean isStoppedColor(){
+        stoppedColor =  colorVelocityA == 0f && colorVelocityR == 0f && colorVelocityG == 0f && colorVelocityB == 0f;
+        return stopped;
+    }
+
 
     public void step(float deltaTime){
         changedByWorld = true;
@@ -512,9 +600,11 @@ public class SimpleBody extends MyRectangle {
                 originVelocity.set(0f,0f);
                 if (positionCorrection) setOriginFixedOrigin(targetOrigin.x, targetOrigin.y);
                 simpleBodyBehaviorListener.onOriginVelocityChanged(this);
+                if (!stoppedOrigin && isStoppedOrigin()) {
+                    simpleBodyBehaviorListener.onStopOrigin(this);
+                }
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
-                    simpleBodyBehaviorListener.onStopOrigin(this);
                 }
             }
         }
@@ -551,9 +641,11 @@ public class SimpleBody extends MyRectangle {
                 angularVelocity = 0f;
                 if (positionCorrection) setRotation(targetRotation);
                 simpleBodyBehaviorListener.onAngularVelocityChanged(this);
+                if (!stoppedAngular && isStoppedAngular()) {
+                    simpleBodyBehaviorListener.onStopAngular(this);
+                }
                 if (!stopped && isStopped()){
                     simpleBodyBehaviorListener.onStop(this);
-                    simpleBodyBehaviorListener.onStopAngular(this);
                 }
             }
         }
@@ -572,7 +664,6 @@ public class SimpleBody extends MyRectangle {
                 simpleBodyBehaviorListener.onLinearVelocityChanged(this);
                 if (!stoppedMove && isStoppedMove()) {
                     simpleBodyBehaviorListener.onStopMove(this);
-                    System.out.println("********************");
                 }
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
@@ -617,9 +708,11 @@ public class SimpleBody extends MyRectangle {
                     }
                 }
                 simpleBodyBehaviorListener.onSizeVelocityChanged(this);
+                if (!stoppedSize && isStoppedSize()) {
+                    simpleBodyBehaviorListener.onStopSize(this);
+                }
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
-                    simpleBodyBehaviorListener.onStopSize(this);
                 }
             }
         }
@@ -651,9 +744,11 @@ public class SimpleBody extends MyRectangle {
                 colorTimer = INVALIDTIMER;
                 color = targetColor;
                 setColorVelocity(0f,0f,0f,0f);
+                if (!stoppedColor && isStoppedColor()) {
+                    simpleBodyBehaviorListener.onStopColor(this);
+                }
                 if (!stopped && isStopped()) {
                     simpleBodyBehaviorListener.onStop(this);
-                    simpleBodyBehaviorListener.onStopColor(this);
                 }
             }
         }
@@ -724,20 +819,20 @@ public class SimpleBody extends MyRectangle {
      * @param shape A pozíciója és a forgatása relatív az bodytól
      */
     public void addCollisionShape(String name, MyShape shape){
-        shape.setUserData(this);
+        shape.setWorldData(this);
         shapeMap.put(name, shape);
     }
 
     public void addCollisionRectangleShape(String name, float offsetX, float offsetY, float w, float h, float offsetR){
         MyRectangle shape = new MyRectangle(w,h,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), offsetR, getLeftBottomX(), getLeftBottomY(),true);
-        shape.setUserData(this);
+        shape.setWorldData(this);
         shapeMap.put(name, shape);
     }
 
 
     public void addCollisionCircleShape(String name, float offsetX, float offsetY, float radius, float offsetR){
         MyCircle shape = new MyCircle(radius,offsetX,offsetY, getLeftBottomOriginX(), getLeftBottomOriginY(), getRotation(), offsetR, getLeftBottomX(), getLeftBottomY(),true);
-        shape.setUserData(this);
+        shape.setWorldData(this);
         shapeMap.put(name, shape);
     }
 
@@ -918,6 +1013,43 @@ public class SimpleBody extends MyRectangle {
     protected void colorChanged(Color newC, Color oldC) {
         if (!changedByWorld){
             colorTimer = INVALIDTIMER;
+        }
+    }
+
+    public Vector2 getTargetOrigin() {
+        return targetOrigin;
+    }
+
+    public Vector2 getTargetPosition() {
+        return targetPosition;
+    }
+
+    public float getTargetRotation() {
+        return targetRotation;
+    }
+
+    public Vector2 getTargetSize() {
+        return targetSize;
+    }
+
+    public Color getTargetColor() {
+        return targetColor;
+    }
+
+    public void setPositionSafe(float X, float Y) {
+        setPosition(X, Y);
+        if (linearVelocity != null && !stoppedMove){
+            linearVelocity.set(0,0);
+            stoppedMove = isStoppedMove();
+        }
+    }
+
+
+    public void setPositionFromCenterSafe(float centerX, float centerY) {
+        setPositionFromCenter(centerX, centerY);
+        if (linearVelocity != null && !stoppedMove){
+            linearVelocity.set(0,0);
+            stoppedMove = isStoppedMove();
         }
     }
 }
