@@ -1,10 +1,9 @@
 package hu.csanyzeg.master.Demos.GameOfLife;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import hu.csanyzeg.master.MyBaseClasses.Game.MyGame;
 import hu.csanyzeg.master.MyBaseClasses.Scene2D.MyGroup;
@@ -23,8 +22,9 @@ import hu.csanyzeg.master.MyBaseClasses.SimpleWorld.SimpleWorldHelper;
 
 public class LifeActor extends MyGroup {
     boolean isMale;
-    public OneSpriteStaticActor bg;
-    public OneSpriteStaticActor fg;
+    public OneSpriteStaticActor bgColorActor;
+    public OneSpriteStaticActor bgEyeActor;
+    public OneSpriteStaticActor bgNorotateActor;
     public OneSpriteStaticActor focusActor;
     public SimpleLabel label;
     public static RandomXS128 random = new RandomXS128();
@@ -79,25 +79,24 @@ public class LifeActor extends MyGroup {
     public static final int RETIRED = 256;
     public static final int FINALSIZE = 512;
 
-    public static final String CHILD_BG = "";
-    public static final String CHILD_FG = "";
+    public static final String ASSET_BG_NOROTATE = "LifeGame/bgnorotate.png";
+    public static final String ASSET_CHILD_RETIRED_BG = "LifeGame/gray.png";
 
-    public static final String TEENEGER_BG_F = "";
-    public static final String TEENEGER_FG_F = "";
-    public static final String TEENEGER_BG_M = "";
-    public static final String TEENEGER_FG_M = "";
+    public static final String ASSET_TEEN_ADULT_FEMALE = "LifeGame/female.png";
+    public static final String ASSET_TEEN_ADULT_MALE = "LifeGame/male.png";
 
-    public static final String ADULT_BG_F = "";
-    public static final String ADULT_FG_F = "";
-    public static final String ADULT_BG_M = "";
-    public static final String ADULT_FG_M = "";
+    public static final String ASSET_GENDER_FEMALE = "LifeGame/pink.png";
+    public static final String ASSET_GENDER_MALE = "LifeGame/blue.png";
 
-    public static final String RETIRED_BG = "";
-    public static final String RETIRED_FG = "";
+    public static final String ASSET_FOCUS = "LifeGame/focus.png";
 
-    public static final String FOCUS = "";
+    public static final String ASSET_EYES = "LifeGame/eyes.png";
 
     private boolean force = false;
+
+    public void updateGender(){
+        bgColorActor.sprite.setTexture(game.getMyAssetManager().getTexture(getState() == StateType.child || getState() == StateType.retired ? ASSET_CHILD_RETIRED_BG : isMale ? ASSET_GENDER_MALE : ASSET_GENDER_FEMALE));
+    }
 
     public LifeActor(MyGame game, SimpleWorld world, int maxsize, boolean randompos) {
         super(game);
@@ -105,14 +104,17 @@ public class LifeActor extends MyGroup {
         isMale = random.nextBoolean();
         this.randompos=randompos;
 
-        addActor(bg = new OneSpriteStaticActor(game, "yellow.png") {
 
-        });
-        //bg.sprite.setTexture(game.getMyAssetManager().getTexture("badlogic.jpg"));
-        addActor(fg = new OneSpriteStaticActor(game, "green.png") {
+        addActor(focusActor = new OneSpriteStaticActor(game, ASSET_FOCUS));
+        focusActor.setVisible(false);
+
+        addActor(bgColorActor = new OneSpriteStaticActor(game, ASSET_CHILD_RETIRED_BG));
+
+        addActor(bgNorotateActor = new OneSpriteStaticActor(game, ASSET_BG_NOROTATE) {
             @Override
             public void act(float delta) {
                 super.act(delta);
+                setRotation(-getParent().getRotation());
                 switch (getState()){
                     case child:
                         setAlpha((float)Math.abs(Math.sin(elapsedTime * 1)));
@@ -130,10 +132,8 @@ public class LifeActor extends MyGroup {
             }
         });
 
-        addActor(focusActor = new OneSpriteStaticActor(game, "blue.png") {
-
-        });
-        focusActor.setVisible(false);
+        addActor(bgEyeActor = new OneSpriteStaticActor(game, ASSET_EYES));
+        bgEyeActor.setRotation(-90);
 
         growSpeed = (random.nextFloat() / 2 + 0.5f) * 0.2f;
         setSize(s = random.nextInt(maxsize - CHILD + 1) + CHILD, s);
@@ -170,6 +170,8 @@ public class LifeActor extends MyGroup {
                 super.endContact(contact, myHelper, otherHelper);
             }
         });
+
+        updateGender();
     }
 
     public boolean getFocus(){
